@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
 	<title>openWB</title>
-	<?php include ("values.php");?>
+	<?php
+	include ("values.php");
+	require_once '../../settings/settingsClass.php';
+	$mySettings = new openWBSettings();
+	?>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-         <meta name="apple-mobile-web-app-capable" content="yes">
-         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-         <meta name="apple-mobile-web-app-title" content="openWB">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="openWB">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
-	<link rel="apple-touch-startup-image" href="/openWB/web/img/favicons/splash1125x2436w.png"  />
+	<link rel="apple-touch-startup-image" href="/openWB/web/img/favicons/splash1125x2436w.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="img/favicons/splash1125x2436w.png">
 	<meta name="apple-mobile-web-app-title" content="openWB">
 
@@ -46,14 +50,14 @@
 	<!-- Animate.css -->
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
 	<!-- Font Awesome, all styles -->
-  <link href="fonts/font-awesome-5.8.2/css/all.css" rel="stylesheet">
+	<link href="fonts/font-awesome-5.8.2/css/all.css" rel="stylesheet">
 	<!-- Elegant Icons -->
 	<link rel="stylesheet" type="text/css" href="fonts/eleganticons/et-icons.css">
 	<!-- Main style -->
 	<link rel="stylesheet" type="text/css" href="css/cardio.css">
 	<link rel="stylesheet" type="text/css" href="css/pwa.css">
 
-    <!-- include special Theme style -->
+	<!-- include special Theme style -->
 	<link rel="stylesheet" type="text/css" href="themes/<?php echo $_COOKIE['openWBTheme'];?>/style.css">
 
 	<!-- important Scripts to be loaded first-->
@@ -64,65 +68,63 @@
 	<script src="js/typewriter.js"></script>
 	<script src="js/jquery.onepagenav.js"></script>
 	<script src="js/main.js"></script>
-</head>
+	<script>
+		var hook1_aktiv = <?php echo $mySettings->getSetting("hook1_aktiv"); ?>;
+		var hook2_aktiv = <?php echo $mySettings->getSetting("hook2_aktiv"); ?>;
+		var hook3_aktiv = <?php echo $mySettings->getSetting("hook3_aktiv"); ?>;
+		var activetheme = "<?php echo $themeCookie ?>";
+		registerPageVisibility()
 
-<script>
-	var hook1_aktiv = <?php echo $hook1_aktivold ?>;
-	var hook2_aktiv = <?php echo $hook2_aktivold ?>;
-	var hook3_aktiv = <?php echo $hook3_aktivold ?>;
-	var activetheme = "<?php echo $themeCookie ?>";
-	registerPageVisibility()
-	function registerPageVisibility() {
-		let hidden;
-	        let visibilityChange;
-	        if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
-		        hidden = 'hidden';
-		        visibilityChange = 'visibilitychange';
-		} else if (typeof document.msHidden !== 'undefined') {
-			hidden = 'msHidden';
-		        visibilityChange = 'msvisibilitychange';
-		} else if (typeof document.webkitHidden !== 'undefined') {
-		        hidden = 'webkitHidden';
-		        visibilityChange = 'webkitvisibilitychange';
-		}
-		window.document.addEventListener(visibilityChange, () => {
-	        if (!document[hidden]) {
-				initialread = 0;
-				all1 = 0;
-				all2 = 0;
-				all3 = 0;
-				all4 = 0;
-				all5 = 0;
-				all6 = 0;
-				all7 = 0;
-				all8 = 0;
+		function registerPageVisibility() {
+			let hidden;
+			let visibilityChange;
+			if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+				hidden = 'hidden';
+				visibilityChange = 'visibilitychange';
+			} else if (typeof document.msHidden !== 'undefined') {
+				hidden = 'msHidden';
+				visibilityChange = 'msvisibilitychange';
+			} else if (typeof document.webkitHidden !== 'undefined') {
+				hidden = 'webkitHidden';
+				visibilityChange = 'webkitvisibilitychange';
 			}
-		});
-	}
-</script>
-
-<input hidden name="lastmanagement" id="lastmanagement" value="<?php echo $lastmanagementold ; ?>" />
-<input hidden name="lastmanagements2" id="lastmanagements2" value="<?php echo $lastmanagements2old ; ?>" />
-<input hidden name="speicherstat" id="speicherstat" value="<?php echo $speicherstatold ; ?>" />
-<input hidden name="lademlp1stat" id="lademlp1stat" value="<?php echo $lademstatold ; ?>" />
-<input hidden name="lademlp2stat" id="lademlp2stat" value="<?php echo $lademstats1old ; ?>" />
-<input hidden name="lademlp3stat" id="lademlp3stat" value="<?php echo $lademstats2old ; ?>" />
-<input hidden name="evuglaettungakt" id="evuglaettungakt" value="<?php echo $evuglaettungaktold ; ?>" />
-<input hidden name="nachtladenstate" id="nachtladenstate" value="<?php echo $nachtladenstate ; ?>" />
-<input hidden name="nachtladenstates1" id="nachtladenstates1" value="<?php echo $nachtladenstates1 ; ?>" />
-<input hidden name="nlakt_nurpv" id="nlakt_nurpv" value="<?php echo $nlakt_nurpvold ; ?>" />
-<input hidden name="nlakt_sofort" id="nlakt_sofort" value="<?php echo $nlakt_sofortold ; ?>" />
-<input hidden name="nlakt_minpv" id="nlakt_minpv" value="<?php echo $nlakt_minpvold ; ?>" />
-<input hidden name="nlakt_standby" id="nlakt_standby" value="<?php echo $nlakt_standbyold ; ?>" />
-<input hidden name="lademodus" id="lademodus" value="<?php echo $lademodusold ; ?>" />
-<input hidden name="hausverbrauchstat" id="hausverbrauchstat" value="<?php echo $hausverbrauchstatold ; ?>" />
-<input hidden name="speicherpvui" id="speicherpvui" value="<?php echo $speicherpvuiold ; ?>" />
-<input hidden name="zielladenaktivlp1" id="zielladenaktivlp1" value="<?php echo $zielladenaktivlp1old ; ?>" />
-<input hidden name="sofortlm" id="sofortlm" value="<?php echo $lademodusold ; ?>" />
-<input hidden name="heutegeladen" id="heutegeladen" value="<?php echo $heutegeladenold ; ?>" />
-
-
+			window.document.addEventListener(visibilityChange, () => {
+				if (!document[hidden]) {
+					initialread = 0;
+					all1 = 0;
+					all2 = 0;
+					all3 = 0;
+					all4 = 0;
+					all5 = 0;
+					all6 = 0;
+					all7 = 0;
+					all8 = 0;
+				}
+			});
+		}
+	</script>
+</head>
 <body>
+	<input type="hidden" name="lastmanagement" id="lastmanagement" value="<?php echo $mySettings->getSetting("lastmanagement"); ?>" />
+	<input type="hidden" name="lastmanagements2" id="lastmanagements2" value="<?php echo $mySettings->getSetting("lastmanagements2"); ?>" />
+	<input type="hidden" name="speicherstat" id="speicherstat" value="<?php echo $mySettings->getSetting("speicherstat"); ?>" />
+	<input type="hidden" name="lademlp1stat" id="lademlp1stat" value="<?php echo $mySettings->getSetting("lademstat"); ?>" />
+	<input type="hidden" name="lademlp2stat" id="lademlp2stat" value="<?php echo $mySettings->getSetting("lademstats1"); ?>" />
+	<input type="hidden" name="lademlp3stat" id="lademlp3stat" value="<?php echo $mySettings->getSetting("lademstats2"); ?>" />
+	<input type="hidden" name="evuglaettungakt" id="evuglaettungakt" value="<?php echo $mySettings->getSetting("evuglaettungakt"); ?>" />
+	<input type="hidden" name="nachtladenstate" id="nachtladenstate" value="<?php echo $mySettings->getSetting("nachtladen"); ?>" />
+	<input type="hidden" name="nachtladenstates1" id="nachtladenstates1" value="<?php echo $mySettings->getSetting("nachtladens1"); ?>" />
+	<input type="hidden" name="nlakt_nurpv" id="nlakt_nurpv" value="<?php echo $mySettings->getSetting("nlakt_nurpv"); ?>" />
+	<input type="hidden" name="nlakt_sofort" id="nlakt_sofort" value="<?php echo $mySettings->getSetting("nlakt_sofort"); ?>" />
+	<input type="hidden" name="nlakt_minpv" id="nlakt_minpv" value="<?php echo $mySettings->getSetting("nlakt_minpv"); ?>" />
+	<input type="hidden" name="nlakt_standby" id="nlakt_standby" value="<?php echo $mySettings->getSetting("nlakt_standby"); ?>" />
+	<input type="hidden" name="lademodus" id="lademodus" value="<?php echo $lademodusold; ?>" />
+	<input type="hidden" name="hausverbrauchstat" id="hausverbrauchstat" value="<?php echo $mySettings->getSetting("hausverbrauchstat"); ?>" />
+	<input type="hidden" name="speicherpvui" id="speicherpvui" value="<?php echo $mySettings->getSetting("speicherpvui"); ?>" />
+	<input type="hidden" name="zielladenaktivlp1" id="zielladenaktivlp1" value="<?php echo $mySettings->getSetting("zielladenaktivlp1"); ?>" />
+	<input type="hidden" name="sofortlm" id="sofortlm" value="<?php echo $lademodusold; ?>" />
+	<input type="hidden" name="heutegeladen" id="heutegeladen" value="<?php echo $mySettings->getSetting("heutegeladen"); ?>" />
+
 	<div class="preloader">
 		<img src="img/loader.gif" alt="Preloader image">
 	</div>
@@ -135,8 +137,6 @@
 
 	<!-- Holder for mobile navigation -->
 	<div class="mobile-nav">
-		<ul>
-		</ul>
 		<a href="#" class="close-link"><i class="arrow_up"></i></a>
 	</div>
 
@@ -152,5 +152,4 @@
 	<script src="live.js?vers=14"></script>
 	<script src="livefunctions.js?vers=7"></script>
 </body>
-
 </html>

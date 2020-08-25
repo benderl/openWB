@@ -37,7 +37,7 @@
 	<body>
 
 		<?php
-
+			/*
 			$lines = file('/var/www/html/openWB/openwb.conf');
 			foreach($lines as $line) {
 				if(strpos($line, "netzabschaltunghz=") !== false) {
@@ -583,19 +583,26 @@
 			$pushoveruserold = str_replace( "'", "", $pushoveruserold);
 			$pushovertokenold = str_replace( "'", "", $pushovertokenold);
 			$lastrfid = file_get_contents('/var/www/html/openWB/ramdisk/rfidlasttag');
+			*/
+
+			// get settings
+			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+			$mySettings = new openWBSettings();
+			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/tools/ramdiskClass.php';
+			$myRamdisk = new openWBRamdisk();
 		?>
 
 		<div id="nav"></div> <!-- placeholder for navbar -->
 
 		<div role="main" class="container" style="margin-top:20px">
 			<div class="col-sm-12">
-				<form action="./tools/savemisc.php" method="POST">
+				<form action="settings/savepostsettings.php" method="POST">
 					<div class="row">
 						<b><label for="dspeed">Geschwindigkeit Regelintervall:</label></b>
 						<select name="dspeed" id="dspeed">
-							<option <?php if($dspeedold == 0) echo "selected" ?> value="0">Normal</option>
-							<option <?php if($dspeedold == 2) echo "selected" ?> value="2">Langsam</option>
-							<option <?php if($dspeedold == 3) echo "selected" ?> value="3">Sehr Langsam</option>
+							<option <?php if($mySettings->getSetting("dspeed") == 0) echo "selected" ?> value="0">Normal</option>
+							<option <?php if($mySettings->getSetting("dspeed") == 2) echo "selected" ?> value="2">Langsam</option>
+							<option <?php if($mySettings->getSetting("dspeed") == 3) echo "selected" ?> value="3">Sehr Langsam</option>
 						</select>
 					</div>
 
@@ -608,8 +615,8 @@
 					<div class="row">
 						<b><label for="ladetaster">Ladetaster:</label></b>
 						<select name="ladetaster" id="ladetaster">
-							<option <?php if($ladetasterold == 0) echo "selected" ?> value="0">Aus</option>
-							<option <?php if($ladetasterold == 1) echo "selected" ?> value="1">An</option>
+							<option <?php if($mySettings->getSetting("ladetaster") == 0) echo "selected" ?> value="0">Aus</option>
+							<option <?php if($mySettings->getSetting("ladetaster") == 1) echo "selected" ?> value="1">An</option>
 						</select>
 					</div>
 					<div class="row">
@@ -618,11 +625,11 @@
 					<div class="row">
 						<b><label for="bootmodus">Lademodus nach Start der openWB:</label></b>
 						<select name="bootmodus" id="bootmodus">
-							<option <?php if($bootmodusold == 0) echo "selected" ?> value="0">Sofort Laden</option>
-							<option <?php if($bootmodusold == 1) echo "selected" ?> value="1">Min + PV</option>
-							<option <?php if($bootmodusold == 2) echo "selected" ?> value="2">Nur PV</option>
-							<option <?php if($bootmodusold == 3) echo "selected" ?> value="3">Stop</option>
-							<option <?php if($bootmodusold == 4) echo "selected" ?> value="4">Standby</option>
+							<option <?php if($mySettings->getSetting("bootmodus") == 0) echo "selected" ?> value="0">Sofort Laden</option>
+							<option <?php if($mySettings->getSetting("bootmodus") == 1) echo "selected" ?> value="1">Min + PV</option>
+							<option <?php if($mySettings->getSetting("bootmodus") == 2) echo "selected" ?> value="2">Nur PV</option>
+							<option <?php if($mySettings->getSetting("bootmodus") == 3) echo "selected" ?> value="3">Stop</option>
+							<option <?php if($mySettings->getSetting("bootmodus") == 4) echo "selected" ?> value="4">Standby</option>
 						</select>
 					</div>
 					<div class="row">
@@ -631,8 +638,8 @@
 					<div class="row">
 						<b><label for="netzabschaltunghz">Netzschutz:</label></b>
 						<select name="netzabschaltunghz" id="netzabschaltunghz">
-							<option <?php if($netzabschaltunghzold == 0) echo "selected" ?> value="0">Deaktiviert</option>
-							<option <?php if($netzabschaltunghzold == 1) echo "selected" ?> value="1">Aktiviert</option>
+							<option <?php if($mySettings->getSetting("netzabschaltunghz") == 0) echo "selected" ?> value="0">Deaktiviert</option>
+							<option <?php if($mySettings->getSetting("netzabschaltunghz") == 1) echo "selected" ?> value="1">Aktiviert</option>
 						</select>
 					</div>
 					<div class="row">
@@ -646,15 +653,15 @@
 					<div class="row">
 						<b><label for="cpunterbrechunglp1">CP Unterbrechung LP1:</label></b>
 						<select name="cpunterbrechunglp1" id="cpunterbrechunglp1">
-							<option <?php if($cpunterbrechunglp1old == 0) echo "selected" ?> value="0">Deaktiviert</option>
-							<option <?php if($cpunterbrechunglp1old == 1) echo "selected" ?> value="1">Aktiviert</option>
+							<option <?php if($mySettings->getSetting("cpunterbrechunglp1") == 0) echo "selected" ?> value="0">Deaktiviert</option>
+							<option <?php if($mySettings->getSetting("cpunterbrechunglp1") == 1) echo "selected" ?> value="1">Aktiviert</option>
 						</select>
 					</div>
 					<div class="row">
 						<b><label for="cpunterbrechunglp2">CP Unterbrechung LP2:</label></b>
 						<select name="cpunterbrechunglp2" id="cpunterbrechunglp2">
-							<option <?php if($cpunterbrechunglp2old == 0) echo "selected" ?> value="0">Deaktiviert</option>
-							<option <?php if($cpunterbrechunglp2old == 1) echo "selected" ?> value="1">Aktiviert</option>
+							<option <?php if($mySettings->getSetting("cpunterbrechunglp2") == 0) echo "selected" ?> value="0">Deaktiviert</option>
+							<option <?php if($mySettings->getSetting("cpunterbrechunglp2") == 1) echo "selected" ?> value="1">Aktiviert</option>
 						</select>
 					</div>
 					<div class="row">
@@ -667,8 +674,8 @@
 					<div class="row">
 						<b><label for="rfidakt">RFID Lesung:</label></b>
 						<select name="rfidakt" id="rfidakt">
-							<option <?php if($rfidaktold == 0) echo "selected" ?> value="0">Deaktiviert</option>
-							<option <?php if($rfidaktold == 1) echo "selected" ?> value="1">Aktiviert</option>
+							<option <?php if($mySettings->getSetting("rfidakt") == 0) echo "selected" ?> value="0">Deaktiviert</option>
+							<option <?php if($mySettings->getSetting("rfidakt") == 1) echo "selected" ?> value="1">Aktiviert</option>
 						</select>
 					</div>
 
@@ -680,91 +687,91 @@
 							Wenn die Option RFID mitgekauft wurde befindet sich dieser unten mittig. Das Scannen wird durch einen Piepton sowie das angehen des Displays (sofern vorhanden) signalisiert.
 						</div>
 						<div class="row">
-							Zuletzt gescannter RFID Tag: <?php echo $lastrfid ?>
+							Zuletzt gescannter RFID Tag: <?php echo $myRamdisk->getData('rfidlasttag'); ?>
 						</div>
 						<div class="row">
 							<b><label for="rfidlp1c1">Ladepunkt 1, Auto 1:</label></b>
-							<input type="text" name="rfidlp1c1" id="rfidlp1c1" value="<?php echo $rfidlp1c1old ?>">
+							<input type="text" name="rfidlp1c1" id="rfidlp1c1" value="<?php echo $mySettings->getSetting("rfidlp1c1") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidlp1c2">Ladepunkt 1, Auto 2:</label></b>
-							<input type="text" name="rfidlp1c2" id="rfidlp1c2" value="<?php echo $rfidlp1c2old ?>">
+							<input type="text" name="rfidlp1c2" id="rfidlp1c2" value="<?php echo $mySettings->getSetting("rfidlp1c2") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidlp1c3">Ladepunkt 1, Auto 3:</label></b>
-							<input type="text" name="rfidlp1c3" id="rfidlp1c3" value="<?php echo $rfidlp1c3old ?>">
+							<input type="text" name="rfidlp1c3" id="rfidlp1c3" value="<?php echo $mySettings->getSetting("rfidlp1c3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidlp2c1">Ladepunkt 2, Auto 1:</label></b>
-							<input type="text" name="rfidlp2c1" id="rfidlp2c1" value="<?php echo $rfidlp2c1old ?>">
+							<input type="text" name="rfidlp2c1" id="rfidlp2c1" value="<?php echo $mySettings->getSetting("rfidlp2c1") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidlp2c2">Ladepunkt 2, Auto 2:</label></b>
-							<input type="text" name="rfidlp2c2" id="rfidlp2c2" value="<?php echo $rfidlp2c2old ?>">
+							<input type="text" name="rfidlp2c2" id="rfidlp2c2" value="<?php echo $mySettings->getSetting("rfidlp2c2") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidlp2c3">Ladepunkt 2, Auto 3:</label></b>
-							<input type="text" name="rfidlp2c3" id="rfidlp2c3" value="<?php echo $rfidlp2c3old ?>">
+							<input type="text" name="rfidlp2c3" id="rfidlp2c3" value="<?php echo $mySettings->getSetting("rfidlp2c3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen.
 						</div>
 						<div class="row">
 							<b><label for="rfidstop">Ändere Lademodus auf Stop:</label></b><br>
-							<input type="text" name="rfidstop" id="rfidstop" value="<?php echo $rfidstopold ?>"><br>
-							<input type="text" name="rfidstop2" id="rfidstop2" value="<?php echo $rfidstop2old ?>"><br>
-							<input type="text" name="rfidstop3" id="rfidstop3" value="<?php echo $rfidstop3old ?>">
+							<input type="text" name="rfidstop" id="rfidstop" value="<?php echo $mySettings->getSetting("rfidstop") ?>"><br>
+							<input type="text" name="rfidstop2" id="rfidstop2" value="<?php echo $mySettings->getSetting("rfidstop2") ?>"><br>
+							<input type="text" name="rfidstop3" id="rfidstop3" value="<?php echo $mySettings->getSetting("rfidstop3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
 						</div>
 						<div class="row">
 							<b><label for="rfidstandby">Ändere Lademodus auf Standby:</label></b><br>
-							<input type="text" name="rfidstandby" id="rfidstandby" value="<?php echo $rfidstandbyold ?>"><br>
-							<input type="text" name="rfidstandby2" id="rfidstandby2" value="<?php echo $rfidstandby2old ?>"><br>
-							<input type="text" name="rfidstandby3" id="rfidstandby3" value="<?php echo $rfidstandby3old ?>">
+							<input type="text" name="rfidstandby" id="rfidstandby" value="<?php echo $mySettings->getSetting("rfidstandby") ?>"><br>
+							<input type="text" name="rfidstandby2" id="rfidstandby2" value="<?php echo $mySettings->getSetting("rfidstandby2") ?>"><br>
+							<input type="text" name="rfidstandby3" id="rfidstandby3" value="<?php echo $mySettings->getSetting("rfidstandby3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
 						</div>
 						<div class="row">
 							<b><label for="rfidsofort">Ändere Lademodus auf Sofort Laden:</label></b><br>
-							<input type="text" name="rfidsofort" id="rfidsofort" value="<?php echo $rfidsofortold ?>"><br>
-							<input type="text" name="rfidsofort2" id="rfidsofort2" value="<?php echo $rfidsofort2old ?>"><br>
-							<input type="text" name="rfidsofort3" id="rfidsofort3" value="<?php echo $rfidsofort3old ?>">
+							<input type="text" name="rfidsofort" id="rfidsofort" value="<?php echo $mySettings->getSetting("rfidsofort") ?>"><br>
+							<input type="text" name="rfidsofort2" id="rfidsofort2" value="<?php echo $mySettings->getSetting("rfidsofort2old") ?>"><br>
+							<input type="text" name="rfidsofort3" id="rfidsofort3" value="<?php echo $mySettings->getSetting("rfidsofort3old") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
 						</div>
 						<div class="row">
 							<b><label for="rfidminpv">Ändere Lademodus auf Min + PV Laden:</label></b><br>
-							<input type="text" name="rfidminpv" id="rfidminpv" value="<?php echo $rfidminpvold ?>"><br>
-							<input type="text" name="rfidminpv2" id="rfidminpv2" value="<?php echo $rfidminpv2old ?>"><br>
-							<input type="text" name="rfidminpv3" id="rfidminpv3" value="<?php echo $rfidminpv3old ?>">
+							<input type="text" name="rfidminpv" id="rfidminpv" value="<?php echo $mySettings->getSetting("rfidminpv") ?>"><br>
+							<input type="text" name="rfidminpv2" id="rfidminpv2" value="<?php echo $mySettings->getSetting("rfidminpv2") ?>"><br>
+							<input type="text" name="rfidminpv3" id="rfidminpv3" value="<?php echo $mySettings->getSetting("rfidminpv3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
 						</div>
 						<div class="row">
 							<b><label for="rfidnurpv">Ändere Lademodus auf Nur PV:</label></b><br>
-							<input type="text" name="rfidnurpv" id="rfidnurpv" value="<?php echo $rfidnurpvold ?>"><br>
-							<input type="text" name="rfidnurpv2" id="rfidnurpv2" value="<?php echo $rfidnurpv2old ?>"><br>
-							<input type="text" name="rfidnurpv3" id="rfidnurpv3" value="<?php echo $rfidnurpv3old ?>">
+							<input type="text" name="rfidnurpv" id="rfidnurpv" value="<?php echo $mySettings->getSetting("rfidnurpv") ?>"><br>
+							<input type="text" name="rfidnurpv2" id="rfidnurpv2" value="<?php echo $mySettings->getSetting("rfidnurpv2") ?>"><br>
+							<input type="text" name="rfidnurpv3" id="rfidnurpv3" value="<?php echo $mySettings->getSetting("rfidnurpv3") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
@@ -773,19 +780,19 @@
 							<b><label for="rfidlp1start1">Aktiviere Ladepunkt 1:</label></b><br>
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp1start1" id="rfidlp1start1" value="<?php echo $rfidlp1start1old ?>">
+							<input type="text" name="rfidlp1start1" id="rfidlp1start1" value="<?php echo $mySettings->getSetting("rfidlp1start1") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp1start2" id="rfidlp1start2" value="<?php echo $rfidlp1start2old ?>">
+							<input type="text" name="rfidlp1start2" id="rfidlp1start2" value="<?php echo $mySettings->getSetting("rfidlp1start2") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp1start3" id="rfidlp1start3" value="<?php echo $rfidlp1start3old ?>">
+							<input type="text" name="rfidlp1start3" id="rfidlp1start3" value="<?php echo $mySettings->getSetting("rfidlp1start3") ?>">
 						</div>
 						<div class="row">					
-							<input type="text" name="rfidlp1start4" id="rfidlp1start4" value="<?php echo $rfidlp1start4old ?>">
+							<input type="text" name="rfidlp1start4" id="rfidlp1start4" value="<?php echo $mySettings->getSetting("rfidlp1start4") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp1start5" id="rfidlp1start5" value="<?php echo $rfidlp1start5old ?>">
+							<input type="text" name="rfidlp1start5" id="rfidlp1start5" value="<?php echo $mySettings->getSetting("rfidlp1start5") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
@@ -794,19 +801,19 @@
 						<b><label for="rfidlp2start1">Aktiviere Ladepunkt 2:</label></b>
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp2start1" id="rfidlp2start1" value="<?php echo $rfidlp2start1old ?>">
+							<input type="text" name="rfidlp2start1" id="rfidlp2start1" value="<?php echo $mySettings->getSetting("rfidlp2start1") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp2start2" id="rfidlp2start2" value="<?php echo $rfidlp2start2old ?>">
+							<input type="text" name="rfidlp2start2" id="rfidlp2start2" value="<?php echo $mySettings->getSetting("rfidlp2start2") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp2start3" id="rfidlp2start3" value="<?php echo $rfidlp2start3old ?>">
+							<input type="text" name="rfidlp2start3" id="rfidlp2start3" value="<?php echo $mySettings->getSetting("rfidlp2start3") ?>">
 						</div>
 						<div class="row">					
-							<input type="text" name="rfidlp2start4" id="rfidlp2start4" value="<?php echo $rfidlp2start4old ?>">
+							<input type="text" name="rfidlp2start4" id="rfidlp2start4" value="<?php echo $mySettings->getSetting("rfidlp2start4") ?>">
 						</div>
 						<div class="row">
-							<input type="text" name="rfidlp2start5" id="rfidlp2start5" value="<?php echo $rfidlp2start5old ?>">
+							<input type="text" name="rfidlp2start5" id="rfidlp2start5" value="<?php echo $mySettings->getSetting("rfidlp2start5") ?>">
 						</div>
 						<div class="row">
 							RFID Tag eintragen. Kann auch in Kombination mit einem RFID Tag zur Autozuweisung genutzt werden.
@@ -845,8 +852,8 @@
 						<div class="col">
 							<b><label for="pushbenachrichtigung">Pushover Benachrichtigungen:</label></b>
 							<select name="pushbenachrichtigung" id="pushbenachrichtigung">
-								<option <?php if($pushbenachrichtigungold == 0) echo "selected" ?> value="0">Deaktiviert</option>
-								<option <?php if($pushbenachrichtigungold == 1) echo "selected" ?> value="1">Aktiviert</option>
+								<option <?php if($mySettings->getSetting("pushbenachrichtigung") == 0) echo "selected" ?> value="0">Deaktiviert</option>
+								<option <?php if($mySettings->getSetting("pushbenachrichtigung") == 1) echo "selected" ?> value="1">Aktiviert</option>
 							</select>
 						</div>
 					</div>
@@ -861,14 +868,14 @@
 						</div>
 						<div class="row">
 							<b><label for="pushoveruser">Pushover User String:</label></b>
-							<input type="text" name="pushoveruser" id="pushoveruser" value="<?php echo $pushoveruserold ?>">
+							<input type="text" name="pushoveruser" id="pushoveruser" value="<?php echo $mySettings->getSetting("pushoveruser") ?>">
 						</div>
 						<div class="row">
 							Hier das User Token von Pushover eintragen
 						</div>
 						<div class="row">
 							<b><label for="pushovertoken">Pushover App Token:</label></b>
-							<input type="text" name="pushovertoken" id="pushovertoken" value="<?php echo $pushovertokenold ?>">
+							<input type="text" name="pushovertoken" id="pushovertoken" value="<?php echo $mySettings->getSetting("pushovertoken") ?>">
 						</div>
 						<div class="row">
 							Hier das Application Token von Pushover eintragen
@@ -880,29 +887,29 @@
 						<div class="row">
 							<b><label for="pushbstartl">Beim Starten der Ladung:</label></b>
 							<select name="pushbstartl" id="pushbstartl">
-								<option <?php if($pushbstartlold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($pushbstartlold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("pushbstartl") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("pushbstartl") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="pushbstopl">Beim Stoppen der Ladung:</label></b>
 							<select name="pushbstopl" id="pushbstopl">
-								<option <?php if($pushbstoplold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($pushbstoplold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("pushbstopl") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("pushbstopl") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="pushbplug">Beim Einstecken des Fahrzeugs:</label></b>
 							<select name="pushbplug" id="pushbplug">
-								<option <?php if($pushbplugold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($pushbplugold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("pushbplug") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("pushbplug") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="pushbsmarthome">Bei Triggern von Smart Home Aktionen:</label></b>
 							<select name="pushbsmarthome" id="pushbsmarthome">
-								<option <?php if($pushbsmarthomeold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($pushbsmarthomeold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("pushbsmarthome") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("pushbsmarthome") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 					</div>
@@ -935,8 +942,8 @@
 					<div class="row">
 						<b><label for="ledsakt">LED Ausgänge:</label></b>
 						<select name="ledsakt" id="ledsakt">
-							<option <?php if($ledsaktold == 0) echo "selected" ?> value="0">Nein</option>
-							<option <?php if($ledsaktold == 1) echo "selected" ?> value="1">Ja</option>
+							<option <?php if($mySettings->getSetting("ledsakt") == 0) echo "selected" ?> value="0">Nein</option>
+							<option <?php if($mySettings->getSetting("ledsakt") == 1) echo "selected" ?> value="1">Ja</option>
 						</select>
 					</div>
 
@@ -944,191 +951,191 @@
 						<div class="row">
 							<b><label for="led0sofort">Ladung nicht freigegeben, Sofort Laden Modus:</label></b>
 							<select name="led0sofort" id="led0sofort">
-								<option <?php if($led0sofortold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($led0sofortold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($led0sofortold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($led0sofortold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($led0sofortold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($led0sofortold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($led0sofortold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($led0sofortold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($led0sofortold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($led0sofortold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($led0sofortold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($led0sofortold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($led0sofortold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($led0sofortold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0sofort") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="led0nurpv">Ladung nicht freigegeben, Nur PV Laden Modus:</label></b>
 							<select name="led0nurpv" id="led0nurpv">
-								<option <?php if($led0nurpvold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($led0nurpvold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($led0nurpvold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($led0nurpvold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($led0nurpvold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($led0nurpvold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($led0nurpvold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($led0nurpvold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($led0nurpvold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($led0nurpvold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($led0nurpvold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($led0nurpvold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($led0nurpvold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($led0nurpvold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0nurpv") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="led0minpv">Ladung nicht freigegeben, Min + PV Laden Modus:</label></b>
 							<select name="led0minpv" id="led0minpv">
-								<option <?php if($led0minpvold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($led0minpvold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($led0minpvold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($led0minpvold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($led0minpvold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($led0minpvold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($led0minpvold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($led0minpvold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($led0minpvold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($led0minpvold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($led0minpvold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($led0minpvold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($led0minpvold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($led0minpvold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0minpv") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="led0standby">Ladung nicht freigegeben, Standby Modus:</label></b>
 							<select name="led0standby" id="led0standby">
-								<option <?php if($led0standbyold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($led0standbyold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($led0standbyold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($led0standbyold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($led0standbyold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($led0standbyold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($led0standbyold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($led0standbyold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($led0standbyold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($led0standbyold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($led0standbyold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($led0standbyold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($led0standbyold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($led0standbyold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0standby") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="led0stop">Ladung nicht freigegeben, Stop Modus:</label></b>
 							<select name="led0stop" id="led0stop">
-								<option <?php if($led0stopold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($led0stopold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($led0stopold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($led0stopold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($led0stopold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($led0stopold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($led0stopold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($led0stopold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($led0stopold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($led0stopold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($led0stopold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($led0stopold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($led0stopold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($led0stopold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("led0stop") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="ledsofort">Ladung freigegeben, Sofort Laden Modus:</label></b>
 							<select name="ledsofort" id="ledsofort">
-								<option <?php if($ledsofortold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($ledsofortold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($ledsofortold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($ledsofortold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($ledsofortold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($ledsofortold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($ledsofortold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($ledsofortold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($ledsofortold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($ledsofortold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($ledsofortold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($ledsofortold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($ledsofortold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($ledsofortold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledsofort") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="lednurpv">Ladung freigegeben, Nur PV Laden Modus:</label></b>
 							<select name="lednurpv" id="lednurpv">
-								<option <?php if($lednurpvold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($lednurpvold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($lednurpvold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($lednurpvold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($lednurpvold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($lednurpvold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($lednurpvold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($lednurpvold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($lednurpvold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($lednurpvold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($lednurpvold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($lednurpvold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($lednurpvold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($lednurpvold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("lednurpv") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="ledminpv">Ladung freigegeben, Min + PV Laden Modus:</label></b>
 							<select name="ledminpv" id="ledminpv">
-								<option <?php if($ledminpvold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($ledminpvold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($ledminpvold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($ledminpvold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($ledminpvold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($ledminpvold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($ledminpvold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($ledminpvold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($ledminpvold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($ledminpvold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($ledminpvold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($ledminpvold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($ledminpvold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($ledminpvold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledminpv") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="ledstandby">Ladung freigegeben, Standby Modus:</label></b>
 							<select name="ledstandby" id="ledstandby">
-								<option <?php if($ledstandbyold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($ledstandbyold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($ledstandbyold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($ledstandbyold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($ledstandbyold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($ledstandbyold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($ledstandbyold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($ledstandbyold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($ledstandbyold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($ledstandbyold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($ledstandbyold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($ledstandbyold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($ledstandbyold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($ledstandbyold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstandby") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="ledstop">Ladung freigegeben, Stop Modus:</label></b>
 							<select name="ledstop" id="ledstop">
-								<option <?php if($ledstopold == "aus\n") echo "selected" ?> value="aus">Alle LEDs aus</option>
-								<option <?php if($ledstopold == "an\n") echo "selected" ?> value="an">Alle LEDs an</option>
-								<option <?php if($ledstopold == "an1\n") echo "selected" ?> value="an1">LED 1 an</option>
-								<option <?php if($ledstopold == "an2\n") echo "selected" ?> value="an2">LED 2 an</option>
-								<option <?php if($ledstopold == "an3\n") echo "selected" ?> value="an3">LED 3 an</option>
-								<option <?php if($ledstopold == "an12\n") echo "selected" ?> value="an12">LED 1 & 2 an</option>
-								<option <?php if($ledstopold == "an13\n") echo "selected" ?> value="an13">LED 1 & 3 an</option>
-								<option <?php if($ledstopold == "an23\n") echo "selected" ?> value="an23">LED 2 & 3 an</option>
-								<option <?php if($ledstopold == "blink1\n") echo "selected" ?> value="blink1">LED 1 blinkend</option>
-								<option <?php if($ledstopold == "blink2\n") echo "selected" ?> value="blink2">LED 2 blinkend</option>
-								<option <?php if($ledstopold == "blink3\n") echo "selected" ?> value="blink3">LED 3 blinkend</option>
-								<option <?php if($ledstopold == "blink12\n") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
-								<option <?php if($ledstopold == "blink13\n") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
-								<option <?php if($ledstopold == "blink23\n") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "aus") echo "selected" ?> value="aus">Alle LEDs aus</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an") echo "selected" ?> value="an">Alle LEDs an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an1") echo "selected" ?> value="an1">LED 1 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an2") echo "selected" ?> value="an2">LED 2 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an3") echo "selected" ?> value="an3">LED 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an12") echo "selected" ?> value="an12">LED 1 & 2 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an13") echo "selected" ?> value="an13">LED 1 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "an23") echo "selected" ?> value="an23">LED 2 & 3 an</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink1") echo "selected" ?> value="blink1">LED 1 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink2") echo "selected" ?> value="blink2">LED 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink3") echo "selected" ?> value="blink3">LED 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink12") echo "selected" ?> value="blink12">LED 1 & 2 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink13") echo "selected" ?> value="blink13">LED 1 & 3 blinkend</option>
+								<option <?php if($mySettings->getSetting("ledstop") == "blink23") echo "selected" ?> value="blink23">LED 2 & 3 blinkend</option>
 							</select>
 						</div>
 					</div>
@@ -1189,79 +1196,79 @@
 					<div class="row">
 						<b><label for="displayaktiv">Display installiert:</label></b>
 						<select name="displayaktiv" id="displayaktiv">
-							<option <?php if($displayaktivold == 0) echo "selected" ?> value="0">Nein</option>
-							<option <?php if($displayaktivold == 1) echo "selected" ?> value="1">Ja</option>
+							<option <?php if($mySettings->getSetting("displayaktiv") == 0) echo "selected" ?> value="0">Nein</option>
+							<option <?php if($mySettings->getSetting("displayaktiv") == 1) echo "selected" ?> value="1">Ja</option>
 						</select>
 					</div>
 					<div id="displayan">
 						<div class="row">
 							<b><label for="displaytagesgraph">Tagesgraph anzeigbar (Ja vermindert die Performance):</label></b>
 							<select name="displaytagesgraph" id="displaytagesgraph">
-								<option <?php if($displaytagesgraphold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($displaytagesgraphold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("displaytagesgraph") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("displaytagesgraph") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="displaytheme">Theme des Displays:</label></b>
 							<select name="displaytheme" id="displaytheme">
-								<option <?php if($displaythemeold == 0) echo "selected" ?> value="0">Gauges</option>
-								<option <?php if($displaythemeold == 1) echo "selected" ?> value="1">Symbolfluss</option>
-								<option <?php if($displaythemeold == 2) echo "selected" ?> value="2">Nur Ladeleistung, keine verstellmöglichkeit</option>
+								<option <?php if($mySettings->getSetting("displaytheme") == 0) echo "selected" ?> value="0">Gauges</option>
+								<option <?php if($mySettings->getSetting("displaytheme") == 1) echo "selected" ?> value="1">Symbolfluss</option>
+								<option <?php if($mySettings->getSetting("displaytheme") == 2) echo "selected" ?> value="2">Nur Ladeleistung, keine verstellmöglichkeit</option>
 							</select>
 						</div>
 						<div id="displaygauge">
 							<div class="row">
 								<b><label for="displayevumax">EVU Skala Min Max:</label></b>
-								<input type="text" name="displayevumax" id="displayevumax" value="<?php echo $displayevumaxold ?>">
+								<input type="text" name="displayevumax" id="displayevumax" value="<?php echo $mySettings->getSetting("displayevumax") ?>">
 							</div>
 							<div class="row">
 								<b><label for="displaypvmax">PV Skala Max:</label></b>
-								<input type="text" name="displaypvmax" id="displaypvmax" value="<?php echo $displaypvmaxold ?>">
+								<input type="text" name="displaypvmax" id="displaypvmax" value="<?php echo $mySettings->getSetting("displaypvmax") ?>">
 							</div>
 							<div class="row">
 								<b><label for="displayspeichermax">Speicher Skala Min Max:</label></b>
-								<input type="text" name="displayspeichermax" id="displayspeichermax" value="<?php echo $displayspeichermaxold ?>">
+								<input type="text" name="displayspeichermax" id="displayspeichermax" value="<?php echo $mySettings->getSetting("displayspeichermax") ?>">
 							</div>
 							<div class="row">
 								<b><label for="displayhausanzeigen">Hausverbrauch anzeigen:</label></b>
 								<select name="displayhausanzeigen" id="displayhausanzeigen">
-									<option <?php if($displayhausanzeigenold == 0) echo "selected" ?> value="0">Nein</option>
-									<option <?php if($displayhausanzeigenold == 1) echo "selected" ?> value="1">Ja</option>
+									<option <?php if($mySettings->getSetting("displayhausanzeigen") == 0) echo "selected" ?> value="0">Nein</option>
+									<option <?php if($mySettings->getSetting("displayhausanzeigen") == 1) echo "selected" ?> value="1">Ja</option>
 								</select>
 							</div>
 							<div class="row">
 								<b><label for="displayhausmax">Hausverbrauch Skala Max:</label></b>
-								<input type="text" name="displayhausmax" id="displayhausmax" value="<?php echo $displayhausmaxold ?>">
+								<input type="text" name="displayhausmax" id="displayhausmax" value="<?php echo $mySettings->getSetting("displayhausmax") ?>">
 							</div>
 							<div class="row">
 								<b><label for="displaylp1max">Ladepunkt 1 Skala Max:</label></b>
-								<input type="text" name="displaylp1max" id="displaylp1max" value="<?php echo $displaylp1maxold ?>">
+								<input type="text" name="displaylp1max" id="displaylp1max" value="<?php echo $mySettings->getSetting("displaylp1max") ?>">
 							</div>
 							<div class="row">
 								<b><label for="displaylp2max">Ladepunkt 2 Skala Max:</label></b>
-								<input type="text" name="displaylp2max" id="displaylp2max" value="<?php echo $displaylp2maxold ?>">
+								<input type="text" name="displaylp2max" id="displaylp2max" value="<?php echo $mySettings->getSetting("displaylp2max") ?>">
 							</div>
 						</div>
 						<div class="row">
 							<b><label for="displaypinaktiv">Pin nötig zum ändern des Lademodus:</label></b>
 							<select name="displaypinaktiv" id="displaypinaktiv">
-								<option <?php if($displaypinaktivold == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($displaypinaktivold == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("displaypinaktiv") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("displaypinaktiv") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="displaypincode">Pin (4-stellig, nur Zahlen erlaubt von 1-9):</label></b>
-							<input type="text" name="displaypincode" id="displaypincode" value="<?php echo $displaypincodeold ?>">
+							<input type="text" name="displaypincode" id="displaypincode" value="<?php echo $mySettings->getSetting("displaypincode") ?>">
 						</div>
 						<div class="row">
 							<b><label for="displaysleep">Display ausschalten nach x Sekunden:</label></b>
-							<input type="text" name="displaysleep" id="displaysleep" value="<?php echo $displaysleepold ?>">
+							<input type="text" name="displaysleep" id="displaysleep" value="<?php echo $mySettings->getSetting("displaysleep") ?>">
 						</div>
 						<div class="row">
 							<b><label for="displayEinBeimAnstecken">Display beim Einstecken des Fahrzeugs einschalten<br/><small>(f&uuml;r oben konfigurierte Dauer):</small></label></b>
 							<select name="displayEinBeimAnstecken" id="displayEinBeimAnstecken">
-								<option <?php if($displayEinBeimAnsteckenOld == 0) echo "selected" ?> value="0">Nein</option>
-								<option <?php if($displayEinBeimAnsteckenOld == 1) echo "selected" ?> value="1">Ja</option>
+								<option <?php if($mySettings->getSetting("displayEinBeimAnstecken") == 0) echo "selected" ?> value="0">Nein</option>
+								<option <?php if($mySettings->getSetting("displayEinBeimAnstecken") == 1) echo "selected" ?> value="1">Ja</option>
 							</select>
 						</div>
 					</div>
@@ -1275,15 +1282,15 @@
 					<div class="row">
 						<b><label for="hausverbrauchstat">Hausverbrauch auf der Hauptseite anzeigen:</label></b>
 						<select name="hausverbrauchstat" id="hausverbrauchstat">
-							<option <?php if($hausverbrauchstatold == 0) echo "selected" ?> value="0">Aus</option>
-							<option <?php if($hausverbrauchstatold == 1) echo "selected" ?> value="1">Ein</option>
+							<option <?php if($mySettings->getSetting("hausverbrauchstat") == 0) echo "selected" ?> value="0">Aus</option>
+							<option <?php if($mySettings->getSetting("hausverbrauchstat") == 1) echo "selected" ?> value="1">Ein</option>
 						</select>
 					</div>
 					<div class="row">
 						<b><label for="heutegeladen">Heute geladen auf der Hauptseite anzeigen:</label></b>
 						<select name="heutegeladen" id="heutegeladen">
-							<option <?php if($heutegeladenold == 0) echo "selected" ?> value="0">Aus</option>
-							<option <?php if($heutegeladenold == 1) echo "selected" ?> value="1">Ein</option>
+							<option <?php if($mySettings->getSetting("heutegeladen") == 0) echo "selected" ?> value="0">Aus</option>
+							<option <?php if($mySettings->getSetting("heutegeladen") == 1) echo "selected" ?> value="1">Ein</option>
 						</select>
 					</div>
 
@@ -1294,30 +1301,29 @@
 					<div class="row">
 						<b><label for="livegraph">Zeitintervall für den Live Graphen der Hauptseite:</label></b>
 						<select name="livegraph" id="livegraph">
-							<option <?php if($livegraphold == 5) echo "selected" ?> value="5">5 Min</option>
-							<option <?php if($livegraphold == 10) echo "selected" ?> value="10">10 Min</option>
-							<option <?php if($livegraphold == 15) echo "selected" ?> value="15">15 Min</option>
-							<option <?php if($livegraphold == 20) echo "selected" ?> value="20">20 Min</option>
-							<option <?php if($livegraphold == 30) echo "selected" ?> value="30">30 Min</option>
-							<option <?php if($livegraphold == 40) echo "selected" ?> value="40">40 Min</option>
-							<option <?php if($livegraphold == 50) echo "selected" ?> value="50">50 Min</option>
-							<option <?php if($livegraphold == 60) echo "selected" ?> value="60">60 Min</option>
-							<option <?php if($livegraphold == 70) echo "selected" ?> value="70">70 Min</option>
-							<option <?php if($livegraphold == 80) echo "selected" ?> value="80">80 Min</option>
-							<option <?php if($livegraphold == 90) echo "selected" ?> value="90">90 Min</option>
-							<option <?php if($livegraphold == 100) echo "selected" ?> value="100">100 Min</option>
-							<option <?php if($livegraphold == 110) echo "selected" ?> value="110">110 Min</option>
-							<option <?php if($livegraphold == 120) echo "selected" ?> value="120">120 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 5) echo "selected" ?> value="5">5 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 10) echo "selected" ?> value="10">10 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 15) echo "selected" ?> value="15">15 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 20) echo "selected" ?> value="20">20 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 30) echo "selected" ?> value="30">30 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 40) echo "selected" ?> value="40">40 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 50) echo "selected" ?> value="50">50 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 60) echo "selected" ?> value="60">60 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 70) echo "selected" ?> value="70">70 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 80) echo "selected" ?> value="80">80 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 90) echo "selected" ?> value="90">90 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 100) echo "selected" ?> value="100">100 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 110) echo "selected" ?> value="110">110 Min</option>
+							<option <?php if($mySettings->getSetting("livegraph") == 120) echo "selected" ?> value="120">120 Min</option>
 						</select>
 					</div>
-
 
 					<!--
 					<div class="row">
 						<b><label for="chartlegendmain">Legende auf der Hauptseite anzeigen (nur für interaktivem Graph):</label></b>
 						<select name="chartlegendmain" id="chartlegendmain">
-							<option <?php if($chartlegendmainold == 0) echo "selected" ?> value="0">Aus</option>
-							<option <?php if($chartlegendmainold == 1) echo "selected" ?> value="1">Ein</option>
+							<option <?php if($mySettings->getSetting("chartlegendmain") == 0) echo "selected" ?> value="0">Aus</option>
+							<option <?php if($mySettings->getSetting("chartlegendmain") == 1) echo "selected" ?> value="1">Ein</option>
 						</select>
 					</div>
 					-->
@@ -1326,15 +1332,15 @@
 						<div class="row">
 							<b><label for="logdailywh">Anzeige Daily Graph in Watt oder Wh:</label></b>
 							<select name="logdailywh" id="logdailywh">
-								<option <?php if($logdailywhold == 0) echo "selected" ?> value="0">Watt</option>
-								<option <?php if($logdailywhold == 1) echo "selected" ?> value="1">Wh</option>
+								<option <?php if($mySettings->getSetting("logdailywh") == 0) echo "selected" ?> value="0">Watt</option>
+								<option <?php if($mySettings->getSetting("logdailywh") == 1) echo "selected" ?> value="1">Wh</option>
 							</select>
 						</div>
 						<div class="row">
 							<b><label for="logeinspeisungneg">Einspeisung im Daily Graph positiv oder negativ anzeigen:</label></b>
 							<select name="logeinspeisungneg" id="logeinspeisungneg">
-								<option <?php if($logeinspeisungnegold == 0) echo "selected" ?>value="0">Positiv</option>
-								<option <?php if($logeinspeisungnegold == 1) echo "selected" ?> value="1">Negativ</option>
+								<option <?php if($mySettings->getSetting("logeinspeisungneg") == 0) echo "selected" ?>value="0">Positiv</option>
+								<option <?php if($mySettings->getSetting("logeinspeisungneg") == 1) echo "selected" ?> value="1">Negativ</option>
 							</select>
 						</div>
 					</div>
@@ -1342,8 +1348,8 @@
 						<div class="row">
 							<b><label for="graphinteractiveam">Animation im Graph:</label></b>
 							<select name="graphinteractiveam" id="graphinteractiveam">
-								<option <?php if($graphinteractiveamold == 0) echo "selected" ?> value="0">Aus</option>
-								<option <?php if($graphinteractiveamold == 1) echo "selected" ?> value="1">Ein</option>
+								<option <?php if($mySettings->getSetting("graphinteractiveam") == 0) echo "selected" ?> value="0">Aus</option>
+								<option <?php if($mySettings->getSetting("graphinteractiveam") == 1) echo "selected" ?> value="1">Ein</option>
 							</select>
 						</div>
 					-->

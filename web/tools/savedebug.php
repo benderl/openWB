@@ -5,6 +5,7 @@
 	</head>
 	<body>
 <?php
+/* functionality moved to "settings/savepostsettings.php"
 
 	// receives chosen debug mode from settings page via POST-request,
 	// writes value to config file and returns to theme
@@ -52,6 +53,8 @@
 
 	// return to theme
 	echo "<script>window.location.href='../index.php';</script>";
+
+*/
 ?>
 	</body>
 </html>

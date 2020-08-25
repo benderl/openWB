@@ -50,35 +50,18 @@
 	<body>
 		<?php
 
-			/**
-			 * read settings for input elements from config file
-			 * and put them in associative array
-			 */
-
 			// some global vars
 			$maxQuantityLp = 8;  // max configured lp
 			$elemName = '';
 			$elemId = '';
 			$elemValue = '';
+			$elemCheckboxValue = '';
 			$lp;
 			$dayOfWeek;  // Mo = 1, ..., So = 7
 
-			// first read config-lines in array
-			$settingsFile = file('/var/www/html/openWB/openwb.conf');
-			// prepare key/value array
-			$settingsArray = [];
-
-			// convert lines to key/value array for faster manipulation
-			foreach($settingsFile as $line) {
-				// split line at char '='
-				$splitLine = explode('=', $line);
-				// trim parts
-				$splitLine[0] = trim($splitLine[0]);
-				$splitLine[1] = trim($splitLine[1]);
-				// push key/value pair to new array
-				$settingsArray[$splitLine[0]] = $splitLine[1];
-			}
-			// now values can be accessed by $settingsArray[$key] = $value;
+			// get settings
+			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+			$mySettings = new openWBSettings();
 
 			$isConfiguredLp = array_fill(1, $maxQuantityLp, false); // holds boolean for configured lp
 			// due to inconsitent variable naming need individual lines
@@ -86,22 +69,25 @@
 			$isConfiguredLp[2] = ($settingsArray['lastmanagement'] == 1) ? 1 : 0;
 			$isConfiguredLp[3] = ($settingsArray['lastmanagements2'] == 1) ? 1 : 0;
 			for ($lp=4; $lp<=$maxQuantityLp; $lp++) {
-				$isConfiguredLp[$lp] = ($settingsArray['lastmanagementlp'.$lp] == 1) ? 1 : 0;
+				$isConfiguredLp[$lp] = ($mySettings->getSetting('lastmanagementlp'.$lp) == 1) ? true : false;
 			}
 
 			// just to make sure... reset all elements for non-configured lp
+			$newSettings = [];
 			for ($lp=1; $lp<=$maxQuantityLp; $lp++) {
 				if ( !$isConfiguredLp[$lp] ) {
-					$settingsArray['waitUntilFinishedBoxLp'.$lp] = 'off';
+					$newSettings['waitUntilFinishedBoxLp'.$lp] = 'off';
 					for ($dayOfWeek=1; $dayOfWeek<=7; $dayOfWeek++) {
 						// all days...
-						$settingsArray['lockBoxLp'.$lp.'_'.$dayOfWeek] = 'off';
-						$settingsArray['lockTimeLp'.$lp.'_'.$dayOfWeek] = '';
-						$settingsArray['unlockBoxLp'.$lp.'_'.$dayOfWeek] = 'off';
-						$settingsArray['unlockTimeLp'.$lp.'_'.$dayOfWeek] = '';
+						$newSettings['lockBoxLp'.$lp.'_'.$dayOfWeek] = 'off';
+						$newSettings['lockTimeLp'.$lp.'_'.$dayOfWeek] = '';
+						$newSettings['unlockBoxLp'.$lp.'_'.$dayOfWeek] = 'off';
+						$newSettings['unlockTimeLp'.$lp.'_'.$dayOfWeek] = '';
 					}
 				}
 			}
+			// merge settings into read config file
+			$mySettings->setSettings($newSettings);
 
 			function getDayOfWeekString($dayOfWeek) {
 				// returns name of the weekday
@@ -127,11 +113,11 @@
 
 			function buildElementProperties($elemType) {
 				// builds name, id and value strings for element
-				global $lp, $dayOfWeek, $elemName, $elemId, $elemValue, $settingsArray;
+				global $lp, $dayOfWeek, $elemName, $elemId, $elemValue, $mySettings;
 
 				$elemId = $elemType.$lp.'_'.$dayOfWeek;
-				$elemName = $elemType.'['.$lp.']['.$dayOfWeek.']';
-				$elemValue = $settingsArray[$elemId];
+				$elemName = $elemType.$lp.'_'.$dayOfWeek;
+				$elemValue = $mySettings->getSetting($elemId);
 			}
 
 			function echoCheckboxDiv($elemType, $label) {
@@ -140,75 +126,68 @@
 				buildElementProperties($elemType);
 				// translate boolean to proper html
 				if ( $elemValue == 'on' ) {
-					$elemValue = " checked='checked'";
+					$elemCheckboxValue = " checked='checked'";
 				} else {
-					$elemValue = '';
+					$elemCheckboxValue = '';
 				}
-				echo <<<ECHOCHECKBOX
-													<div class="col-auto my-1">
-														<div class="form-check">
-															<input type="hidden" name="{$elemName}">
-															<input class="form-check-input lockUnlockCheckbox" type="checkbox" id="{$elemId}" name="{$elemName}"{$elemValue}>
-															<label class="form-check-label pl-10" for="{$elemId}">
-																{$label}
-															</label>
-														</div>
-													</div>
-
-ECHOCHECKBOX;
+				?>
+				<div class="col-auto my-1">
+					<div class="form-check">
+						<input type="hidden" id="<?php echo $elemId."_text"; ?>" name="<?php echo $elemName; ?>" value="<?php echo $elemValue; ?>">
+						<input class="form-check-input lockUnlockCheckbox checkboxToText" type="checkbox" id="<?php echo $elemId; ?>" <?php echo $elemCheckboxValue; ?>>
+						<label class="form-check-label pl-10" for="<?php echo $elemId; ?>"><?php echo $label; ?></label>
+					</div>
+				</div>
+				<?php
 			}
 
 			function echoClockpickerDiv($elemType) {
 				// echoes the div to render locktime timepicker for lp
 				global $elemName, $elemId, $elemValue;
 				buildElementProperties($elemType);
-				echo <<<ECHOCLOCKPICKER
-													<div class="col-sm-6 my-1">
-														<div class="input-group">
-															<input type="text" class="form-control" readonly id="{$elemId}" name="{$elemName}" placeholder="--" value="{$elemValue}">
-															<div class="input-group-append">
-																<span class="input-group-text far fa-xs fa-clock vaRow"></span>
-															</div>
-														</div>
-													</div>\n
-ECHOCLOCKPICKER;
+				?>
+				<div class="col-sm-6 my-1">
+					<div class="input-group">
+						<input type="text" class="form-control" readonly id="<?php echo $elemId; ?>" name="<?php echo $elemName; ?>" placeholder="--" value="<?php echo $elemValue; ?>">
+						<div class="input-group-append">
+							<span class="input-group-text far fa-xs fa-clock vaRow"></span>
+						</div>
+					</div>
+				</div>
+				<?php
 			}
 
 			function echoDayRow() {
 				// echoes all elements for one day-row in form
 				global $dayOfWeek;
 				$dayOfWeekString = getDayOfWeekString($dayOfWeek);
-
-				echo <<<ECHODAYROWHEAD
-										<div class="row vaRow">  <!-- row {$dayOfWeekString} -->
-											<div class="col-2">
-									            {$dayOfWeekString}
-									        </div>
-											<div class="col-5">
-												<div class="form-row align-items-center">\n
-ECHODAYROWHEAD;
-
+				?>
+				<div class="row vaRow">  <!-- row <?php echo $dayOfWeekString; ?> -->
+					<div class="col-2">
+						<?php echo $dayOfWeekString; ?>
+					</div>
+					<div class="col-5">
+						<div class="form-row align-items-center">
+				<?php
 				echoCheckboxDiv("lockBoxLp", "sperren");
 				echoClockpickerDiv("lockTimeLp");
-
-				echo <<<ECHODAYROWMIDDLE
-												</div>
-									        </div>
-											<div class="col-5">
-												<div class="form-row align-items-center">\n
-ECHODAYROWMIDDLE;
-
+				?>
+						</div>
+					</div>
+					<div class="col-5">
+						<div class="form-row align-items-center">
+				<?php
 				echoCheckboxDiv("unlockBoxLp", "entsperren");
 				echoClockpickerDiv("unlockTimeLp");
-
-				echo <<<ECHODAYROWTAIL
-												</div>
-									        </div>
-										</div>  <!-- end row {$dayOfWeekString} -->\n
-ECHODAYROWTAIL;
-
+				?>
+						</div>
+					</div>
+				</div>  <!-- end row <?php echo $dayOfWeekString; ?> -->
+				<?php
 				if ( $dayOfWeek < 7 ) {
-					echo '						<hr class="d-sm-none">'."\n";
+					?>
+				<hr class="d-sm-none">
+					<?php
 				}
 			}  // end echoDayRow
 
@@ -221,7 +200,7 @@ ECHODAYROWTAIL;
 		<div role="main" class="container" style="margin-top:20px">
 			<div class="row justify-content-center">
 
-				<form class="form col-md-10" action="./tools/saveautolock.php" method="POST">
+				<form class="form col-md-10" action="settings/savepostsettings.php" method="POST">
 
 				<?php
 
@@ -235,50 +214,41 @@ ECHODAYROWTAIL;
 							$visibility = ' display: none;';
 						}
 						// remove special characters except space and underscore... maybe dangerous
-						$nameLp = preg_replace('/[^A-Za-z0-9_ ]/', '', $settingsArray['lp'.$lp.'name']);
+						$nameLp = preg_replace('/[^A-Za-z0-9_ ]/', '', $mySettings->getSetting('lp'.$lp.'name'));
 
 						$elemId = 'waitUntilFinishedBoxLp'.$lp;
-						$elemName = 'waitUntilFinishedBoxLp'.'['.$lp.']';
-						$elemValue = $settingsArray[$elemId];
+						$elemName = 'waitUntilFinishedBoxLp'.$lp;
+						$elemValue = $mySettings->getSetting($elemId);
 						// translate boolean to proper html
 						if ( $elemValue == 'on' ) {
-							$elemValue = " checked='checked'";
+							$elemCheckboxValue = " checked='checked'";
 						} else {
-							$elemValue = '';
+							$elemCheckboxValue = '';
 						}
-
-						echo <<<ECHOFORMGROUPHEAD
-							<div class="form-group px-3 pb-3" style="border:1px solid black;{$visibility}" id="lp{$lp}">  <!-- group charge point {$lp} -->
-								<h1>LP {$lp} ({$nameLp})</h1>\n
-
-								<div class="row mt-2">
-									<div class="col">
-										<div class="form-check">
-											<input type="hidden" name="{$elemName}">
-											<input class="form-check-input" type="checkbox" id="{$elemId}" name="{$elemName}"{$elemValue}>
-											<label class="form-check-label pl-10" for="{$elemId}">
-												sperren erst nach Ende lfd. Ladevorgang
-											</label>
-										</div>
+						?>
+						<div class="form-group px-3 pb-3" style="border:1px solid black;<?php echo $visibility; ?>" id="lp<?php echo $lp; ?>">  <!-- group charge point <?php echo $lp; ?> -->
+							<h1>LP <?php echo $lp; ?> (<?php echo $nameLp; ?>)</h1>
+							<div class="row mt-2">
+								<div class="col">
+									<div class="form-check">
+										<input type="hidden" id="<?php echo $elemId; ?>_text" name="<?php echo $elemName; ?>" value="<?php echo $elemValue; ?>">
+										<input class="form-check-input checkboxToText" type="checkbox" id="<?php echo $elemId; ?>"<?php echo $elemCheckboxValue; ?>>
+										<label class="form-check-label pl-10" for="<?php echo $elemId; ?>">sperren erst nach Ende lfd. Ladevorgang</label>
 									</div>
 								</div>
-
-								<hr>
-ECHOFORMGROUPHEAD;
-
+							</div>
+							<hr>
+						<?php
 						for ($dayOfWeek=1; $dayOfWeek<=7; $dayOfWeek++) {
 							// build form-rows for all weekdays
 							echoDayRow();
 						}  // end all days
-
-						echo <<<ECHOFORMGROUPTAIL
-											<div class="row justify-content-center mt-2">
-												<button type="button" class="btn btn-sm btn-red resetForm" id="resetFormBtnLp{$lp}">LP{$lp} zurücksetzen</button>
-											</div>
-										</div>  <!-- end form-group charge point {$lp} -->
-
-ECHOFORMGROUPTAIL;
-
+						?>
+							<div class="row justify-content-center mt-2">
+								<button type="button" class="btn btn-sm btn-red resetForm" id="resetFormBtnLp<?php echo $lp; ?>">LP<?php echo $lp; ?> zurücksetzen</button>
+							</div>
+						</div>  <!-- end form-group charge point <?php echo $lp; ?> -->
+						<?php
 					}  // end all lp
 
 				?>
@@ -375,6 +345,18 @@ ECHOFORMGROUPTAIL;
 						}
 					});
 
+					$(".checkboxToText").change(function() {
+						var boxIsChecked = $(this).prop("checked") == true;
+						// if a checkbox for enabling lock or unlock time is checked/unchecked
+						// fill the corresponding hidden input field
+						var textID = "#"+this.id+"_text";
+						if ( boxIsChecked ) {
+							$(textID).val("on");
+						} else {
+							$(textID).val("off");
+						}
+					});
+
 					$("input:text").click(function() {
 						// if clockpicker input is clickedstore the old clockpicker time of clicked clockpicker in global var
 						//  before changing it so it can be reset if lock/unlock time is accidently chosen to be identical
@@ -404,10 +386,13 @@ ECHOFORMGROUPTAIL;
 						for (day=1; day<=7; day++) {
 							// reset all days
 							$("#lockBoxLp"+chargePoint+"_"+day).prop("checked", false);
+							$("#lockBoxLp"+chargePoint+"_"+day+"_text").val("off");
 							removeClockpicker("#lockTimeLp"+chargePoint+"_"+day);
 							$("#unlockBoxLp"+chargePoint+"_"+day).prop("checked", false);
+							$("#unlockBoxLp"+chargePoint+"_"+day+"_text").val("off");
 							removeClockpicker("#unlockTimeLp"+chargePoint+"_"+day);
 							$("#waitUntilFinishedBoxLp"+chargePoint).prop("checked", false);
+							$("#waitUntilFinishedBoxLp"+chargePoint+"_text").val("off");
 						}
 					});
 

@@ -9,7 +9,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="OpenWB">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
-	<link rel="apple-touch-startup-image" href="/openWB/web/img/favicons/splash1125x2436w.png"  />
+	<link rel="apple-touch-startup-image" href="/openWB/web/img/favicons/splash1125x2436w.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="img/favicons/splash1125x2436w.png">
 	<meta name="apple-mobile-web-app-title" content="openWB">
 	<title>openWB</title>
@@ -59,28 +59,32 @@
 	<script src="livefunctions.js"></script>
 </head>
 
-<?php include ("values.php"); ?>
+<?php
+include ("values.php");
+require_once './settings/settingsClass.php';
+$mySettings = new openWBSettings();
+?>
 
 <body>
-	<input hidden name="lastmanagement" id="lastmanagement" value="<?php echo $lastmanagementold ; ?>" />
-	<input hidden name="lastmanagements2" id="lastmanagements2" value="<?php echo $lastmanagements2old ; ?>" />
-	<input hidden name="speicherstat" id="speicherstat" value="<?php echo $speicherstatold ; ?>" />
-	<input hidden name="lademlp1stat" id="lademlp1stat" value="<?php echo $lademstatold ; ?>" />
-	<input hidden name="lademlp2stat" id="lademlp2stat" value="<?php echo $lademstats1old ; ?>" />
-	<input hidden name="lademlp3stat" id="lademlp3stat" value="<?php echo $lademstats2old ; ?>" />
-	<input hidden name="evuglaettungakt" id="evuglaettungakt" value="<?php echo $evuglaettungaktold ; ?>" />
-	<input hidden name="nachtladenstate" id="nachtladenstate" value="<?php echo $nachtladenstate ; ?>" />
-	<input hidden name="nachtladenstates1" id="nachtladenstates1" value="<?php echo $nachtladenstates1 ; ?>" />
-	<input hidden name="nlakt_nurpv" id="nlakt_nurpv" value="<?php echo $nlakt_nurpvold ; ?>" />
-	<input hidden name="nlakt_sofort" id="nlakt_sofort" value="<?php echo $nlakt_sofortold ; ?>" />
-	<input hidden name="nlakt_minpv" id="nlakt_minpv" value="<?php echo $nlakt_minpvold ; ?>" />
-	<input hidden name="nlakt_standby" id="nlakt_standby" value="<?php echo $nlakt_standbyold ; ?>" />
-	<input hidden name="lademodus" id="lademodus" value="<?php echo $lademodusold ; ?>" />
-	<input hidden name="hausverbrauchstat" id="hausverbrauchstat" value="<?php echo $hausverbrauchstatold ; ?>" />
-	<input hidden name="speicherpvui" id="speicherpvui" value="<?php echo $speicherpvuiold ; ?>" />
-	<input hidden name="zielladenaktivlp1" id="zielladenaktivlp1" value="<?php echo $zielladenaktivlp1old ; ?>" />
-	<input hidden name="sofortlm" id="sofortlm" value="<?php echo $lademodusold ; ?>" />
-	<input hidden name="heutegeladen" id="heutegeladen" value="<?php echo $heutegeladenold ; ?>" />
+	<input hidden name="lastmanagement" id="lastmanagement" value="<?php echo $mySettings->getSetting("lastmanagement"); ?>" />
+	<input hidden name="lastmanagements2" id="lastmanagements2" value="<?php echo $mySettings->getSetting("lastmanagements2"); ?>" />
+	<input hidden name="speicherstat" id="speicherstat" value="<?php echo $mySettings->getSetting("speicherstat"); ?>" />
+	<input hidden name="lademlp1stat" id="lademlp1stat" value="<?php echo $mySettings->getSetting("lademstat"); ?>" />
+	<input hidden name="lademlp2stat" id="lademlp2stat" value="<?php echo $mySettings->getSetting("lademstats1"); ?>" />
+	<input hidden name="lademlp3stat" id="lademlp3stat" value="<?php echo $mySettings->getSetting("lademstats2"); ?>" />
+	<input hidden name="evuglaettungakt" id="evuglaettungakt" value="<?php echo $mySettings->getSetting("evuglaettungakt"); ?>" />
+	<input hidden name="nachtladenstate" id="nachtladenstate" value="<?php echo $mySettings->getSetting("nachtladen"); ?>" />
+	<input hidden name="nachtladenstates1" id="nachtladenstates1" value="<?php echo $mySettings->getSetting("nachtladens1"); ?>" />
+	<input hidden name="nlakt_nurpv" id="nlakt_nurpv" value="<?php echo $mySettings->getSetting("nlakt_nurpv"); ?>" />
+	<input hidden name="nlakt_sofort" id="nlakt_sofort" value="<?php echo $mySettings->getSetting("nlakt_sofort"); ?>" />
+	<input hidden name="nlakt_minpv" id="nlakt_minpv" value="<?php echo $mySettings->getSetting("nlakt_minpv"); ?>" />
+	<input hidden name="nlakt_standby" id="nlakt_standby" value="<?php echo $mySettings->getSetting("nlakt_standby"); ?>" />
+	<input hidden name="lademodus" id="lademodus" value="<?php echo $lademodusold; ?>" />
+	<input hidden name="hausverbrauchstat" id="hausverbrauchstat" value="<?php echo $mySettings->getSetting("hausverbrauchstat"); ?>" />
+	<input hidden name="speicherpvui" id="speicherpvui" value="<?php echo $mySettings->getSetting("speicherpvui"); ?>" />
+	<input hidden name="zielladenaktivlp1" id="zielladenaktivlp1" value="<?php echo $mySettings->getSetting("zielladenaktivlp1"); ?>" />
+	<input hidden name="sofortlm" id="sofortlm" value="<?php echo $lademodusold; ?>" />
+	<input hidden name="heutegeladen" id="heutegeladen" value="<?php echo $mySettings->getSetting("heutegeladen"); ?>" />
 <?php
 	include 'display/simple.html';
 ?>

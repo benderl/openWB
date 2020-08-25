@@ -1,9 +1,12 @@
 <?php
+require_once './ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
+
 $result = '';
 
 if (filter_var($_POST['emailAddress'], FILTER_VALIDATE_EMAIL) && strlen($_POST['debugMessage'])>20) {
 	$result = $_POST['debugMessage'] . "\n" . $_POST['emailAddress'] . "\n";
-	file_put_contents('/var/www/html/openWB/ramdisk/debuguser', $result);
+	$myRamdisk->setData('debuguser', $result);
 	header("Location: ./debugredirect.html");
 } else {
 	header ("Refresh: 10; ../index.php");

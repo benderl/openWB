@@ -1,3 +1,10 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/tools/ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
+require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+$mySettings = new openWBSettings();
+$owbversion = file_get_contents($_SERVER['DOCUMENT_ROOT'].'/openWB/web/version');
+?>
 <!DOCTYPE html>
 <html lang="de">
 
@@ -638,76 +645,10 @@
 		}
 		nurpvlog();
 	</script>
-
-	<?php
-		$owbversion = file_get_contents('/var/www/html/openWB/web/version');
-		$result = '';
-		$lines = file('/var/www/html/openWB/openwb.conf');
-		foreach ($lines as $line) {
-			if (strpos($line, "lp1name=") !== false) {
-				list(, $lp1nameold) = explode("=", $line);
-			}
-			if (strpos($line, "lp2name=") !== false) {
-				list(, $lp2nameold) = explode("=", $line);
-			}
-			if (strpos($line, "lp3name=") !== false) {
-				list(, $lp3nameold) = explode("=", $line);
-			}
-			if (strpos($line, "lastmanagement=") !== false) {
-				list(, $lastmanagementold) = explode("=", $line);
-			}
-			if (strpos($line, "lastmanagements2=") !== false) {
-				list(, $lastmanagements2old) = explode("=", $line);
-			}
-			if (strpos($line, "simplemode=") !== false) {
-				list(, $simplemodeold) = explode("=", $line);
-			}
-			if (strpos($line, "verbraucher1_name=") !== false) {
-				list(, $verbraucher1_nameold) = explode("=", $line);
-			}
-			if (strpos($line, "verbraucher2_name=") !== false) {
-				list(, $verbraucher2_nameold) = explode("=", $line);
-			}
-			if (strpos($line, "name_wechselrichter1=") !== false) {
-				list(, $name_wechselrichter1old) = explode("=", $line);
-				# entferne EOL von String
-				$name_wechselrichter1old = trim(preg_replace('/\s+/', '', $name_wechselrichter1old));
-			}
-			if (strpos($line, "name_wechselrichter2=") !== false) {
-				list(, $name_wechselrichter2old) = explode("=", $line);
-				# entferne EOL von String
-				$name_wechselrichter2old = trim(preg_replace('/\s+/', '', $name_wechselrichter2old));
-			}
-			if (strpos($line, "kostalplenticoreip2=") !== false) {
-				# wird benötigt, für Anzeige der getrennten WR-Daten an/aus
-				list(, $kostalplenticoreip2old) = explode("=", $line);
-				# entferne EOL von String
-				$kostalplenticoreip2old = trim(preg_replace('/\s+/', '', $kostalplenticoreip2old));
-			}
-		}
-?>
-<script>
-	$(function() {
-		var lp2akt = <?php echo $lastmanagementold ?>;
-		var lp3akt = <?php echo $lastmanagements2old ?>;
-		
-		if(lp2akt == '0') {
-			$('#ladepunkt2div').hide();
-		} else {
-			$('#ladepunkt2div').show();
-		}
-		if(lp2akt == '0') {
-			$('#ladepunkt3div').hide();
-		} else {
-			$('#ladepunkt3div').show();
-		}
-	});
-</script>
-
 </head>
 <body>
 	<?php
-		include '/var/www/html/openWB/web/status/navbar.php';
+		include $_SERVER['DOCUMENT_ROOT'].'/openWB/web/status/navbar.php';
 	?>
 
 	<div role="main" class="container" style="margin-top: 20px; display: block;">
@@ -802,7 +743,7 @@
 		<hr>
 		<div class="row bg-info">
 			<div class="col-sm-4 text-center">
-				LP1 <?php echo $lp1nameold ?>  Spannung [V]
+				LP1 <?php echo $mySettings->getSetting('lp1name') ?>  Spannung [V]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="llv1div"></div>
@@ -817,7 +758,7 @@
 		<hr>
 		<div class="row bg-info">
 			<div class="col-sm-4 text-center">
-				LP1 <?php echo $lp1nameold ?>  Power Faktor
+				LP1 <?php echo $mySettings->getSetting('lp1name') ?>  Power Faktor
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="llpf1div"></div>
@@ -832,7 +773,7 @@
 		<hr>
 		<div class="row bg-info">
 			<div class="col-sm-4 text-center">
-				LP1 <?php echo $lp1nameold ?>  Stromstärke [A]
+				LP1 <?php echo $mySettings->getSetting('lp1name') ?>  Stromstärke [A]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="lla1div"></div>
@@ -844,21 +785,46 @@
 				<div id="lla3div"></div>
 			</div>
 		</div>
-		<div id="ladepunkt2div">
-			<hr>
-			<div class="row bg-info">
-				<div class="col-sm-4 text-center">
-					LP2 <?php echo $lp2nameold ?>  Spannung [V]
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv1s1div"></div>
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv2s1div"></div>
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv3s1div"></div>
-				</div>
+		<hr>
+		<div class="row bg-info">
+			<div class="col-sm-4 text-center">
+				LP2 <?php echo $mySettings->getSetting('lp2name') ?>  Spannung [V]
+			</div>
+			<div class="col-sm-2 text-center">
+				<div id="llv1s1div"></div>
+			</div>
+			<div class="col-sm-2 text-center">
+				<div id="llv2s1div"></div>
+			</div>
+			<div class="col-sm-2 text-center">
+				<div id="llv3s1div"></div>
+			</div>
+		</div>
+		<hr>
+		<div class="row bg-info">
+			<div class="col-sm-4 text-center bg-info">
+				LP2 <?php echo $mySettings->getSetting('lp2name') ?> Stromstärke [A]
+			</div>
+			<div class="col-sm-2 text-center bg-info">
+				<div id="llas11div"></div>
+			</div>
+			<div class="col-sm-2 text-center bg-info">
+				<div id="llas12div"></div>
+			</div>
+			<div class="col-sm-2 text-center bg-info">
+				<div id="llas13div"></div>
+			</div>
+		</div>
+		<hr>
+		<div class="row bg-info">
+			<div class="col-sm-4 text-center">
+				LP3 <?php echo $mySettings->getSetting('lp3name') ?> Spannung [V]
+			</div>
+			<div class="col-sm-2 text-center">
+				<div id="llv1s2div"></div>
+			</div>
+			<div class="col-sm-2 text-center">
+				<div id="llv2s2div"></div>
 			</div>
 			<hr>
 			<div class="row bg-info">
@@ -876,21 +842,16 @@
 				</div>
 			</div>
 		</div>
-		<div id="ladepunkt3div">
-			<hr>
-			<div class="row bg-info">
-				<div class="col-sm-4 text-center">
-					LP3 <?php echo $lp3nameold ?> Spannung [V]
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv1s2div"></div>
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv2s2div"></div>
-				</div>
-				<div class="col-sm-2 text-center">
-					<div id="llv3s2div"></div>
-				</div>
+		<hr>
+		<div class="row bg-info">
+			<div class="col-sm-4 text-center bg-info">
+				LP3 <?php echo $mySettings->getSetting('lp3name') ?> Stromstärke [A]
+			</div>
+			<div class="col-sm-2 text-center bg-info">
+				<div id="llas21div"></div>
+			</div>
+			<div class="col-sm-2 text-center bg-info">
+				<div id="llas22div"></div>
 			</div>
 			<hr>
 			<div class="row bg-info">
@@ -977,7 +938,6 @@
 			</div>
 		</div>
 
-
 		<hr style="height:3px;border:none;color:#333;background-color:#333;" />
 		<div class="row" style="background-color:#BEFEBE">
 			<div class="col text-center bold">
@@ -1051,9 +1011,9 @@
 				<div class="col text-center bold">
 					PV Anlagendaten Wechselrichter 1
 					<?php
-						if ($name_wechselrichter1old != '') {
+						if ($mySettings->getSetting('name_wechselrichter1') != '') {
 							echo ' (';
-							echo $name_wechselrichter1old;
+							echo $mySettings->getSetting('name_wechselrichter1');
 							echo ')';
 						}
 					?>
@@ -1102,9 +1062,9 @@
 				<div class="col text-center bold">
 					PV Anlagendaten Wechselrichter 2
 					<?php
-						if ($name_wechselrichter2old != '') {
+						if ($mySettings->getSetting('name_wechselrichter2') != '') {
 							echo ' (';
-							echo $name_wechselrichter2old;
+							echo $mySettings->getSetting('name_wechselrichter2');
 							echo ')';
 						}
 					?>
@@ -1192,19 +1152,19 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2 text-center ">
-				<?php echo $verbraucher1_nameold ?> [W]
+				<?php echo $mySettings->getSetting('verbraucher1_name') ?> [W]
 			</div>
 			<div class="col-sm-2 text-center ">
 				<div id="verbraucher1wattdiv"></div>
 			</div>
 			<div class="col-sm-2 text-center">
-				<?php echo $verbraucher1_nameold ?> Import [kWh]
+				<?php echo $mySettings->getSetting('verbraucher1_name') ?> Import [kWh]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="verbraucher1whdiv"></div>
 			</div>
 			<div class="col-sm-2 text-center">
-				<?php echo $verbraucher1_nameold ?>Export [kWh]
+				<?php echo $mySettings->getSetting('verbraucher1_name') ?>Export [kWh]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="verbraucher1whediv"></div>
@@ -1212,19 +1172,19 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2 text-center ">
-				<?php echo $verbraucher2_nameold ?> [W]
+				<?php echo $mySettings->getSetting('verbraucher2_name') ?> [W]
 			</div>
 			<div class="col-sm-2 text-center ">
 				<div id="verbraucher2wattdiv"></div>
 			</div>
 			<div class="col-sm-2 text-center">
-				<?php echo $verbraucher2_nameold ?> Import [kWh]
+				<?php echo $mySettings->getSetting('verbraucher2_name') ?> Import [kWh]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="verbraucher2whdiv"></div>
 			</div>
 			<div class="col-sm-2 text-center">
-				<?php echo $verbraucher2_nameold ?> Export [kWh]
+				<?php echo $mySettings->getSetting('verbraucher2_name') ?> Export [kWh]
 			</div>
 			<div class="col-sm-2 text-center">
 				<div id="verbraucher2whediv"></div>
@@ -1292,7 +1252,7 @@
 
 	<script>
 		$(function() {
-			if('<?php echo $kostalplenticoreip2old ?>' == 'none') {
+			if('<?php echo $mySettings->getSetting('kostalplenticoreip2') ?>' == 'none') {
 				$('#pvinverter1and2div').hide();
 			}
 		});

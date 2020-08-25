@@ -1,4 +1,6 @@
 <?php
+/* module settings are saved in "settings/savepostsettings.php"
+
 if(isset($_POST['evsecon'])) {
 	$result = '';
 	$lines = file($_SERVER['DOCUMENT_ROOT'].'/openWB/openwb.conf');
@@ -1423,4 +1425,6 @@ if(isset($_POST['evsecon'])) {
 
 }
 header("Location: ../index.php");
+
+*/
 ?>

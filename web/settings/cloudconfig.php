@@ -35,6 +35,9 @@
 
 	<body>
 		<?php
+			// get settings
+			require_once './settingsClass.php';
+			$mySettings = new openWBSettings();
 
 			$lines = file('/var/www/html/openWB/openwb.conf');
 			foreach($lines as $line) {
@@ -63,7 +66,7 @@
 						$remotePrefix = trim($matches[5]);
 					} else if(preg_match('/^\s*connection\s+(.+)/', $bridgeLine, $matches) === 1) {
 						$connectionName = trim($matches[1]);
-					}
+					} 
 				}
 			}
 
@@ -77,22 +80,24 @@
 					<h3>Cloud Einstellungen</h3>
 				</div>
 				<?php if (( $connectionName == "cloud") && ( $bridgeEnabled == "1")) {
-				echo '
+					?>
 					<div class="row">
 						Cloud ist aktiv<br>
-						Benutzername: '.$clouduserold.'<br>
-						Passwort: '.$cloudpwold.'<br>
+						Benutzername: <?php echo $mySettings->getSetting("clouduser"); ?><br>
+						Passwort: <?php echo $mySettings->getSetting("cloudpw"); ?><br>
 					</div>
 					<div class="row">
 						Mit den Zugangsdaten auf web.openwb.de anmelden
 					</div>
-					<form action="./tools/savemqtt.php?bridge='.urlencode($connectionName).'" method="POST">
+					<form action="./tools/savemqtt.php?bridge=<?php urlencode($connectionName); ?>" method="POST">
 						<input type="hidden" name="ConnectionName" value="cloud"/>
-                                        	<div class="row justify-content-center py-1">
-                                        	        <button type="submit" class="btn btn-green" name="action" value="deleteBridge">Br&uuml;cke '.urlencode($connectionName).' l&ouml;schen</button>
+						<div class="row justify-content-center py-1">
+								<button type="submit" class="btn btn-green" name="action" value="deleteBridge">Br&uuml;cke <?php urlencode($connectionName); ?> l&ouml;schen</button>
 						</div>
 					</form>
-				'; } else { echo '
+					<?php
+				} else {
+					?>
 					<form action="./tools/cloudregistrate.php" method="POST">
 						<div class="row">
 							<b><label for="connect_username">Benutzername:</label></b>
@@ -130,7 +135,9 @@
 
 						<button type="submit" class="btn btn-green">Neuen Account erstellen und einrichten</button>
 					</form>
-				'; } ?>
+					<?php
+				}
+				?>
 				<div class="row justify-content-center">
 					<div class="col text-center">
 						Open Source made with love!<br>

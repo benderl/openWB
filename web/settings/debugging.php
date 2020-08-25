@@ -35,20 +35,9 @@
 
 	<body>
 		<?php
-
-			// read selected debug mode from config file
-			$lines = file('/var/www/html/openWB/openwb.conf');
-			foreach($lines as $line) {
-				if(strpos($line, "debug=") !== false) {
-					list(, $debugmode) = explode("=", $line);
-				}
-			}
-			$debugmode = trim($debugmode);
-			if ( $debugmode == "" ) {
-				// if no debug mode set, set 0 = off
-				$debugmode="0";
-			}
-
+			// get settings
+			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+			$mySettings = new openWBSettings();
 		?>
 
 		<div id="nav"></div> <!-- placeholder for navbar -->
@@ -59,20 +48,20 @@
 					<h1>Debug-Modus</h1>
 				</div>
 			</div>
-			<form class="form" id="debugmodeForm" action="./tools/savedebug.php" method="POST">
+			<form class="form" id="debugmodeForm" action="settings/savepostsettings.php" method="POST">
 				<div class="form-row">
 					<div class="col-auto">
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="debugmodeRadioBtn" id="mode0RadioBtn" value="0" <?php if($debugmode == "0") echo checked?>>
+								<input class="form-check-input" type="radio" name="debug" id="mode0RadioBtn" value="0" <?php if($mySettings->getSetting('debug') == "0") echo 'checked'?>>
 								<label class="form-check-label" for="mode0RadioBtn">
-								    Mode 0 (aus)
+									Mode 0 (aus)
 								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="debugmodeRadioBtn" id="mode1RadioBtn" value="1" <?php if($debugmode == "1") echo checked?>>
+								<input class="form-check-input" type="radio" name="debug" id="mode1RadioBtn" value="1" <?php if($mySettings->getSetting('debug') == "1") echo 'checked'?>>
 								<label class="form-check-label" for="mode1RadioBtn">
 									Mode 1 (Regelwerte)
 								</label>
@@ -80,7 +69,7 @@
 						</div>
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="debugmodeRadioBtn" id="mode2RadioBtn" value="2" <?php if($debugmode == "2") echo checked?>>
+								<input class="form-check-input" type="radio" name="debug" id="mode2RadioBtn" value="2" <?php if($mySettings->getSetting('debug') == "2") echo 'checked'?>>
 								<label class="form-check-label" for="mode2RadioBtn">
 									Mode 2 (Berechnungsgrundlage)
 								</label>
@@ -106,7 +95,7 @@
 				</div>
 			</div>
 			<br>
-			<form class="form" id="sendDebugMessageForm" action="./tools/senddebug.php" method="POST">
+			<form class="form" id="sendDebugMessageForm" action="tools/senddebug.php" method="POST">
 				<div class="form-row">
 					<div class="form-group col-lg-7">
 						<textarea class="form-control" id="debugMessage" name="debugMessage" rows="3" placeholder="Fehlerbeschreibung" maxlength="500"></textarea>

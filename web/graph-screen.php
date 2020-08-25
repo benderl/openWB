@@ -4,17 +4,14 @@ require_once "/var/www/html/openWB/web/class/pDraw.class.php";
 require_once "/var/www/html/openWB/web/class/pImage.class.php";
 require_once "/var/www/html/openWB/web/class/pData.class.php";
 
-$evufile = '/var/www/html/openWB/ramdisk/evu-live.graph';
-$pvfile = '/var/www/html/openWB/ramdisk/pv-live.graph';
-$evfile = '/var/www/html/openWB/ramdisk/ev-live.graph';
-$timefile = '/var/www/html/openWB/ramdisk/time-live.graph';
-$socfile = '/var/www/html/openWB/ramdisk/soc-live.graph';
+require_once './tools/ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
 
-$EV = file($evfile, FILE_IGNORE_NEW_LINES);
-$EVU = file($evufile, FILE_IGNORE_NEW_LINES);
-$PV = file($pvfile, FILE_IGNORE_NEW_LINES);
-$timef = file($timefile, FILE_IGNORE_NEW_LINES);
-$SOC = file($socfile, FILE_IGNORE_NEW_LINES);
+$EV = $myRamdisk->getData('ev-live.graph');
+$EVU = $myRamdisk->getData('evu-live.graph');
+$PV = $myRamdisk->getData('pv-live.graph');
+$timef = $myRamdisk->getData('time-live.graph');
+$SOC = $myRamdisk->getData('soc-live.graph');
 
 $myData = new pData();
 $myData->addPoints($EV,"EV");
@@ -57,5 +54,4 @@ $myImage->drawScale($ScaleSettings);
 
 $myImage->drawLineChart();
 
-header("Content-Type: image/png");
-$myImage->autoOutput('/var/www/html/openWB/ramdisk/chart-m.png');
+$myImage->autoOutput(); // headers are sent by method, no filename as we are directly streaming to the browser

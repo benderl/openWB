@@ -3,36 +3,26 @@ session_start();
 require_once "/var/www/html/openWB/web/class/pDraw.class.php";
 require_once "/var/www/html/openWB/web/class/pImage.class.php";
 require_once "/var/www/html/openWB/web/class/pData.class.php";
-$speichervorhanden = file_get_contents('/var/www/html/openWB/ramdisk/speichervorhanden');
-$soc1vorhanden = file_get_contents('/var/www/html/openWB/ramdisk/soc1vorhanden');
-$evufile = '/var/www/html/openWB/ramdisk/evu-live.graph';
-$pvfile = '/var/www/html/openWB/ramdisk/pv-live.graph';
-$evfile = '/var/www/html/openWB/ramdisk/ev-live.graph';
-$timefile = '/var/www/html/openWB/ramdisk/time-live.graph';
-$socfile = '/var/www/html/openWB/ramdisk/soc-live.graph';
-$ev1file = '/var/www/html/openWB/ramdisk/ev1-live.graph';
 
+require_once '../tools/ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
+
+$speichervorhanden = $myRamdisk->getData('speichervorhanden');
+$soc1vorhanden = $myRamdisk->getData('soc1vorhanden');
+
+$EV = $myRamdisk->getData('ev-live.graph');
+$EV1 = $myRamdisk->getData('ev1-live.graph');
+$EVU = $myRamdisk->getData('evu-live.graph');
+$PV = $myRamdisk->getData('pv-live.graph');
+$timef = $myRamdisk->getData('time-live.graph');
+$SOC = $myRamdisk->getData('soc-live.graph');
 if ($speichervorhanden == 1) {
-	$speicherfile = '/var/www/html/openWB/ramdisk/speicher-live.graph';
-	$speichersocfile = '/var/www/html/openWB/ramdisk/speichersoc-live.graph';
+	$SPEICHER = $myRamdisk->getData('speicher-live.graph');
+	$SPEICHERSOC = $myRamdisk->getData('speichersoc-live.graph');
 }
 if ($soc1vorhanden == 1) {
-	$soc1file = '/var/www/html/openWB/ramdisk/soc1-live.graph';
-	$ev2file = '/var/www/html/openWB/ramdisk/ev2-live.graph';
-}
-$EV = file($evfile, FILE_IGNORE_NEW_LINES);
-$EV1 = file($ev1file, FILE_IGNORE_NEW_LINES);
-$EVU = file($evufile, FILE_IGNORE_NEW_LINES);
-$PV = file($pvfile, FILE_IGNORE_NEW_LINES);
-$timef = file($timefile, FILE_IGNORE_NEW_LINES);
-$SOC = file($socfile, FILE_IGNORE_NEW_LINES);
-if ($speichervorhanden == 1) {
-	$SPEICHER = file($speicherfile, FILE_IGNORE_NEW_LINES);
-	$SPEICHERSOC = file($speichersocfile, FILE_IGNORE_NEW_LINES);
-}
-if ($soc1vorhanden == 1) {
-	$SOC1 = file($soc1file, FILE_IGNORE_NEW_LINES);
-	$EV2 = file($ev2file, FILE_IGNORE_NEW_LINES);
+	$SOC1 = $myRamdisk->getData('soc1-live.graph');
+	$EV2 = $myRamdisk->getData('ev2-live.graph');
 }
 $myData = new pData();
 $myData->addPoints($EV,"EV");
@@ -157,8 +147,8 @@ $myData->setSerieDrawable("EV1",false);
 $myData->setSerieDrawable("EV2",false);
 $myImage->drawAreaChart();
 
+$myImage->autoOutput(); // headers sent by function, no filename as we are streaming to browser
 
-
-header("Content-Type: image/png");
-$myImage->autoOutput('/var/www/html/openWB/ramdisk/chart-m.png');
-function YAxisFormat($Value) { return(round($Value/1000,2)); }
+function YAxisFormat($Value) {
+	return(round($Value/1000,2));
+}

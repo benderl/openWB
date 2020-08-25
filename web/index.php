@@ -1,8 +1,13 @@
 <?php
+	require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/tools/ramdiskClass.php';
+	$myRamdisk = new openWBRamdisk();
+	require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+	$mySettings = new openWBSettings();
+
 	// check if update.sh is still running
-	$updateinprogress = file_get_contents('/var/www/html/openWB/ramdisk/updateinprogress');
+	$updateinprogress = $myRamdisk->getData('updateinprogress');
 	// check if atreboot.sh is still running
-	$bootinprogress = file_get_contents('/var/www/html/openWB/ramdisk/bootinprogress');
+	$bootinprogress = $myRamdisk->getData('bootinprogress');
 	// if yes, show placeholder. If not, show theme
 	if ( $bootinprogress == 1 or $updateinprogress == 1) {
 		//atreboot.sh or update.sh still in progress, wait 5 seconds and retry
@@ -23,14 +28,7 @@
 		<?php
 	} else {
 		// check if forced theme is activated in config file
-		$simplemodeold = '';
-		$lines = file('/var/www/html/openWB/openwb.conf');
-		foreach( $lines as $line ) {
-			if( strpos($line, "simplemode=") !== false ) {
-				list(, $simplemodeold) = explode("=", $line);
-			}
-		}
-		if ( $simplemodeold == 1 ) {
+		if ( $mySettings->getSetting("simplemode") == 1 ) {
 			// force hidden theme
 			?><!-- including themes/hidden/simplemode.php --><?php
 			include 'themes/hidden/simplemode.php';

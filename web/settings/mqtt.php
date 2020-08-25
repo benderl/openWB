@@ -36,14 +36,11 @@
 	<body>
 
 		<?php
+			// get settings
+			require_once './settingsClass.php';
+			$mySettings = new openWBSettings();
 
-			$lines = file('/var/www/html/openWB/openwb.conf');
 			$refreshDuration = 8;
-			foreach($lines as $line) {
-				if(strpos($line, "debug=") !== false) {
-					list(, $debugold) = explode("=", $line);
-				}
-			}
 
 			$lines = file('/etc/os-release');
 			$tlsv13Supported = empty(preg_grep('/VERSION_CODENAME=stretch/', $lines)) && empty(preg_grep('/VERSION_CODENAME=jessie/', $lines)) && empty(preg_grep('/VERSION_CODENAME=wheezy/', $lines));
@@ -136,7 +133,7 @@
 				<form action="./tools/savemqtt.php?bridge=<?php echo urlencode($connectionName); ?>" method="POST">
 					<div >
 						<input type="checkbox" name="bridgeEnabled" value="bridgeEnabled" <?php echo $bridgeEnabled ? "checked=\"checked\"" : "" ?>><?php echo $bridgeEnabled ? "": "&nbsp;&nbsp;<em>! Deaktiviert !</em>" ?><b><label>&nbsp;&nbsp;Br&uuml;cke&nbsp;&nbsp;<input type="text" size="35" name="ConnectionName" id="ConnectionName" value="<?php echo $connectionName; ?>" /></label></b><br/>
-						<?php if($debugold >= 1) echo "<small>in Datei '$currentFile'</small>"; ?><br/>
+						<?php if($mySettings->getSetting('debug') >= 1) echo "<small>in Datei '$currentFile'</small>"; ?><br/>
 						<span style="color: red; font-weight: bold; font-size:small;"><u>ACHTUNG</u>: Die Konfiguration einer MQTT-Br&uuml;cke erlaubt allen Nutzern mit Zugang zum entfernten MQTT-Server alle weitergeleiteten Daten dieser openWB einzusehen !<br/>
 						Es wird dringend empfohlen, dies nur f&uuml;r nicht-&ouml;ffentliche MQTT-Server unter Verwendung starker Transport-Verschl&uuml;sselung (TLS)  mit personfiziertem Login und strenger Zugriffskontrolle (zumindest f&uuml;r die MQTT-Thema unterhalb von &quot;Entfernter Pr&auml;fix&quot;) zu aktivieren !</span>
 					</div>
@@ -240,7 +237,7 @@
 
 		<footer class="footer bg-dark text-light font-small">
 			<div class="container text-center">
-				  <small>Sie befinden sich hier: Einstellungen/MQTT-Brücke</small>
+				<small>Sie befinden sich hier: Einstellungen/MQTT-Brücke</small>
 			</div>
 		</footer>
 

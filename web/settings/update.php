@@ -35,21 +35,9 @@
 	<body>
 
 		<?php
-
-			// read selected releasetrain from config file
-			$lines = file('/var/www/html/openWB/openwb.conf');
-			foreach($lines as $line) {
-				if(strpos($line, "releasetrain=") !== false) {
-					list(, $releasetrain) = explode("=", $line);
-				}
-			}
-			$releasetrain = trim($releasetrain);
-
-			if ( $releasetrain == "" ) {
-				// if no releasetrain set, set stable
-				$releasetrain="stable";
-			}
-
+			// get settings
+			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
+			$mySettings = new openWBSettings();
 		?>
 
 		<div id="nav"></div> <!-- placeholder for navbar -->
@@ -67,47 +55,43 @@
 					</div>
 				</div>
 			</div>
-			<br>
-			<form class="form" id="releasetrainForm" action="./tools/saveupdate.php" method="POST">
+
+			<form class="form" id="releasetrainForm" action="settings/saveupdate.php" method="POST">
 				<div class="form-row align-items-center">
 					<div class="col">
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="releasetrainRadioBtn" id="radioBtnStable" value="stable" disabled>
+								<input class="form-check-input" type="radio" name="releasetrain" id="radioBtnStable" value="stable" disabled>
 								<label class="form-check-label vaRow" for="radioBtnStable">
 									Stable:
 									<span class="mx-1" id="availStableVersionSpan" data-version=""></span><span class="spinner-grow spinner-grow-sm" id="availStableVersionSpinner"></span>
-									<br>
 								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="releasetrainRadioBtn" id="radioBtnStableold" value="stableold" disabled>
+								<input class="form-check-input" type="radio" name="releasetrain" id="radioBtnStableold" value="stableold" disabled>
 								<label class="form-check-label vaRow" for="radioBtnStableold">
 									Stable old:
 									<span class="mx-1" id="availStableoldVersionSpan" data-version=""></span><span class="spinner-grow spinner-grow-sm" id="availStableoldVersionSpinner"></span>
-									<br>
 								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="releasetrainRadioBtn" id="radioBtnBeta" value="beta" disabled>
+								<input class="form-check-input" type="radio" name="releasetrain" id="radioBtnBeta" value="beta" disabled>
 								<label class="form-check-label vaRow" for="radioBtnBeta">
 									Beta:
 									<span class="mx-1" id="availBetaVersionSpan" data-version=""></span><span class="spinner-grow spinner-grow-sm" id="availBetaVersionSpinner"></span>
-									<br>
 								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="releasetrainRadioBtn" id="radioBtnNightly" value="master" disabled>
+								<input class="form-check-input" type="radio" name="releasetrain" id="radioBtnNightly" value="master" disabled>
 								<label class="form-check-label vaRow" for="radioBtnNightly">
 									Nightly:
 									<span class="mx-1" id="availNightlyVersionSpan" data-version=""></span><span class="spinner-grow spinner-grow-sm" id="availNightlyVersionSpinner"></span>
-									<br>
 								</label>
 							</div>
 						</div>
@@ -118,7 +102,6 @@
 						<button type="button" class="btn btn-green" data-toggle="modal" data-target="#updateConfirmationModal">Update</button>
 					</div>
 				</div>
-				<br>
 			</form>
 
 			<div class="row">
@@ -256,13 +239,13 @@
 					var releasetrains = [];
 					$(".form-check-input:enabled").each(function(){
 						// all enabled checkbox values
-					    releasetrains.push( $(this).val() );
+						releasetrains.push( $(this).val() );
 					});
 					if ( releasetrains.length > 0 ) {
 						// if there are any enabled checkBoxes ( equals available updates )
-						if ( releasetrains.includes("<?php echo $releasetrain?>") ) {
+						if ( releasetrains.includes("<?php echo $mySettings->getSetting('releasetrain')?>") ) {
 							// check the box matching config file releasetrain
-							$("input[value='<?php echo $releasetrain?>']").prop('checked', true);
+							$("input[value='<?php echo $mySettings->getSetting('releasetrain')?>']").prop('checked', true);
 						} else if ( releasetrains.includes("stable17") ) {
 							// version from config file not availabe so select stable
 							$("input[value='stable17']").prop('checked', true);

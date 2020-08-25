@@ -155,7 +155,7 @@ AUTHEND
  			$(document).ready(function(){
  				// disable navbar entry for current page
 				$('#navPasswortschutz').addClass('disabled');
-				});
+			});
 		</script>
 
 		<footer class="footer bg-dark text-light font-small">

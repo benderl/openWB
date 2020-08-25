@@ -1,4 +1,6 @@
 <?php
+/* functionality moved to "settings/savepostsettings.php"
+
 if(isset($_POST['minimalstromstaerke'])) {
 
 	$result = '';
@@ -549,4 +551,6 @@ if(isset($_POST['minimalstromstaerke'])) {
 	file_put_contents('/var/www/html/openWB/openwb.conf', $result);
 }
 header("Location: ../index.php");
+
+*/
 ?>

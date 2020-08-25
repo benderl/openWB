@@ -3,14 +3,15 @@
 
 <div class="container">
 
-	<div class="row"><div class="col-xs-12 text-center">
-		<div class="col-xs-6 text-center bg-success" style="font-size: 3vw">
-			PV: <span id="pvdiv"></span>
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<div class="col-xs-6 text-center bg-success" style="font-size: 3vw">
+				PV: <span id="pvdiv"></span>
+			</div>
+			<div class="col-xs-6 text-center bg-warning" style="font-size: 3vw">
+				EVU: <span id="bezugdiv"></span>
+			</div>
 		</div>
-		<div class="col-xs-6 text-center bg-warning" style="font-size: 3vw">
-			EVU: <span id="bezugdiv"></span>
-		</div>
-	</div>
 	</div>
 
 	<!-- interactive chart.js as graph selected -->
@@ -22,7 +23,8 @@
 			</div>
 			<canvas id="canvas"></canvas>
 		</div>
-		<div id="graphoptiondiv" style="display: none;"><br><br></div>
+		<div id="graphoptiondiv" style="display: none;">
+		</div>
 	</div>
 
 	<div class="row">
@@ -42,16 +44,20 @@
 		</div>
 		<div class="row">
 		</div>
-
 		<div class="row" style="font-size: 2vw">
 			<div class="col-xs-12 text-center" style="font-size: 3vw">
-				LP1 <span id="gelrlp1div"></span>km,<span id="aktgeladendiv"></span>kWh	<br><span id="sofortlmdiv"><div id="lademstatdiv">
-
-					</div></span>
+				LP1 <span id="gelrlp1div"></span>km, <span id="aktgeladendiv"></span>kWh<br>
+				<span id="sofortlmdiv">
+					<div id="lademstatdiv">
+					</div>
+				</span>
 			</div>
 			<div class="col-xs-12 text-center" style="font-size: 3vw">
-				LP2 <span id="gelrlp2div"></span>km,<span id="aktgeladens1div"></span>kWh	<br><span id="sofortlms1div"><div id="lademstats1div">
-					</div></span>
+				LP2 <span id="gelrlp2div"></span>km,<span id="aktgeladens1div"></span>kWh<br>
+				<span id="sofortlms1div">
+					<div id="lademstats1div">
+					</div>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -60,3 +66,5 @@
 			<a href="settings/settings.php">Einstellungen</a>
 		</div>
 	</div>
+
+</div>

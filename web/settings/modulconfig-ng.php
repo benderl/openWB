@@ -36,1171 +36,52 @@
 	<body>
 
 		<?php
+			include $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/navbar.php';
 
-			/*
-			$lines = file('/var/www/html/openWB/openwb.conf');
-			foreach($lines as $line) {
-				if(strpos($line, "soclp1_vin=") !== false) {
-					list(, $soclp1_vinold) = explode("=", $line);
-				}
-				if(strpos($line, "pv2wattmodul=") !== false) {
-					list(, $pv2wattmodulold) = explode("=", $line);
-				}
-				if(strpos($line, "pv2id=") !== false) {
-					list(, $pv2idold) = explode("=", $line);
-				}
-				if(strpos($line, "pv1_ipa=") !== false) {
-					list(, $pv1_ipaold) = explode("=", $line);
-				}
-				if(strpos($line, "speicher1_ip=") !== false) {
-					list(, $speicher1_ipold) = explode("=", $line);
-				}
-				if(strpos($line, "bezug1_ip=") !== false) {
-					list(, $bezug1_ipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "pv2ip=") !== false) {
-					list(, $pv2ipold) = explode("=", $line);
-				}
-				if(strpos($line, "pv2user=") !== false) {
-					list(, $pv2userold) = explode("=", $line);
-				}
-				if(strpos($line, "pv2pass=") !== false) {
-					list(, $pv2passold) = explode("=", $line);
-				}
-
-				if(strpos($line, "soc_bluelink_interval=") !== false) {
-					list(, $soc_bluelink_intervalold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_bluelink_email=") !== false) {
-					list(, $soc_bluelink_emailold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_bluelink_password=") !== false) {
-					list(, $soc_bluelink_passwordold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_bluelink_pin=") !== false) {
-					list(, $soc_bluelink_pinold) = explode("=", $line);
-				}
-				if(strpos($line, "solarworld_emanagerip=") !== false) {
-					list(, $solarworld_emanageripold) = explode("=", $line);
-				}
-				if(strpos($line, "femsip=") !== false) {
-					list(, $femsipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsunwaysip=") !== false) {
-					list(, $wrsunwaysipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsunwayspw=") !== false) {
-					list(, $wrsunwayspwold) = explode("=", $line);
-				}
-				if(strpos($line, "pvkitversion=") !== false) {
-					list(, $pvkitversionold) = explode("=", $line);
-				}
-				if(strpos($line, "evukitversion=") !== false) {
-					list(, $evukitversionold) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_userlp2=") !== false) {
-					list(, $myrenault_userlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_passlp2=") !== false) {
-					list(, $myrenault_passlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_locationlp2=") !== false) {
-					list(, $myrenault_locationlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_countrylp2=") !== false) {
-					list(, $myrenault_countrylp2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "myrenault_userlp1=") !== false) {
-					list(, $myrenault_userlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_passlp1=") !== false) {
-					list(, $myrenault_passlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_locationlp1=") !== false) {
-					list(, $myrenault_locationlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "myrenault_countrylp1=") !== false) {
-					list(, $myrenault_countrylp1old) = explode("=", $line);
-				}
-				if(strpos($line, "wryoulessip=") !== false) {
-					list(, $wryoulessipold) = explode("=", $line);
-				}
-				if(strpos($line, "lastmanagementlp4=") !== false) {
-					list(, $lastmanagementlp4old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmanagementlp5=") !== false) {
-					list(, $lastmanagementlp5old) = explode("=", $line);
-				}
-
-				if(strpos($line, "lastmanagementlp5=") !== false) {
-					list(, $lastmanagementlp5old) = explode("=", $line);
-				}
-
-				if(strpos($line, "lastmanagementlp6=") !== false) {
-					list(, $lastmanagementlp6old) = explode("=", $line);
-				}
-
-				if(strpos($line, "lastmanagementlp7=") !== false) {
-					list(, $lastmanagementlp7old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmanagementlp8=") !== false) {
-					list(, $lastmanagementlp8old) = explode("=", $line);
-				}
-
-				if(strpos($line, "stopsocnotpluggedlp1=") !== false) {
-					list(, $stopsocnotpluggedlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp3=") !== false) {
-					list(, $evseiplp3old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp3=") !== false) {
-					list(, $evseidlp3old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp3id=") !== false) {
-					list(, $mpmlp3idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp3ip=") !== false) {
-					list(, $mpmlp3ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp2=") !== false) {
-					list(, $evseiplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp2=") !== false) {
-					list(, $evseidlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp2id=") !== false) {
-					list(, $mpmlp2idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp2ip=") !== false) {
-					list(, $mpmlp2ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp1=") !== false) {
-					list(, $evseiplp1old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp1=") !== false) {
-					list(, $evseidlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp1id=") !== false) {
-					list(, $mpmlp1idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp1ip=") !== false) {
-					list(, $mpmlp1ipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "evseiplp4=") !== false) {
-					list(, $evseiplp4old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp4=") !== false) {
-					list(, $evseidlp4old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp4id=") !== false) {
-					list(, $mpmlp4idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp4ip=") !== false) {
-					list(, $mpmlp4ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp5=") !== false) {
-					list(, $evseiplp5old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp5=") !== false) {
-					list(, $evseidlp5old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp5id=") !== false) {
-					list(, $mpmlp5idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp5ip=") !== false) {
-					list(, $mpmlp5ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp6=") !== false) {
-					list(, $evseiplp6old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp6=") !== false) {
-					list(, $evseidlp6old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp6id=") !== false) {
-					list(, $mpmlp6idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp6ip=") !== false) {
-					list(, $mpmlp6ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp7=") !== false) {
-					list(, $evseiplp7old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp7=") !== false) {
-					list(, $evseidlp7old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp7id=") !== false) {
-					list(, $mpmlp7idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp7ip=") !== false) {
-					list(, $mpmlp7ipold) = explode("=", $line);
-				}
-				if(strpos($line, "evseiplp8=") !== false) {
-					list(, $evseiplp8old) = explode("=", $line);
-				}
-				if(strpos($line, "evseidlp8=") !== false) {
-					list(, $evseidlp8old) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp8id=") !== false) {
-					list(, $mpmlp8idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpmlp8ip=") !== false) {
-					list(, $mpmlp8ipold) = explode("=", $line);
-				}
-				if(strpos($line, "discovergyuser=") !== false) {
-					list(, $discovergyuserold) = explode("=", $line);
-				}
-				if(strpos($line, "discovergypass=") !== false) {
-					list(, $discovergypassold) = explode("=", $line);
-				}
-				if(strpos($line, "discovergyevuid=") !== false) {
-					list(, $discovergyevuidold) = explode("=", $line);
-				}
-				if(strpos($line, "discovergypvid=") !== false) {
-					list(, $discovergypvidold) = explode("=", $line);
-				}
-				if(strpos($line, "ksemip=") !== false) {
-					list(, $ksemipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "solarview_hostname=") !== false) {
-					list(, $solarview_hostnameold) = explode("=", $line);
-				}
-				if(strpos($line, "solarview_port=") !== false) {
-					list(, $solarview_portold) = explode("=", $line);
-				}
-
-				if(strpos($line, "soc_audi_username=") !== false) {
-					list(, $soc_audi_usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_audi_passwort=") !== false) {
-					list(, $soc_audi_passwortold) = explode("=", $line);
-				}
-
-				if(strpos($line, "soc_zerong_username=") !== false) {
-					list(, $soc_zerong_usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zerong_password=") !== false) {
-					list(, $soc_zerong_passwordold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zerong_intervall=") !== false) {
-					list(, $soc_zerong_intervallold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zerong_intervallladen=") !== false) {
-					list(, $soc_zerong_intervallladenold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zeronglp2_username=") !== false) {
-					list(, $soc_zeronglp2_usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zeronglp2_password=") !== false) {
-					list(, $soc_zeronglp2_passwordold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zeronglp2_intervall=") !== false) {
-					list(, $soc_zeronglp2_intervallold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_zeronglp2_intervallladen=") !== false) {
-					list(, $soc_zeronglp2_intervallladenold) = explode("=", $line);
-				}
-				if(strpos($line, "bezug_victronip=") !== false) {
-					list(, $bezug_victronipold) = explode("=", $line);
-				}
-				if(strpos($line, "sonnenecoip=") !== false) {
-					list(, $sonnenecoipold) = explode("=", $line);
-				}
-				if(strpos($line, "sonnenecoalternativ=") !== false) {
-					list(, $sonnenecoalternativold) = explode("=", $line);
-				}
-				if(strpos($line, "wr_sdm120id=") !== false) {
-					list(, $wr_sdm120idold) = explode("=", $line);
-				}
-				if(strpos($line, "wr_sdm120ip=") !== false) {
-					list(, $wr_sdm120ipold) = explode("=", $line);
-				}
-				if(strpos($line, "debug=") !== false) {
-					list(, $debugold) = explode("=", $line);
-				}
-
-				if(strpos($line, "wakeupmyrenaultlp1=") !== false) {
-					list(, $wakeupmyrenaultlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "wakeupmyrenaultlp2=") !== false) {
-					list(, $wakeupmyrenaultlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "pvbezugeinspeisung=") !== false) {
-					list(, $pvbezugeinspeisungold) = explode("=", $line);
-				}
-				if(strpos($line, "sofortll=") !== false) {
-					list(, $sofortllold) = explode("=", $line);
-				}
-				if(strpos($line, "dspeed=") !== false) {
-					list(, $dspeedold) = explode("=", $line);
-				}
-
-				if(strpos($line, "sdmids1=") !== false) {
-					list(, $sdmids1old) = explode("=", $line);
-				}
-				if(strpos($line, "minimalampv=") !== false) {
-					list(, $minimalampvold) = explode("=", $line);
-				}
-				if(strpos($line, "minimalapv=") !== false) {
-					list(, $minimalapvold) = explode("=", $line);
-				}
-				if(strpos($line, "minimalstromstaerke=") !== false) {
-					list(, $minimalstromstaerkeold) = explode("=", $line);
-				}
-				if(strpos($line, "maximalstromstaerke=") !== false) {
-					list(, $maximalstromstaerkeold) = explode("=", $line);
-				}
-				if(strpos($line, "httpevseip=") !== false) {
-					list(, $httpevseipold) = explode("=", $line);
-				}
-				if(strpos($line, "evsecon=") !== false) {
-					list(, $evseconold) = explode("=", $line);
-				}
-				if(strpos($line, "twcmanagerlp1ip=") !== false) {
-					list(, $twcmanagerlp1ipold) = explode("=", $line);
-				}
-				if(strpos($line, "twcmanagerlp1phasen=") !== false) {
-					list(, $twcmanagerlp1phasenold) = explode("=", $line);
-				}
-
-				if(strpos($line, "dacregister=") !== false) {
-					list(, $dacregisterold) = explode("=", $line);
-				}
-				if(strpos($line, "dacregisters2=") !== false) {
-					list(, $dacregisters2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "dacregisters1=") !== false) {
-					list(, $dacregisters1old) = explode("=", $line);
-				}
-				if(strpos($line, "modbusevsesource=") !== false) {
-					list(, $modbusevsesourceold) = explode("=", $line);
-				}
-
-				if(strpos($line, "modbusevseid=") !== false) {
-					list(, $modbusevseidold) = explode("=", $line);
-				}
-				if(strpos($line, "modbusevselanip=") !== false) {
-					list(, $modbusevselanipold) = explode("=", $line);
-				}
-				if(strpos($line, "evsesources1=") !== false) {
-					list(, $evsesources1old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid1s1=") !== false) {
-					list(, $sdm120modbusllid1s1old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid2s1=") !== false) {
-					list(, $sdm120modbusllid2s1old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid3s1=") !== false) {
-					list(, $sdm120modbusllid3s1old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid1s2=") !== false) {
-					list(, $sdm120modbusllid1s2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid2s2=") !== false) {
-					list(, $sdm120modbusllid2s2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid3s2=") !== false) {
-					list(, $sdm120modbusllid3s2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid1=") !== false) {
-					list(, $sdm120modbusllid1old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid2=") !== false) {
-					list(, $sdm120modbusllid2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllid3=") !== false) {
-					list(, $sdm120modbusllid3old) = explode("=", $line);
-				}
-				if(strpos($line, "evseids1=") !== false) {
-					list(, $evseids1old) = explode("=", $line);
-				}
-				if(strpos($line, "evseids2=") !== false) {
-					list(, $evseids2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evselanips1=") !== false) {
-					list(, $evselanips1old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmanagement=") !== false) {
-					list(, $lastmanagementold) = explode("=", $line);
-				}
-				if(strpos($line, "durchslp1=") !== false) {
-					list(, $durchslp1old) = explode("=", $line);
-				}
-				if(strpos($line, "durchslp2=") !== false) {
-					list(, $durchslp2old) = explode("=", $line);
-				}
-				if(strpos($line, "durchslp3=") !== false) {
-					list(, $durchslp3old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmanagements2=") !== false) {
-					list(, $lastmanagements2old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmmaxw=") !== false) {
-					list(, $lastmmaxwold) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsecons1=") !== false) {
-					list(, $evsecons1old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsecons2=") !== false) {
-					list(, $evsecons2old) = explode("=", $line);
-				}
-				if(strpos($line, "evsesources2=") !== false) {
-					list(, $evsesources2old) = explode("=", $line);
-				}
-				if(strpos($line, "evseids1=") !== false) {
-					list(, $evseids1old) = explode("=", $line);
-				}
-				if(strpos($line, "evselanips2=") !== false) {
-					list(, $evselanips2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdmids2=") !== false) {
-					list(, $sdmids2old) = explode("=", $line);
-				}
-				if(strpos($line, "ladeleistungs2modul=") !== false) {
-					list(, $ladeleistungs2modulold) = explode("=", $line);
-				}
-				if(strpos($line, "wattbezugmodul=") !== false) {
-					list(, $wattbezugmodulold) = explode("=", $line);
-				}
-
-				if(strpos($line, "vzloggerip=") !== false) {
-					list(, $vzloggeripold) = explode("=", $line);
-				}
-				if(strpos($line, "vzloggerline=") !== false) {
-					list(, $vzloggerlineold) = explode("=", $line);
-				}
-				if(strpos($line, "vzloggerkwhline=") !== false) {
-					list(, $vzloggerkwhlineold) = explode("=", $line);
-				}
-				if(strpos($line, "vzloggerekwhline=") !== false) {
-					list(, $vzloggerekwhlineold) = explode("=", $line);
-				}
-				if(strpos($line, "vzloggerpvip=") !== false) {
-					list(, $vzloggerpvipold) = explode("=", $line);
-				}
-				if(strpos($line, "vzloggerpvline=") !== false) {
-					list(, $vzloggerpvlineold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbusbezugid=") !== false) {
-					list(, $sdm630modbusbezugidold) = explode("=", $line);
-				}
-
-				if(strpos($line, "sdm630modbusbezuglanip=") !== false) {
-					list(, $sdm630modbusbezuglanipold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbusbezugsource=") !== false) {
-					list(, $sdm630modbusbezugsourceold) = explode("=", $line);
-				}
-
-
-				if(strpos($line, "pvwattmodul=") !== false) {
-					list(, $pvwattmodulold) = explode("=", $line);
-				}
-				if(strpos($line, "wrfroniusip=") !== false) {
-					list(, $wrfroniusipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrfronius2ip=") !== false) {
-					list(, $wrfronius2ipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrkostalpikoip=") !== false) {
-					list(, $wrkostalpikoipold) = explode("=", $line);
-				}
-				if(strpos($line, "ladeleistungmodul=") !== false) {
-					list(, $ladeleistungmodulold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbusllid=") !== false) {
-					list(, $sdm630modbusllidold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbusllsource=") !== false) {
-					list(, $sdm630modbusllsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "fsm63a3modbusllid=") !== false) {
-					list(, $fsm63a3modbusllidold) = explode("=", $line);
-				}
-				if(strpos($line, "fsm63a3modbusllsource=") !== false) {
-					list(, $fsm63a3modbusllsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120modbusllsource=") !== false) {
-					list(, $sdm120modbusllsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbuslllanip=") !== false) {
-					list(, $sdm630modbuslllanipold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbuswrid=") !== false) {
-					list(, $sdm630modbuswridold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbuswrsource=") !== false) {
-					list(, $sdm630modbuswrsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630modbuswrlanip=") !== false) {
-					list(, $sdm630modbuswrlanipold) = explode("=", $line);
-				}
-				if(strpos($line, "socmodul=") !== false) {
-					list(, $socmodulold) = explode("=", $line);
-				}
-				if(strpos($line, "hsocip=") !== false) {
-					list(, $hsocipold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "socmodul1=") !== false) {
-					list(, $socmodul1old) = explode("=", $line);
-				}
-				if(strpos($line, "hsocip1=") !== false) {
-					list(, $hsocip1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtladen=") !== false) {
-					list(, $nachtladenold) = explode("=", $line);
-				}
-				if(strpos($line, "nachtll=") !== false) {
-					list(, $nachtllold) = explode("=", $line);
-				}
-				if(strpos($line, "nachtladens1=") !== false) {
-					list(, $nachtladens1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtlls1=") !== false) {
-					list(, $nachtlls1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtsocs1=") !== false) {
-					list(, $nachtsocs1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtsoc1s1=") !== false) {
-					list(, $nachtsoc1s1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtladenabuhrs1=") !== false) {
-					list(, $nachtladenabuhrs1old) = explode("=", $line);
-				}
-				if(strpos($line, "nachtladenbisuhrs1=") !== false) {
-					list(, $nachtladenbisuhrs1old) = explode("=", $line);
-				}
-				if(strpos($line, "httpll_w_url=") !== false) {
-					list(, $httpll_w_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "httpll_ip=") !== false) {
-					list(, $httpll_ipold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "httpll_kwh_url=") !== false) {
-					list(, $httpll_kwh_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "httpll_a1_url=") !== false) {
-					list(, $httpll_a1_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "httpll_a2_url=") !== false) {
-					list(, $httpll_a2_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "httpll_a3_url=") !== false) {
-					list(, $httpll_a3_urlold) = explode("=", $line, 2);
-				}
-
-				if(strpos($line, "wr_http_w_url=") !== false) {
-					list(, $wr_http_w_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_http_kwh_url=") !== false) {
-					list(, $wr_http_kwh_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_w_url=") !== false) {
-					list(, $bezug_http_w_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_l1_url=") !== false) {
-					list(, $bezug_http_l1_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_l2_url=") !== false) {
-					list(, $bezug_http_l2_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_l3_url=") !== false) {
-					list(, $bezug_http_l3_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_ikwh_url=") !== false) {
-					list(, $bezug_http_ikwh_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_http_ekwh_url=") !== false) {
-					list(, $bezug_http_ekwh_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "nachtladenabuhr=") !== false) {
-					list(, $nachtladenabuhrold) = explode("=", $line);
-				}
-				if(strpos($line, "nachtladenbisuhr=") !== false) {
-					list(, $nachtladenbisuhrold) = explode("=", $line);
-				}
-				if(strpos($line, "nachtsoc=") !== false) {
-					list(, $nachtsocold) = explode("=", $line);
-				}
-				if(strpos($line, "nachtsoc1=") !== false) {
-					list(, $nachtsoc1old) = explode("=", $line);
-				}
-				if(strpos($line, "mindestuberschuss=") !== false) {
-					list(, $mindestuberschussold) = explode("=", $line);
-				}
-				if(strpos($line, "abschaltuberschuss=") !== false) {
-					list(, $abschaltuberschussold) = explode("=", $line);
-				}
-				if(strpos($line, "ladeleistungs1modul=") !== false) {
-					list(, $ladeleistungs1modulold) = explode("=", $line);
-				}
-				if(strpos($line, "lastmaxap1=") !== false) {
-					list(, $lastmaxap1old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmaxap2=") !== false) {
-					list(, $lastmaxap2old) = explode("=", $line);
-				}
-				if(strpos($line, "lastmaxap3=") !== false) {
-					list(, $lastmaxap3old) = explode("=", $line);
-				}
-				if(strpos($line, "smaemdbezugid=") !== false) {
-					list(, $smaemdbezugidold) = explode("=", $line);
-				}
-				if(strpos($line, "smaemdllid=") !== false) {
-					list(, $smaemdllidold) = explode("=", $line);
-				}
-				if(strpos($line, "smaemdpvid=") !== false) {
-					list(, $smaemdpvidold) = explode("=", $line);
-				}
-				if(strpos($line, "abschaltverzoegerung=") !== false) {
-					list(, $abschaltverzoegerungold) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsewifiiplp1=") !== false) {
-					list(, $evsewifiiplp1old) = explode("=", $line);
-				}
-				if(strpos($line, "evsewifiiplp2=") !== false) {
-					list(, $evsewifiiplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "evsewifiiplp3=") !== false) {
-					list(, $evsewifiiplp3old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsewifitimeoutlp1=") !== false) {
-					list(, $evsewifitimeoutlp1old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsewifitimeoutlp2=") !== false) {
-					list(, $evsewifitimeoutlp2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evsewifitimeoutlp3=") !== false) {
-					list(, $evsewifitimeoutlp3old) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmllsource=") !== false) {
-					list(, $mpm3pmllsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmlls1source=") !== false) {
-					list(, $mpm3pmlls1sourceold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmlls2source=") !== false) {
-					list(, $mpm3pmlls2sourceold) = explode("=", $line);
-				}
-
-				if(strpos($line, "mpm3pmpvid=") !== false) {
-					list(, $mpm3pmpvidold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmpvsource=") !== false) {
-					list(, $mpm3pmpvsourceold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmpvlanip=") !== false) {
-					list(, $mpm3pmpvlanipold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmllid=") !== false) {
-					list(, $mpm3pmllidold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmlls1id=") !== false) {
-					list(, $mpm3pmlls1idold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmlls2id=") !== false) {
-					list(, $mpm3pmlls2idold) = explode("=", $line);
-				}
-
-				if(strpos($line, "mpm3pmevuid=") !== false) {
-					list(, $mpm3pmevuidold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmevusource=") !== false) {
-					list(, $mpm3pmevusourceold) = explode("=", $line);
-				}
-				if(strpos($line, "leafusername=") !== false) {
-					list(, $leafusernameold) = explode("=", $line);
-				}
-				if(strpos($line, "leafpasswort=") !== false) {
-					list(, $leafpasswortold) = explode("=", $line);
-				}
-				if(strpos($line, "leafusernames1=") !== false) {
-					list(, $leafusernames1old) = explode("=", $line);
-				}
-				if(strpos($line, "leafpassworts1=") !== false) {
-					list(, $leafpassworts1old) = explode("=", $line);
-				}
-				if(strpos($line, "i3passworts1=") !== false) {
-					list(, $i3passworts1old) = explode("=", $line);
-				}
-				if(strpos($line, "i3passwort=") !== false) {
-					list(, $i3passwortold) = explode("=", $line);
-				}
-				if(strpos($line, "soci3intervall=") !== false) {
-					list(, $soci3intervallold) = explode("=", $line);
-				}
-				if(strpos($line, "soci3intervall1=") !== false) {
-					list(, $soci3intervall1old) = explode("=", $line);
-				}
-				if(strpos($line, "i3username=") !== false) {
-					list(, $i3usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "i3usernames1=") !== false) {
-					list(, $i3usernames1old) = explode("=", $line);
-				}
-				if(strpos($line, "i3vin=") !== false) {
-					list(, $i3vinold) = explode("=", $line);
-				}
-				if(strpos($line, "i3vins1=") !== false) {
-					list(, $i3vins1old) = explode("=", $line);
-				}
-				if(strpos($line, "zoeusername=") !== false) {
-					list(, $zoeusernameold) = explode("=", $line);
-				}
-				if(strpos($line, "zoepasswort=") !== false) {
-					list(, $zoepasswortold) = explode("=", $line);
-				}
-				if(strpos($line, "zoelp2username=") !== false) {
-					list(, $zoelp2usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "zoelp2passwort=") !== false) {
-					list(, $zoelp2passwortold) = explode("=", $line);
-				}
-				if(strpos($line, "wakeupzoelp1=") !== false) {
-					list(, $wakeupzoelp1old) = explode("=", $line);
-				}
-				if(strpos($line, "wakeupzoelp2=") !== false) {
-					list(, $wakeupzoelp2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "evnotifytoken=") !== false) {
-					list(, $evnotifytokenold) = explode("=", $line);
-				}
-				if(strpos($line, "evnotifyakey=") !== false) {
-					list(, $evnotifyakeyold) = explode("=", $line);
-				}
-				if(strpos($line, "evnotifytokenlp2=") !== false) {
-					list(, $evnotifytokenlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "evnotifyakeylp2=") !== false) {
-					list(, $evnotifyakeylp2old) = explode("=", $line);
-				}
-				if(strpos($line, "wrjsonurl=") !== false) {
-					list(, $wrjsonurlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wrjsonwatt=") !== false) {
-					list(, $wrjsonwattold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wrjsonkwh=") !== false) {
-					list(, $wrjsonkwhold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "hausbezugnone=") !== false) {
-					list(, $hausbezugnoneold) = explode("=", $line);
-				}
-				if(strpos($line, "bezugjsonurl=") !== false) {
-					list(, $bezugjsonurlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezugjsonwatt=") !== false) {
-					list(, $bezugjsonwattold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezugjsonkwh=") !== false) {
-					list(, $bezugjsonkwhold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "einspeisungjsonkwh=") !== false) {
-					list(, $einspeisungjsonkwhold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_solarlog_speicherv=") !== false) {
-					list(, $bezug_solarlog_speichervold) = explode("=", $line);
-				}
-				if(strpos($line, "bezug_solarlog_ip=") !== false) {
-					list(, $bezug_solarlog_ipold) = explode("=", $line);
-				}
-				if(strpos($line, "speichermodul=") !== false) {
-					list(, $speichermodulold) = explode("=", $line);
-				}
-				if(strpos($line, "speicherleistung_http=") !== false) {
-					list(, $speicherleistung_httpold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "speichersoc_http=") !== false) {
-					list(, $speichersoc_httpold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "soc_tesla_username=") !== false) {
-					list(, $socteslausernameold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_tesla_carnumber=") !== false) {
-					list(, $socteslacarnumberold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_tesla_password=") !== false) {
-					list(, $socteslapwold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_tesla_intervall=") !== false) {
-					list(, $socteslaintervallold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_tesla_intervallladen=") !== false) {
-					list(, $socteslaintervallladenold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_teslalp2_username=") !== false) {
-					list(, $socteslalp2usernameold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_teslalp2_carnumber=") !== false) {
-					list(, $socteslalp2carnumberold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_teslalp2_password=") !== false) {
-					list(, $socteslalp2pwold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_teslalp2_intervall=") !== false) {
-					list(, $socteslalp2intervallold) = explode("=", $line);
-				}
-				if(strpos($line, "soc_teslalp2_intervallladen=") !== false) {
-					list(, $socteslalp2intervallladenold) = explode("=", $line);
-				}
-
-				if(strpos($line, "wrkostalpikoip=") !== false) {
-					list(, $wrkostalpikoipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "solaredgepvip=") !== false) {
-					list(, $solaredgepvipold) = explode("=", $line);
-				}
-				if(strpos($line, "solaredgepvslave1=") !== false) {
-					list(, $solaredgeipslave1old) = explode("=", $line);
-				}
-				if(strpos($line, "solaredgepvslave2=") !== false) {
-					list(, $solaredgeipslave2old) = explode("=", $line);
-				}
-				if(strpos($line, "solaredgepvslave3=") !== false) {
-					list(, $solaredgeipslave3old) = explode("=", $line);
-				}
-				if(strpos($line, "solaredgeip=") !== false) {
-					list(, $solaredgeipold) = explode("=", $line);
-				}
-				if(strpos($line, "solaredgewr2ip=") !== false) {
-					list(, $solaredgewr2ipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "solaredgespeicherip=") !== false) {
-					list(, $solaredgespeicheripold) = explode("=", $line);
-				}
-				if(strpos($line, "vartaspeicherip=") !== false) {
-					list(, $vartaspeicheripold) = explode("=", $line);
-				}
-				if(strpos($line, "lgessv1ip=") !== false) {
-					list(, $lgessv1ipold) = explode("=", $line);
-				}
-				if(strpos($line, "lgessv1pass=") !== false) {
-					list(, $lgessv1passold) = explode("=", $line);
-				}
-				if(strpos($line, "ess_api_ver=") !== false) {
-					list(, $ess_api_ver_old) = explode("=", $line);
-				}
-				if(strpos($line, "lllaniplp2=") !== false) {
-					list(, $lllaniplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630lp2source=") !== false) {
-					list(, $sdm630lp2sourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120lp2source=") !== false) {
-					list(, $sdm120lp2sourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm630lp3source=") !== false) {
-					list(, $sdm630lp3sourceold) = explode("=", $line);
-				}
-				if(strpos($line, "sdm120lp3source=") !== false) {
-					list(, $sdm120lp3sourceold) = explode("=", $line);
-				}
-				if(strpos($line, "lllaniplp3=") !== false) {
-					list(, $lllaniplp3old) = explode("=", $line);
-				}
-				if(strpos($line, "lp1name=") !== false) {
-					list(, $lp1nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp2name=") !== false) {
-					list(, $lp2nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp3name=") !== false) {
-					list(, $lp3nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp4name=") !== false) {
-					list(, $lp4nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp5name=") !== false) {
-					list(, $lp5nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp6name=") !== false) {
-					list(, $lp6nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp7name=") !== false) {
-					list(, $lp7nameold) = explode("=", $line);
-				}
-				if(strpos($line, "lp8name=") !== false) {
-					list(, $lp8nameold) = explode("=", $line);
-				}
-				if(strpos($line, "goeiplp1=") !== false) {
-					list(, $goeiplp1old) = explode("=", $line);
-				}
-				if(strpos($line, "kebaiplp1=") !== false) {
-					list(, $kebaiplp1old) = explode("=", $line);
-				}
-				if(strpos($line, "kebaiplp2=") !== false) {
-					list(, $kebaiplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "goetimeoutlp1=") !== false) {
-					list(, $goetimeoutlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "goeiplp2=") !== false) {
-					list(, $goeiplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "goetimeoutlp2=") !== false) {
-					list(, $goetimeoutlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "goeiplp3=") !== false) {
-					list(, $goeiplp3old) = explode("=", $line);
-				}
-				if(strpos($line, "goetimeoutlp3=") !== false) {
-					list(, $goetimeoutlp3old) = explode("=", $line);
-				}
-				if(strpos($line, "smashmbezugid=") !== false) {
-					list(, $smashmbezugidold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmspeicherpv=") !== false) {
-					list(, $mpm3pmspeicherpvold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmspeicherid=") !== false) {
-					list(, $mpm3pmspeicheridold) = explode("=", $line);
-				}
-				if(strpos($line, "mpm3pmspeicherlanip=") !== false) {
-					list(, $mpm3pmspeicherlanipold) = explode("=", $line);
-				}
-
-				if(strpos($line, "mpm3pmspeichersource=") !== false) {
-					list(, $mpm3pmspeichersourceold) = explode("=", $line);
-				}
-				if(strpos($line, "speicherekwh_http=") !== false) {
-					list(, $speicherekwh_httpold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "speicherikwh_http=") !== false) {
-					list(, $speicherikwh_httpold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_smartme_user=") !== false) {
-					list(, $bezug_smartme_userold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_smartme_pass=") !== false) {
-					list(, $bezug_smartme_passold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "bezug_smartme_url=") !== false) {
-					list(, $bezug_smartme_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "carnetuser=") !== false) {
-					list(, $carnetuserold) = explode("=", $line);
-				}
-				if(strpos($line, "carnetpass=") !== false) {
-					list(, $carnetpassold) = explode("=", $line);
-				}
-				if(strpos($line, "soccarnetintervall=") !== false) {
-					list(, $soccarnetintervallold) = explode("=", $line);
-				}
-				if(strpos($line, "carnetlp2user=") !== false) {
-					list(, $carnetlp2userold) = explode("=", $line);
-				}
-				if(strpos($line, "carnetlp2pass=") !== false) {
-					list(, $carnetlp2passold) = explode("=", $line);
-				}
-				if(strpos($line, "soccarnetlp2intervall=") !== false) {
-					list(, $soccarnetlp2intervallold) = explode("=", $line);
-				}
-
-				if(strpos($line, "bydhvuser=") !== false) {
-					list(, $bydhvuserold) = explode("=", $line);
-				}
-				if(strpos($line, "bydhvpass=") !== false) {
-					list(, $bydhvpassold) = explode("=", $line);
-				}
-				if(strpos($line, "bydhvip=") !== false) {
-					list(, $bydhvipold) = explode("=", $line);
-				}
-				if(strpos($line, "wr_smartme_user=") !== false) {
-					list(, $wr_smartme_userold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_smartme_pass=") !== false) {
-					list(, $wr_smartme_passold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_smartme_url=") !== false) {
-					list(, $wr_smartme_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_piko2_user=") !== false) {
-					list(, $wr_piko2_userold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_piko2_pass=") !== false) {
-					list(, $wr_piko2_passold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "wr_piko2_url=") !== false) {
-					list(, $wr_piko2_urlold) = explode("=", $line, 2);
-				}
-				if(strpos($line, "e3dcip=") !== false) {
-					list(, $e3dcipold) = explode("=", $line);
-				}
-				if(strpos($line, "e3dcextprod=") !== false) {
-					list(, $e3dcextprodold) = explode("=", $line);
-				}
-				if(strpos($line, "e3dc2ip=") !== false) {
-					list(, $e3dc2ipold) = explode("=", $line);
-				}
-				if(strpos($line, "speicherpwip=") !== false) {
-					list(, $speicherpwipold) = explode("=", $line);
-				}
-				if(strpos($line, "sbs25ip=") !== false) {
-					list(, $sbs25ipold) = explode("=", $line);
-				}
-				if(strpos($line, "tri9000ip=") !== false) {
-					list(, $tri9000ipold) = explode("=", $line);
-				}
-				if(strpos($line, "bezug_smartfox_ip=") !== false) {
-					list(, $bezug_smartfox_ipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsmawebbox=") !== false) {
-					list(, $wrsmawebboxold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsma2ip=") !== false) {
-					list(, $wrsma2ipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsma3ip=") !== false) {
-					list(, $wrsma3ipold) = explode("=", $line);
-				}
-				if(strpos($line, "wrsma4ip=") !== false) {
-					list(, $wrsma4ipold) = explode("=", $line);
-				}
-				if(strpos($line, "kostalplenticoreip=") !== false) {
-					list(, $kostalplenticoreipold) = explode("=", $line);
-				}
-				if(strpos($line, "kostalplenticoreip2=") !== false) {
-					list(, $kostalplenticoreip2old) = explode("=", $line);
-				}
-				if(strpos($line, "name_wechselrichter1=") !== false) {
-					list(, $name_wechselrichter1old) = explode("=", $line);
-				}
-				if(strpos($line, "name_wechselrichter2=") !== false) {
-					list(, $name_wechselrichter2old) = explode("=", $line);
-				}
-
-				if(strpos($line, "mpm3pmevuhaus=") !== false) {
-					list(, $mpm3pmevuhausold) = explode("=", $line);
-				}
-				if(strpos($line, "evuglaettung=") !== false) {
-					list(, $evuglaettungold) = explode("=", $line);
-				}
-				if(strpos($line, "evuglaettungakt=") !== false) {
-					list(, $evuglaettungaktold) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickiplp1=") !== false) {
-					list(, $nrgkickiplp1old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkicktimeoutlp1=") !== false) {
-					list(, $nrgkicktimeoutlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickmaclp1=") !== false) {
-					list(, $nrgkickmaclp1old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickpwlp1=") !== false) {
-					list(, $nrgkickpwlp1old) = explode("=", $line);
-				}
-				if(strpos($line, "kostalplenticorehaus=") !== false) {
-					list(, $kostalplenticorehausold) = explode("=", $line);
-				}
-				if(strpos($line, "kostalplenticorebatt=") !== false) {
-					list(, $kostalplenticorebattold) = explode("=", $line);
-				}
-				if(strpos($line, "froniuserzeugung=") !== false) {
-					list(, $froniuserzeugungold) = explode("=", $line);
-				}
-				if(strpos($line, "froniusprimo=") !== false) {
-					list(, $froniusprimoold) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickiplp2=") !== false) {
-					list(, $nrgkickiplp2old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkicktimeoutlp2=") !== false) {
-					list(, $nrgkicktimeoutlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickmaclp2=") !== false) {
-					list(, $nrgkickmaclp2old) = explode("=", $line);
-				}
-				if(strpos($line, "nrgkickpwlp2=") !== false) {
-					list(, $nrgkickpwlp2old) = explode("=", $line);
-				}
-				if(strpos($line, "sunnyislandip=") !== false) {
-					list(, $sunnyislandipold) = explode("=", $line);
-				}
-			}
-			$twcmanagerlp1ipold = str_replace( "'", "", $twcmanagerlp1ipold);
-			$bezug_http_l1_urlold = str_replace( "'", "", $bezug_http_l1_urlold);
-			$bezug_http_l2_urlold = str_replace( "'", "", $bezug_http_l2_urlold);
-			$bezug_http_l3_urlold = str_replace( "'", "", $bezug_http_l3_urlold);
-			$bezug_http_w_urlold = str_replace( "'", "", $bezug_http_w_urlold);
-			$bezug_http_ikwh_urlold = str_replace( "'", "", $bezug_http_ikwh_urlold);
-			$bezug_http_ekwh_urlold = str_replace( "'", "", $bezug_http_ekwh_urlold);
-			$wr_http_w_urlold = str_replace( "'", "", $wr_http_w_urlold);
-			$wr_http_kwh_urlold = str_replace( "'", "", $wr_http_kwh_urlold);
-			$httpll_kwh_urlold = str_replace( "'", "", $httpll_kwh_urlold);
-			$httpll_w_urlold = str_replace( "'", "", $httpll_w_urlold);
-			$httpll_a1_urlold = str_replace( "'", "", $httpll_a1_urlold);
-			$httpll_a2_urlold = str_replace( "'", "", $httpll_a2_urlold);
-			$httpll_a3_urlold = str_replace( "'", "", $httpll_a3_urlold);
-			$hsocipold = str_replace( "'", "", $hsocipold);
-			$wrjsonurlold = str_replace( "'", "", $wrjsonurlold);
-			$wrjsonwattold = str_replace( "'", "", $wrjsonwattold);
-			$wrjsonkwhold = str_replace( "'", "", $wrjsonkwhold);
-			$bezugjsonurlold = str_replace( "'", "", $bezugjsonurlold);
-			$bezugjsonwattold = str_replace( "'", "", $bezugjsonwattold);
-			$bezugjsonkwhold = str_replace( "'", "", $bezugjsonkwhold);
-			$einspeisungjsonkwhold = str_replace( "'", "", $einspeisungjsonkwhold);
-			$bezug_solarlog_ipold = str_replace( "'", "", $bezug_solarlog_ipold);
-			$speichersoc_httpold = str_replace( "'", "", $speichersoc_httpold);
-			$speicherleistung_httpold = str_replace( "'", "", $speicherleistung_httpold);
-			$speicherikwh_httpold = str_replace( "'", "", $speicherikwh_httpold);
-			$speicherekwh_httpold = str_replace( "'", "", $speicherekwh_httpold);
-			$bezug_smartme_userold = str_replace( "'", "", $bezug_smartme_userold);
-			$bezug_smartme_passold = str_replace( "'", "", $bezug_smartme_passold);
-			$bezug_smartme_urlold = str_replace( "'", "", $bezug_smartme_urlold);
-			$carnetuserold = str_replace( "'", "", $carnetuserold);
-			$carnetpassold = str_replace( "'", "", $carnetpassold);
-			$wr_smartme_userold = str_replace( "'", "", $wr_smartme_userold);
-			$wr_smartme_passold = str_replace( "'", "", $wr_smartme_passold);
-			$wr_smartme_urlold = str_replace( "'", "", $wr_smartme_urlold);
-			$socteslapwold = str_replace( "'", "", $socteslapwold);
-			$socteslalp2pwold = str_replace( "'", "", $socteslalp2pwold);
-			$carnetlp2userold = str_replace( "'", "", $carnetlp2userold);
-			$carnetlp2passold = str_replace( "'", "", $carnetlp2passold);
-			$wr_piko2_userold = str_replace( "'", "", $wr_piko2_userold);
-			$wr_piko2_passold = str_replace( "'", "", $wr_piko2_passold);
-			$wr_piko2_urlold = str_replace( "'", "", $wr_piko2_urlold);
-
-			$solaredgepvipold = str_replace( "'", "", $solaredgepvipold);
-			$solaredgeipold = str_replace( "'", "", $solaredgeipold);
-			$solaredgewr2ipold = str_replace( "'", "", $solaredgewr2ipold);
-			$solaredgespeicheripold = str_replace( "'", "", $solaredgespeicheripold);
-			$lp1nameold = str_replace( "'", "", $lp1nameold);
-			$lp2nameold = str_replace( "'", "", $lp2nameold);
-			$lp3nameold = str_replace( "'", "", $lp3nameold);
-			$lp4nameold = str_replace( "'", "", $lp4nameold);
-			$lp5nameold = str_replace( "'", "", $lp5nameold);
-			$lp6nameold = str_replace( "'", "", $lp6nameold);
-			$lp7nameold = str_replace( "'", "", $lp7nameold);
-			$lp8nameold = str_replace( "'", "", $lp8nameold);
-			$zoepasswortold = str_replace( "'", "", $zoepasswortold);
-			$zoelp2passwortold = str_replace( "'", "", $zoelp2passwortold);
-			*/
 			// get settings
 			require_once $_SERVER['DOCUMENT_ROOT'].'/openWB/web/settings/settingsClass.php';
 			$mySettings = new openWBSettings();
-		?>
 
-		<div id="nav"></div> <!-- placeholder for navbar -->
+			function getFolders($modulesDir){
+				foreach( array_diff(scandir($modulesDir),array('.','..') ) as $subDir ) {
+					if ( is_dir($modulesDir.'/'.$subDir) ) {
+						$dirList[] = $subDir;
+					}
+				}
+				return $dirList;
+			}
+
+			function loadModules($modulesDir){
+				$dirList = getFolders($modulesDir);
+				$modules = array();
+				foreach( $dirList as $subDir ) {
+					$moduleClassFile = $modulesDir.'/'.$subDir.'/'.$subDir.'.class.php';
+					$className = "openWBModule_".$subDir;
+					if( file_exists( $moduleClassFile ) ) {
+						require_once $moduleClassFile;
+						if( class_exists("openWBModule_".$subDir) ) {
+							$modules[$className] = new $className();
+						}
+					}
+				}
+				return $modules;
+			}
+
+			function printDebugInfo(){
+				global $myModules;
+				echo "<pre>\n";
+				//print_r( $myModules );
+				foreach( $myModules as $moduleName => $module ){
+					echo $moduleName.": ".$module->getName()." (".$module->getId().")\n";
+				}
+				echo "</pre>\n";
+			}
+			$myModules = loadModules($_SERVER['DOCUMENT_ROOT'].'/openWB/modules');
+		?>
 
 		<div role="main" class="container" style="margin-top:20px">
 			<div class="col-sm-12">
+				<?php printDebugInfo(); ?>
 				<form action="settings/savepostsettings.php" method="POST">
 					<div class="row">
 						<div class="col">
@@ -1227,9 +108,7 @@
 								<option <?php if($mySettings->getSetting('evsecon') == "keba") echo "selected" ?> value="keba">Keba</option>
 								<option <?php if($mySettings->getSetting('evsecon') == "modbusevse" && $mySettings->getSetting('ladeleistungmodul') == "mpm3pmll" && $mySettings->getSetting('mpm3pmllsource') == "/dev/ttyUSB0" && $mySettings->getSetting('mpm3pmllid') == "5") echo "selected" ?> value="openwb12">openWB series1/2</option>
 								<option <?php if($mySettings->getSetting('evsecon') == "modbusevse" && $mySettings->getSetting('ladeleistungmodul') == "mpm3pmll" && $mySettings->getSetting('mpm3pmllsource') == "/dev/ttyUSB0" && $mySettings->getSetting('mpm3pmllid') == "105") echo "selected" ?> value="openwb12mid">openWB series1/2 mit geeichtem Zähler</option>
-								<option <?php if($mySettings->getSetting('evsecon') == "modbusevse" && $mySettings->getSetting('ladeleistungmodul') == "mpm3pmll" && $mySettings->getSetting('mpm3pmllsource') == "/dev/serial0" && $mySettings->getSetting('mpm3pmllid') == "105") echo "selected" ?> value="openwb12v2mid">openWB series1/2 mit geeichtem Zähler v2</option>
 								<option <?php if($mySettings->getSetting('evsecon') == "ipevse") echo "selected" ?> value="ipevse">openWB Satellit </option>
-								<option <?php if($mySettings->getSetting('evsecon') == "httpevse") echo "selected" ?> value="httpevse">HTTP</option>
 							</select>
 						</div>
 					</div>
@@ -1250,13 +129,6 @@
 							Dies ist die richtige Option, sowohl für Bausatz als auch für fertige openWB series1 oder series2 mit geeichtem Zähler.
 						</div>
 					</div>
-					<div id="openwb12v2mid">
-						<div class="row bg-success">
-							Keine Konfiguration erforderlich.<br>
-							Dies ist die richtige Option, für fertige openWB series2 mit geeichtem Zähler und Addon Platine ab Mai 2020 (Standard+).
-						</div>
-					</div>
-
 					<div id="evsecondac">
 						<div class="row bg-success">
 							<b><label for="dacregister">Dacregister:</label></b>
@@ -1340,19 +212,6 @@
 							Erforder eine Keba C- oder X- Series. Die Smart Home Funktion (UDP Schnittstelle) muss per DIP Switch in der Keba aktiviert sein!
 						</div>
 					</div>
-					<div id="evseconhttp">
-						<div class="row bg-info">
-							<b><label for="httpevseip">IP Adresse:</label></b>
-							<input type="text" name="httpevseip" id="httpevseip" value="<?php echo $httpevseipold ?>">
-						</div>
-						<div class="row bg-info">
-							Gültige Werte IP Adresse im Format: 192.168.0.12<br>
-							Der Ampere sollwert wird an http://$IP/setcurrent?current=$WERT gesendet.<br>
-							Für eine korrekte Funktion ist als Ladeleistungsmodul HTTP zu wählen.<br>
-							WERT kann sein: 0 = keine Ladung erlaubt, 6-32 = x Ampere erlaubt.
-						</div>
-					</div>
-
 					<div id="evsecontwcmanager">
 						<div class="row bg-info">
 							<b><label for="twcmanagerlp1ip">TWCManager IP Adresse:</label></b>
@@ -1430,8 +289,6 @@
 							$('#evseconkeba').hide();
 							$('#openwb12').hide();
 							$('#openwb12mid').hide();
-							$('#openwb12v2mid').hide();
-							$('#evseconhttp').hide();
 							$('#evsecontwcmanager').hide();
 							$('#evseconipevse').hide();
 							if($('#evsecon').val() == 'ipevse') {
@@ -1449,11 +306,6 @@
 							if($('#evsecon').val() == 'simpleevsewifi') {
 								$('#evseconswifi').show();
 							}
-							if($('#evsecon').val() == 'httpevse') {
-								$('#evseconhttp').show();
-								$('#llmodullp1').show();
-							}
-
 							if($('#evsecon').val() == 'goe') {
 								$('#evsecongoe').show();
 							}
@@ -1475,10 +327,6 @@
 							if($('#evsecon').val() == 'openwb12mid') {
 								$('#openwb12mid').show();
 							}
-							if($('#evsecon').val() == 'openwb12v2mid') {
-								$('#openwb12v2mid').show();
-							}
-
 							if($('#evsecon').val() == 'ipevse') {
 								$('#evseconipevse').show();
 							}
@@ -1562,14 +410,6 @@
 							</div>
 							<div class="row bg-info">
 								Gültige Werte vollständige URL. Die abgerufene Url muss eine reine Zahl zurückgeben. Enthält der Rückgabewert etwas anderes als wird der Wert auf null gesetzt. Der Wert muss in Ampere sein als Trennstelle wird ein Punkt genutzt.
-							</div>
-							<div class="row bg-info" >
-								<b><label for="httpll_ip">IP Adresse für Plug/Charge Status</label></b>
-								<input type="text" name="httpll_ip" id="httpll_ip" value="<?php echo htmlspecialchars($httpll_ipold) ?>">
-							</div>
-							<div class="row bg-info">
-								Gültige Werte IP. Abgerufene wird die Url http://$IP/plugstat und http://$IP/chargestat<br>
-								Rückgabe ist jeweils 0 oder 1. Plugstat gibt an ob ein Stecker steckt, Chargestat gibt an ob EVSEseitig die Ladung aktiv ist
 							</div>
 						</div>
 						<div id="llmpm3pm">
@@ -1749,13 +589,22 @@
 						<b><label for="socmodul">SOC Modul:</label></b>
 						<select name="socmodul" id="socmodul">
 							<option <?php if($mySettings->getSetting('socmodul') == "none") echo "selected" ?> value="none">Nicht vorhanden</option>
+							<?php
+							foreach( $myModules as $module ){
+								if( $module->getCapabilities()["Ladepunkt SoC"] === true ){
+									?>
+							<option <?php if($mySettings->getSetting('socmodul') == $module->getId()) echo "selected" ?> value="<?php echo $module->getId(); ?>"><?php echo $module->getName(); ?></option>
+									<?php
+								}
+							}
+							?>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_http") echo "selected" ?> value="soc_http">SoC HTTP</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_leaf") echo "selected" ?> value="soc_leaf">SoC Nissan Leaf</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_i3") echo "selected" ?> value="soc_i3">SoC BMW i3</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_zoe") echo "selected" ?> value="soc_zoe">SoC Renault Zoe alt</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_myrenault") echo "selected" ?> value="soc_myrenault">SoC Renault Zoe MyRenault</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_evnotify") echo "selected" ?> value="soc_evnotify">SoC EVNotify</option>
-							<option <?php if($mySettings->getSetting('socmodul') == "soc_tesla") echo "selected" ?> value="soc_tesla">SoC Tesla</option>
+							<!-- <option <?php if($mySettings->getSetting('socmodul') == "soc_tesla") echo "selected" ?> value="soc_tesla">SoC Tesla</option> -->
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_carnet") echo "selected" ?> value="soc_carnet">SoC VW Carnet</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_zerong") echo "selected" ?> value="soc_zerong">SoC Zero NG</option>
 							<option <?php if($mySettings->getSetting('socmodul') == "soc_audi") echo "selected" ?> value="soc_audi">SoC Audi</option>
@@ -1781,11 +630,38 @@
 					</div>
 					<div id="socmnone">
 					</div>
+					<?php
+					foreach( $myModules as $module ){
+						if( $module->getCapabilities()["Ladepunkt SoC"] === true ){
+							?>
+					<div id="socm_lp1_<?php echo $module->getId(); ?>">
+							<?php
+							$socSettings = $module->getLadepunktSoCSettingsDefinition();
+							foreach( $socSettings as $setting ){
+								?>
+						<div class="row bg-info">
+							<p>
+								<?php if( !is_null($setting['inputtype'])) { ?>
+								<label style="font-weight: bold;" for="<?php echo $setting['id']; ?>_lp1"><?php echo $setting['label'] ?>: </label>
+								<input type="<?php echo $setting['inputtype'] ?>" name="<?php echo $setting['id']; ?>_lp1" id="<?php echo $setting['id']; ?>_lp1" value="<?php echo $mySettings->getSetting($setting['configId']) ?>"><br>
+								<?php } ?>
+								<?php echo $setting['description']; ?>
+							</p>
+						</div>
+								<?php
+							}
+							?>
+					</div>
+							<?php
+						}
+					}
+					?>
+					<!--
 					<div id="socmtesla">
 						<div class="row bg-info">
 						</div>
 						<div class="row bg-info">
-							<b><label for="teslasocuser">Tesla E-Mail:</label></b>
+							<b><label for="teslasocuser">Tesla Benutzername:</label></b>
 							<input type="text" name="teslasocuser" id="teslasocuser" value="<?php echo $mySettings->getSetting('socteslausername') ?>">
 						</div>
 						<div class="row bg-info">
@@ -1796,9 +672,7 @@
 							<input type="password" name="teslasocpw" id="teslasocpw" value="<?php echo $mySettings->getSetting('socteslapw') ?>">
 						</div>
 						<div class="row bg-info">
-							Password des Tesla Logins. Das Passwort wird nur bei der ersten Einrichtung verwendet. Sobald die Anmeldung erfolgreich war, wird die Anmeldung über Token geregelt und das Passwort durch "#TokenInUse#" ersetzt.<br>
-							Wird bei Tesla direkt das Passwort geändert, kann die WB sich nicht mehr anmelden und es muss hier wieder einmalig das aktuelle Passwort eingetragen werden.<br>
-							Wenn das Eingabefeld geleert wird, dann werden auch die Anmeldetoken komplett entfernt.
+							Password des Tesla Logins
 						</div>
 						<div class="row bg-info">
 							<b><label for="teslasoccarnumber">Auto im Account:</label></b>
@@ -1812,19 +686,17 @@
 							<input type="text" name="teslasocintervall" id="teslasocintervall" value="<?php echo $mySettings->getSetting('socteslaintervall') ?>">
 						</div>
 						<div class="row bg-info">
-							Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos abgefragt werden soll, wenn nicht geladen wird.<br>
-							Damit das Auto in den Standby gehen kann und die Energieverluste gering bleiben, sollte das Intervall mindestens eine Stunde ("60") betragen, besser 12 Stunden ("720") oder mehr.<br>
-							Zu Beginn einer Ladung wird das Auto immer geweckt, um den aktuellen SoC zu erhalten.
+							Wie oft der Tesla abgefragt wird wenn nicht geladen wird. Angabe in Minuten.
 						</div>
 						<div class="row bg-info">
 							<b><label for="teslasocintervallladen">Abfrageintervall Laden:</label></b>
 							<input type="text" name="teslasocintervallladen" id="teslasocintervallladen" value="<?php echo $mySettings->getSetting('socteslaintervallladen') ?>">
 						</div>
 						<div class="row bg-info">
-							Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos während des Ladens abgefragt werden soll.<br>
-							Je nach Ladeleistung werden 5 - 10 Minuten empfohlen, damit eventuell eingestellte SoC-Grenzen rechtzeitig erkannt werden können.
+							Wie oft der Tesla abgefragt wird während geladen wird. Angabe in Minuten.
 						</div>
 					</div>
+					-->
 					<div id="socmbluelink">
 						<div class="row bg-info">
 						</div>
@@ -1981,13 +853,6 @@
 						<div class="row bg-info">
 							Erfordert einen openWB Ladepunkt, Go-e oder Keba. Nicht kompatibel mit EVSE Wifi und SimpleEVSE WB (mit DAC).
 						</div>
-						<div class="row bg-info">
-							<b><label for="soclp1_vin">VIN:</label></b>
-							<input type="text" name="soclp1_vin" id="soclp1_vin" value="<?php echo $soclp1_vinold ?>">
-						</div>
-						<div class="row bg-info">
-							VIN des Autos. Ist nur nötig wenn es sich um ein Importfahrzeug handelt. Kann auf none belassen werden wenn die Auslesung funktioniert.
-						</div>
 					</div>
 					<div id="socevnotify">
 						<div class="row bg-info">
@@ -2078,13 +943,22 @@
 
 					<script>
 						function display_socmodul() {
+							<?php
+							foreach( $myModules as $module ){
+								if( $module->getCapabilities()["Ladepunkt SoC"] === true ){
+									?>
+							$('#<?php echo "socm_lp1_".$module->getId(); ?>').hide();
+									<?php
+								}
+							}
+							?>
 							$('#socmnone').hide();
 							$('#socmhttp').hide();
 							$('#socleaf').hide();
 							$('#soci3').hide();
 							$('#soczoe').hide();
 							$('#socevnotify').hide();
-							$('#socmtesla').hide();
+							//$('#socmtesla').hide();
 							$('#soccarnet').hide();
 							$('#socmzerong').hide();
 							$('#socmaudi').hide();
@@ -2092,6 +966,18 @@
 							$('#socmbluelink').hide();
 
 							$('#socmyrenault').hide();
+
+							<?php
+							foreach( $myModules as $module ){
+								if( $module->getCapabilities()["Ladepunkt SoC"] === true ){
+									?>
+							if($('#socmodul').val() == '<?php echo $module->getId(); ?>') {
+								$('#<?php echo "socm_lp1_".$module->getId(); ?>').show();
+							}
+									<?php
+								}
+							}
+							?>
 							if($('#socmodul').val() == 'soc_mqtt') {
 								$('#socmqtt').show();
 							}
@@ -2128,9 +1014,9 @@
 							if($('#socmodul').val() == 'soc_evnotify') {
 								$('#socevnotify').show();
 							}
-							if($('#socmodul').val() == 'soc_tesla') {
-								$('#socmtesla').show();
-							}
+							//if($('#socmodul').val() == 'soc_tesla') {
+							//	$('#socmtesla').show();
+							//}
 							if($('#socmodul').val() == 'soc_carnet') {
 								$('#soccarnet').show();
 							}
@@ -2196,8 +1082,8 @@
 						</div>
 						<div id="openwb12s1">
 							<div class="row bg-success">
-								Keine Konfiguration erforderlich.
-								Dies ist die richtige option sowohl für Bausatz als auch fertige openWB series1 oder series2.
+								Keine Konfiguration erforderlich.<br>
+								Dies ist die richtige Option sowohl für Bausatz als auch fertige openWB series1 oder series2.
 							</div>
 						</div>
 						<div id="evseconnrgkicks1">
@@ -2544,7 +1430,7 @@
 							<div class="row bg-info">
 							</div>
 							<div class="row bg-info">
-								<b><label for="teslasoclp2user">Tesla E-Mail:</label></b>
+								<b><label for="teslasoclp2user">Tesla Benutzername:</label></b>
 								<input type="text" name="teslasoclp2user" id="teslasoclp2user" value="<?php echo $mySettings->getSetting('socteslalp2username') ?>">
 							</div>
 							<div class="row bg-info">
@@ -2555,9 +1441,7 @@
 								<input type="password" name="teslasoclp2pw" id="teslasoclp2pw" value="<?php echo $mySettings->getSetting('socteslalp2pw') ?>">
 							</div>
 							<div class="row bg-info">
-								Password des Tesla Logins. Das Passwort wird nur bei der ersten Einrichtung verwendet. Sobald die Anmeldung erfolgreich war, wird die Anmeldung über Token geregelt und das Passwort durch "#TokenInUse#" ersetzt.<br>
-								Wird bei Tesla direkt das Passwort geändert, kann die WB sich nicht mehr anmelden und es muss hier wieder einmalig das aktuelle Passwort eingetragen werden.<br>
-								Wenn das Eingabefeld geleert wird, dann werden auch die Anmeldetoken komplett entfernt.
+								Password des Tesla Logins
 							</div>
 							<div class="row bg-info">
 								<b><label for="teslasoclp2carnumber">Auto im Account:</label></b>
@@ -2571,17 +1455,14 @@
 								<input type="text" name="teslasoclp2intervall" id="teslasoclp2intervall" value="<?php echo $mySettings->getSetting('socteslalp2intervall') ?>">
 							</div>
 							<div class="row bg-info">
-								Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos abgefragt werden soll, wenn nicht geladen wird.<br>
-								Damit das Auto in den Standby gehen kann und die Energieverluste gering bleiben, sollte das Intervall mindestens eine Stunde ("60") betragen, besser 12 Stunden ("720") oder mehr.<br>
-								Zu Beginn einer Ladung wird das Auto immer geweckt, um den aktuellen SoC zu erhalten.
+								Wie oft der Tesla abgefragt wird wenn nicht geladen wird. Angabe in Minuten.
 							</div>
 							<div class="row bg-info">
 								<b><label for="teslasoclp2intervallladen">Abfrageintervall Laden:</label></b>
 								<input type="text" name="teslasoclp2intervallladen" id="teslasoclp2intervallladen" value="<?php echo $mySettings->getSetting('socteslalp2intervallladen') ?>">
 							</div>
 							<div class="row bg-info">
-								Gibt an, in welchem Intervall (in Minuten bei normaler Regelgeschwindigkeit) der Ladestand des Autos während des Ladens abgefragt werden soll.<br>
-								Je nach Ladeleistung werden 5 - 10 Minuten empfohlen, damit eventuell eingestellte SoC-Grenzen rechtzeitig erkannt werden können.
+								Wie oft der Tesla abgefragt wird während geladen wird. Angabe in Minuten.
 							</div>
 						</div>
 						<div id="soccarnetlp2">
@@ -3554,7 +2435,6 @@
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_sbs25") echo "selected" ?> value="bezug_sbs25">SMA SBS2.5 Speicher</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_kostalplenticoreem300haus") echo "selected" ?> value="bezug_kostalplenticoreem300haus">Kostal Plenticore mit EM300/KSEM</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_kostalpiko") echo "selected" ?> value="bezug_kostalpiko">Kostal Piko mit Energy Meter</option>
-							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_ksem") echo selected ?> value="bezug_ksem">Kostal Smart Energy Meter oder TQ EM410</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_smartfox") echo "selected" ?> value="bezug_smartfox">Smartfox</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_powerwall") echo "selected" ?> value="bezug_powerwall">Tesla Powerwall</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_victrongx") echo "selected" ?> value="bezug_victrongx">Victron (z.B. GX)</option>
@@ -3566,7 +2446,6 @@
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_sonneneco") echo "selected" ?> value="bezug_sonneneco">Sonnen eco</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_fems") echo "selected" ?> value="bezug_fems">Fenecon FEMS</option>
 							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_solarworld") echo "selected" ?> value="bezug_solarworld">Solarworld</option>
-							<option <?php if($mySettings->getSetting('wattbezugmodul') == "bezug_siemens") echo "selected" ?> value="bezug_siemens">Siemens Speicher</option>
 						</select>
 					</div>
 					<div id="wattbezugsonneneco">
@@ -3603,19 +2482,6 @@
 							Konfiguration im zugehörigen Speichermodul des LG ESS 1.0VI erforderlich. Als PV-Modul auch LG ESS 1.0VI wählen!
 						</div>
 					</div>
-					<div id="wattbezugip">
-						<div class="row" style="background-color:#febebe">
-							<b><label for="bezug1_ip">IP:</label></b>
-							<input type="text" name="bezug1_ip" id="bezug1_ip" value="<?php echo $bezug1_ipold ?>">
-						</div>
-					</div>
-
-					<div id="wattbezugsiemens">
-						<div class="row">
-							IP Adresse des Siemens Speichers eingeben. Im Siemens Speicher muss die Schnittstelle openWB gewählt werden.
-						</div>
-					</div>
-
 					<div id="wattbezugethmpm3pm">
 						<div class="row">
 							<b><label for="evukitversion">Version des openWB evu Kits:</label></b>
@@ -3843,7 +2709,6 @@
 						<div class="row" style="background-color:#febebe">
 							Gültige Werte vollständige URL. Die abgerufene Url muss eine reine Zahl zurückgeben. Enthält der Rückgabewert etwas anderes als "-" (für Einspeisung) oder "0-9" wird der Wert auf null gesetzt. Der Wert muss in Ampere sein. Bei nicht Nutzung auf none setzen.
 						</div>
-
 					</div>
 					<div id="wattbezugsmartme">
 						<div class="row" style="background-color:#febebe">
@@ -3897,14 +2762,12 @@
 						</div>
 					</div>
 					<div id="wattbezugfronius">
-						<div class="row" style="background-color:#febebe"> Die IP des Wechselrichters wird im dazugehörigen Fronius PV-Modul eingestellt.
+						<div class="row" style="background-color:#febebe">
+							Die IP des Wechselrichters wird im dazugehörigen Fronius PV-Modul eingestellt.
 						</div>
-						<input type='hidden' value='0' name='froniuserzeugung'>
-						<input id="froniuserzeugung" name="froniuserzeugung" value="1" type="checkbox" <?php if ( $froniuserzeugungold == 1){ echo "checked"; } ?> >
-						<label for="froniuserzeugung"> Meter mit ID 1 statt 0</label><br />
 						<input type='hidden' value='0' name='froniusprimo'>
 						<input id="froniusprimo" name="froniusprimo" value="1" type="checkbox" <?php if ( $mySettings->getSetting('froniusprimo') == 1){ echo "checked"; } ?> >
-						<label for="froniusprimo"> Kompatibilitätsmodus für die Primo Reihe</label>
+						<label for="froniusprimo">Kompatibilitätsmodus für die Primo Reihe</label>
 					</div>
 					<div id="wattbezugjson">
 						<div class="row" style="background-color:#febebe">
@@ -3975,7 +2838,7 @@
 					</div>
 					<div id="wattbezugsbs25">
 						<div class="row" style="background-color:#febebe">
-							Die IP des Speichers wird im dazugehörigen SMA SBS Speicher-Modul eingestellt.
+							Die IP des Speichers wird im dazugehörigen SMA SBS 2.5 Speicher-Modul eingestellt.
 						</div>
 					</div>
 
@@ -4058,20 +2921,12 @@
 							$('#wattbezugmqtt').hide();
 							$('#wattbezugsonneneco').hide();
 							$('#wattbezugfems').hide();
-							$('#wattbezugsiemens').hide();
-							$('#wattbezugip').hide();
 
 							// Auswahl PV-Modul generell erlauben
 							enable_pv_selector();
 							if($('#wattbezugmodul').val() == 'bezug_sonneneco') {
 								$('#wattbezugsonneneco').show();
 							}
-							if($('#wattbezugmodul').val() == 'bezug_siemens') {
-								$('#wattbezugsiemens').show();
-								$('#wattbezugip').show();
-
-							}
-
 							if($('#wattbezugmodul').val() == 'bezug_fems') {
 								$('#wattbezugfems').show();
 							}
@@ -4209,7 +3064,6 @@
 							<option <?php if($mySettings->getSetting('pvwattmodul') == "wr_sunways") echo "selected" ?> value="wr_sunways">Sunways</option>
 							<option <?php if($mySettings->getSetting('pvwattmodul') == "wr_fems") echo "selected" ?> value="wr_fems">Fenecon FEMS</option>
 							<option <?php if($mySettings->getSetting('pvwattmodul') == "wr_solarworld") echo "selected" ?> value="wr_solarworld">Solarworld</option>
-							<option <?php if($mySettings->getSetting('pvwattmodul') == "wr_siemens") echo "selected" ?> value="wr_siemens">Siemens Speicher</option>
 						</select>
 					</div>
 
@@ -4228,19 +3082,6 @@
 							Konfiguration im zugehörigen Speichermodul des LG ESS 1.0VI erforderlich. Als PV-Modul auch LG ESS 1.0VI wählen!
 						</div>
 					</div>
-					<div id="pvip">
-						<div class="row" style="background-color:#febebe">
-							<b><label for="pv1_ipa">IP Adresse:</label></b>
-							<input type="text" name="pv1_ipa" id="pv1_ipa" value="<?php echo htmlspecialchars($pv1_ipaold) ?>">
-						</div>
-					</div>
-
-					<div id="pvsiemens">
-						<div class="row">
-							IP Adresse des Siemens Speichers.
-						</div>
-					</div>
-
 					<div id="pvfems">
 						<div class="row">
 							Konfiguration im zugehörigen EVU Modul des FEMS erforderlich.
@@ -4267,14 +3108,14 @@
 							<input type="text" name="wrsunwaysip" id="wrsunwaysip" value="<?php echo htmlspecialchars($mySettings->getSetting('wrsunwaysip')); ?>">
 						</div>
 						<div class="row" style="background-color:#febebe">
-							Gültige Werte IP. <br>
+							Gültige Werte IP.<br>
 						</div>
 						<div class="row" style="background-color:#febebe">
 							<b><label for="wrsunwayspw">Passwort des Sunways</label></b>
 							<input type="text" name="wrsunwayspw" id="wrsunwayspw" value="<?php echo htmlspecialchars($mySettings->getSetting('wrsunwayspw')); ?>">
 						</div>
 						<div class="row" style="background-color:#febebe">
-							Gültige Werte Passwort. <br>
+							Gültige Werte Passwort.
 						</div>
 
 					</div>
@@ -4300,18 +3141,18 @@
 					</div>
 					<div id="pvsolarview">
 						<div class="row" style="background-color:#febebe">
-							<b><label for="solarview_hostname">Hostname des SolarView TCP-Servers</label></b>
+							<b><label for="solarview_hostname">IP Adresse des Solarview</label></b>
 							<input type="text" name="solarview_hostname" id="solarview_hostname" value="<?php echo htmlspecialchars($mySettings->getSetting('solarview_hostname')) ?>">
 						</div>
 						<div class="row" style="background-color:#febebe">
-							Gültige Werte Hostname oder IP-Adresse.
+							Gültige Werte IP.
 						</div>
 						<div class="row" style="background-color:#febebe">
-							<b><label for="solarview_port">Port des Solarview TCP-Servers</label></b>
+							<b><label for="solarview_port">Port des Solarview</label></b>
 							<input type="text" name="solarview_port" id="solarview_port" value="<?php echo htmlspecialchars($mySettings->getSetting('solarview_port')) ?>">
 						</div>
 						<div class="row" style="background-color:#febebe">
-							Gültige Werte Port, z.B. 15000.
+							Gültige Werte Port, z.B. 80.
 						</div>
 					</div>
 					<div id="pvpowerwall">
@@ -4666,18 +3507,14 @@
 							$('#pvsunways').hide();
 							$('#pvfems').hide();
 							$('#pvsolarworld').hide();
-							$('#pvip').hide();
-							$('#pvsiemens').hide();
-							if($('#pvwattmodul').val() == 'wr_siemens') {
-								$('#pvip').show();
-								$('#pvsiemens').show();
-							}
+
 							if($('#pvwattmodul').val() == 'wr_fems') {
 								$('#pvfems').show();
 							}
 							if($('#pvwattmodul').val() == 'wr_solarworld') {
 								$('#pvsolarworld').show();
 							}
+
 							if($('#pvwattmodul').val() == 'wr_sunways') {
 								$('#pvsunways').show();
 							}
@@ -4771,7 +3608,6 @@
 							<option <?php if($pv2wattmodulold == "wr2_ethlovato\n") echo "selected" ?> value="wr2_ethlovato">openWB PV Kit v2</option>
 							<option <?php if($pv2wattmodulold == "wr2_smamodbus\n") echo "selected" ?> value="wr2_smamodbus">SMA Wechselrichter</option>
 							<option <?php if($pv2wattmodulold == "wr2_kostalsteca\n") echo "selected" ?> value="wr2_kostalsteca">Kostal Piko MP oder Steca Grid Coolcept</option>
-							<option <?php if($pv2wattmodulold == "wr2_victron\n") echo "selected" ?> value="wr2_victron">Victron MPPT</option>
 
 						</select>
 					</div>
@@ -4790,22 +3626,13 @@
 							Gültige Werte: IPs. IP Adresse des Wechselrichters, ggf. muss modbusTCP im WR noch aktiviert werden.
 						</div>
 					</div>
-					<div id="pv2iddiv">
-						<div class="row" style="background-color:#BEFEBE">
-							<b><label for="pv2id">Modbus ID:</label></b>
-							<input type="text" name="pv2id" id="pv2id" value="<?php echo $pv2idold ?>">
-						</div>
-						<div class="row" style="background-color:#BEFEBE">
-							Gültige Werte: ID. 
-						</div>
-					</div>
+
 
 					<script>
 						function display_pv2wattmodul() {
 							$('#pv2none').hide();
 							$('#pv2noconfig').hide();
 							$('#pv2ipdiv').hide();
-							$('#pv2iddiv').hide();
 
 							if($('#pv2wattmodul').val() == 'none') {
 								$('#pv2none').show();
@@ -4821,10 +3648,6 @@
 							}
 							if($('#pv2wattmodul').val() == 'wr2_kostalsteca') {
 								$('#pv2ipdiv').show();
-							}
-							if($('#pv2wattmodul').val() == 'wr2_victron') {
-								$('#pv2ipdiv').show();
-								$('#pv2iddiv').show();
 							}
 
 						}
@@ -4848,11 +3671,11 @@
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_bydhv") echo "selected" ?> value="speicher_bydhv">ByD HV</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_fronius") echo "selected" ?> value="speicher_fronius">Fronius Speicher</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_e3dc") echo "selected" ?> value="speicher_e3dc">E3DC Speicher</option>
-							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_sbs25") echo "selected" ?> value="speicher_sbs25">SMA Sunny Boy Storage</option>
+							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_sbs25") echo "selected" ?> value="speicher_sbs25">SMA SBS2.5 Speicher</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_solaredge") echo "selected" ?> value="speicher_solaredge">Solaredge Speicher</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_powerwall") echo "selected" ?> value="speicher_powerwall">Tesla Powerwall</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_kostalplenticore") echo "selected" ?> value="speicher_kostalplenticore">Kostal Plenticore mit Speicher</option>
-							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_sunnyisland") echo "selected" ?> value="speicher_sunnyisland">SMA Sunny Island</option>
+							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_sunnyisland") echo "selected" ?> value="speicher_sunnyisland">SMA Sunny Island Speicher</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_sonneneco") echo "selected" ?> value="speicher_sonneneco">Sonnen eco</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_varta") echo "selected" ?> value="speicher_varta">Varta Element u.a.</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_alphaess") echo "selected" ?> value="speicher_alphaess">Alpha ESS</option>
@@ -4860,7 +3683,6 @@
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_lgessv1") echo "selected" ?> value="speicher_lgessv1">LG ESS 1.0VI</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_mqtt") echo "selected" ?> value="speicher_mqtt">MQTT</option>
 							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_fems") echo "selected" ?> value="speicher_fems">Fenecon FEMS</option>
-							<option <?php if($mySettings->getSetting('speichermodul') == "speicher_siemens") echo "selected" ?> value="speicher_siemens">Siemens</option>
 						</select>
 					</div>
 
@@ -4898,13 +3720,13 @@
 					<div id="divspeichermqtt">
 						<div class="row" style="background-color:#fcbe1e">Keine Konfiguration erforderlich</div>
 						<div class="row" style="background-color:#fcbe1e">Per MQTT zu schreiben:</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/W"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/Housebattery/W"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Speicherleistung in Watt, int, positiv Ladung, negativ Entladung</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/WhImported"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/Housebattery/WhImported"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Geladene Energie in Wh, float, nur positiv</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/WhExported"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/Housebattery/WhExported"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Entladene Energie in Wh, float, nur positiv</div>
-						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/HouseBattery/%Soc"</b></div>
+						<div class="row" style="background-color:#fcbe1e"><b>"openWB/set/Housebattery/%Soc"</b></div>
 						<div class="row" style="background-color:#fcbe1e">Ladestand des Speichers, int, 0-100</div>
 					</div>
 					<div id="divspeichervictron">
@@ -4915,17 +3737,6 @@
 					<div id="divspeicherfems">
 							<div class="row" style="background-color:#fcbe1e">
 							Konfiguration im Bezug Fenecon Modul.
-						</div>
-					</div>
-					<div id="divspeicherip">
-						<div class="row" style="background-color:#fcbe1e">
-							<b><label for="speicher1_ip">IP:</label></b>
-							<input type="text" name="speicher1_ip" id="speicher1_ip" value="<?php echo $speicher1_ipold ?>">
-						</div>
-					</div>
-					<div id="divspeichersiemens">
-							<div class="row" style="background-color:#fcbe1e">
-							IP Adresse des Siemens Speichers. Im Siemens Speicher muss als Schnittstelle openWB gewählt werden.
 						</div>
 					</div>
 
@@ -4939,9 +3750,12 @@
 						</div>
 					</div>
 					<div id="divspeicheralphaess">
-
 						<div class="row" style="background-color:#fcbe1e">
-							Keine Konfiguration erforderlich
+							<b><label for="alphaessip">Anbindung:</label></b>
+							<input type="text" name="alphaessip" id="alphaessip" value="<?php echo $mySettings->getSetting('alphaessip') ?>">
+						</div>
+						<div class="row" style="background-color:#fcbe1e">
+							Wenn das Alpha Kit von openWB genutzt wird ist hier 192.168.193.31 einzutragen. Wenn direkt RS485 per Adapter genutzt z.B. /dev/ttyUSB1
 						</div>
 					</div>
 					<div id="divspeicherpw">
@@ -4994,11 +3808,11 @@
 					</div>
 					<div id="divspeichersbs25">
 						<div class="row" style="background-color:#fcbe1e">
-							<b><label for="sbs25ip">SBS IP:</label></b>
+							<b><label for="sbs25ip">SBS 2.5 IP:</label></b>
 							<input type="text" name="sbs25ip" id="sbs25ip" value="<?php echo $mySettings->getSetting('sbs25ip') ?>">
 						</div>
 						<div class="row" style="background-color:#fcbe1e">
-							Gültige Werte: IPs. IP Adresse des SMA Sunny Boy Storage Speichers.
+							Gültige Werte: IPs. IP Adresse des SMA Sunny Boy Storage 2.5 Speichers.
 						</div>
 					</div>
 					<div id="divspeichersunnyisland">
@@ -5012,7 +3826,7 @@
 					</div>
 					<div id="divspeichersolaredge">
 						<div class="row" style="background-color:#fcbe1e">
-								<b><label for="solaredgespeicherip">Solaredge Speicher IP:</label></b>
+							<b><label for="solaredgespeicherip">Solaredge Speicher IP:</label></b>
 							<input type="text" name="solaredgespeicherip" id="solaredgespeicherip" value="<?php echo htmlspecialchars($mySettings->getSetting('solaredgespeicherip')) ?>">
 						</div>
 						<div class="row" style="background-color:#fcbe1e">
@@ -5134,15 +3948,9 @@
 							$('#divspeichervictron').hide();
 							$('#divspeicherlgessv1').hide();
 							$('#divspeicherfems').hide();
-							$('#divspeicherip').hide();
-							$('#divspeichersiemens').hide();
 
 							if($('#speichermodul').val() == 'speicher_fems') {
 								$('#divspeicherfems').show();
-							}
-							if($('#speichermodul').val() == 'speicher_siemens') {
-								$('#divspeicherip').show();
-								$('#divspeichersiemens').show();
 							}
 
 							if($('#speichermodul').val() == 'speicher_alphaess') {
@@ -5216,7 +4024,7 @@
 				<div class="row justify-content-center">
 					<div class="col text-center">
 						Open Source made with love!<br>
-						Jede Spende hilft die Weiterentwicklung von openWB voranzutreiben<br>
+						Jede Spende hilft die Weiterentwicklung von openWB vorranzutreiben<br>
 						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 							<input type="hidden" name="cmd" value="_s-xclick">
 							<input type="hidden" name="hosted_button_id" value="2K8C4Y2JTGH7U">
@@ -5237,13 +4045,14 @@
 
 		<script type="text/javascript">
 
-			$.get("settings/navbar.html", function(data){
+			$.get("settings/navbar.php", function(data){
 				$("#nav").replaceWith(data);
 				// disable navbar entry for current page
-				$('#navModulkonfiguration').addClass('disabled');
+				$('#navModulkonfiguration-ng').addClass('disabled');
 			});
 
 		</script>
 
 
+	</body>
 </html>

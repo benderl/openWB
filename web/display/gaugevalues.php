@@ -1,4 +1,5 @@
 <?php
+/* not used anymore
 
 $result = '';
 $lines = file('/var/www/html/openWB/openwb.conf');
@@ -40,4 +41,6 @@ foreach($lines as $line) {
 
 }
 $displaypincodeold = str_replace("\n", '', $displaypincodeold);
+
+*/
 ?>

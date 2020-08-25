@@ -48,7 +48,7 @@ def replaceAll(changeval,newval):
         inaction=1
         for line in fileinput.input('/var/www/html/openWB/openwb.conf', inplace=1):
             if line.startswith(changeval):
-                line = changeval + newval + "\n"
+                line = changeval + "\"" + newval + "\"" + "\n"
             sys.stdout.write(line)
         time.sleep(0.1)
         inaction=0

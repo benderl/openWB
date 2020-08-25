@@ -46,50 +46,50 @@ sudo chmod 777 /var/www/html/openWB/web/lade.log
 sleep 2
 if ! grep -Fq "wr_http_w_url=" /var/www/html/openWB/openwb.conf
 then
-	  echo "wr_http_w_url=http://192.168.0.17/pvwatt.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "wr_http_w_url=\"http://192.168.0.17/pvwatt.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "hsocip1=" /var/www/html/openWB/openwb.conf
 then
-	  echo "hsocip1=http://10.0.0.110/soc.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "hsocip1=\"http://10.0.0.110/soc.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "socmodul1=" /var/www/html/openWB/openwb.conf
 then
-	  echo "socmodul1=soc_http1" >> /var/www/html/openWB/openwb.conf
+	  echo "socmodul1=\"soc_http1\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "dacregisters1=" /var/www/html/openWB/openwb.conf
 then
-	  echo "dacregisters1=12" >> /var/www/html/openWB/openwb.conf
+	  echo "dacregisters1=\"12\"" >> /var/www/html/openWB/openwb.conf
 fi
 
 if ! grep -Fq "wr_http_kwh_url=" /var/www/html/openWB/openwb.conf
 then
-	  echo "wr_http_kwh_url=http://192.168.0.17/pvwh.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "wr_http_kwh_url=\"http://192.168.0.17/pvwh.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "smaemdbezugid=" /var/www/html/openWB/openwb.conf
 then
-	  echo "smaemdbezugid=1900123456" >> /var/www/html/openWB/openwb.conf
+	  echo "smaemdbezugid=\"1900123456\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "smaemdpvid=" /var/www/html/openWB/openwb.conf
 then
-	  echo "smaemdpvid=1900123456" >> /var/www/html/openWB/openwb.conf
+	  echo "smaemdpvid=\"1900123456\"" >> /var/www/html/openWB/openwb.conf
 fi
 
 if ! grep -Fq "smaemdllid=" /var/www/html/openWB/openwb.conf
 then
-	  echo "smaemdllid=1900123456" >> /var/www/html/openWB/openwb.conf
+	  echo "smaemdllid=\"1900123456\"" >> /var/www/html/openWB/openwb.conf
 fi
 
 if ! grep -Fq "bezug_http_w_url=" /var/www/html/openWB/openwb.conf
 then
-	  echo "bezug_http_w_url=http://192.168.0.17/bezugwatt.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "bezug_http_w_url=\"http://192.168.0.17/bezugwatt.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "bezug_http_ikwh_url=" /var/www/html/openWB/openwb.conf
 then
-	  echo "bezug_http_ikwh_url=http://192.168.0.17/bezugwh.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "bezug_http_ikwh_url=\"http://192.168.0.17/bezugwh.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 if ! grep -Fq "bezug_http_ekwh_url=" /var/www/html/openWB/openwb.conf
 then
-	  echo "bezug_http_ekwh_url=http://192.168.0.17/einspeisungwh.txt" >> /var/www/html/openWB/openwb.conf
+	  echo "bezug_http_ekwh_url=\"http://192.168.0.17/einspeisungwh.txt\"" >> /var/www/html/openWB/openwb.conf
 fi
 
 

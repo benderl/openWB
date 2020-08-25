@@ -5,6 +5,7 @@
 	</head>
 	<body>
 <?php
+/* functionality moved to "settings/savepostsettings.php"
 
 	// writes settings from autolock-page via POST-request to config file
 	// author: M. Ortenstein
@@ -74,6 +75,8 @@
 		fclose($fp);
 		echo "<script>window.location.href='../index.php';</script>";
 	}
+
+*/
 ?>
 	</body>
 </html>

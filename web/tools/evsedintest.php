@@ -1,12 +1,15 @@
 <?php
+require_once './ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
+
 if(isset($_POST["testlp1"])) {
-	file_put_contents('/var/www/html/openWB/ramdisk/evsedintestlp1', ausstehend);
+	$myRamdisk->setData('evsedintestlp1', 'ausstehend');
 }
 if(isset($_POST["testlp2"])) {
-	file_put_contents('/var/www/html/openWB/ramdisk/evsedintestlp2', ausstehend);
+	$myRamdisk->setData('evsedintestlp2', 'ausstehend');
 }
 if(isset($_POST["testlp3"])) {
-	file_put_contents('/var/www/html/openWB/ramdisk/evsedintestlp3', ausstehend);
+	$myRamdisk->setData('evsedintestlp3', 'ausstehend');
 }
 
 header("Location: ../status/status.php");

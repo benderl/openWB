@@ -1,4 +1,6 @@
 <?php
+/* functionality moved to "settings"savepostsettings.php"
+
 $result = '';
 $lines = file('/var/www/html/openWB/openwb.conf');
 foreach($lines as $line) {
@@ -23,4 +25,6 @@ foreach($lines as $line) {
 file_put_contents('/var/www/html/openWB/openwb.conf', $result);
 
 header("Location: ../index.php");
+
+*/
 ?>

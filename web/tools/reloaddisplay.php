@@ -1,3 +1,6 @@
 <?php
-file_put_contents('/var/www/html/openWB/ramdisk/reloaddisplay', "0");
+require_once './ramdiskClass.php';
+$myRamdisk = new openWBRamdisk();
+
+$myRamdisk->setData('reloaddisplay', "0");
 ?>
