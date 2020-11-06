@@ -100,7 +100,7 @@ class openWBSettings {
 		if(!array_key_exists($addKey, $this->settings)) {
 			$this->settings[$addKey] = $addValue;
 		} else {
-			$this->setSettings($addKey, $addValue);
+			$this->setSetting($addKey, $addValue);
 		}
 	}
 
