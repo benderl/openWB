@@ -2763,21 +2763,6 @@ else
 	python3 /var/www/html/openWB/runs/mqttsub.py &
 fi
 
-crontab -l -u pi > /var/www/html/openWB/ramdisk/tmpcrontab
-if grep -Fq "lade.log" /var/www/html/openWB/ramdisk/tmpcrontab
-then
-	echo "crontab modified"
-	sed -i '/lade.log/d' /var/www/html/openWB/ramdisk/tmpcrontab
-	echo "* * * * * /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /var/www/html/openWB/ramdisk/tmpcrontab
-	cat /var/www/html/openWB/ramdisk/tmpcrontab | crontab -u pi -
-fi
-sudo crontab -l > /var/www/html/openWB/ramdisk/tmprootcrontab
-if grep -Fq "atreboot.sh" /var/www/html/openWB/ramdisk/tmprootcrontab
-then
-echo "executed"
-sed -i '/atreboot.sh/d' /var/www/html/openWB/ramdisk/tmprootcrontab
-cat /var/www/html/openWB/ramdisk/tmprootcrontab | sudo crontab -
-fi
 ethstate=$(</sys/class/net/eth0/carrier)
 if (( ethstate == 1 )); then
 	sudo ifconfig eth0:0 192.168.193.5 netmask 255.255.255.0 up
@@ -2792,20 +2777,21 @@ else
 	sudo cp /var/www/html/openWB/web/tools/000-default.conf /etc/apache2/sites-available/
 	echo "...changed"
 fi
-if ! sudo grep -Fq "cronnightly.sh" /var/spool/cron/crontabs/pi
-then
-	(crontab -l -u pi ; echo "1 0 * * * /var/www/html/openWB/runs/cronnightly.sh >> /var/log/openWB.log 2>&1")| crontab -u pi -
+
+# remove old root crontab entries
+if [[ -f /var/spool/cron/crontab/root ]]; then
+	sudo crontab -l > /var/www/html/openWB/ramdisk/tmprootcrontab
+	sed -i '/openWB/d' /var/www/html/openWB/ramdisk/tmprootcrontab
+	cat /var/www/html/openWB/ramdisk/tmprootcrontab | sudo crontab -
 fi
 
-if ! sudo grep -Fq "cron5min.sh" /var/spool/cron/crontabs/pi
-then
-	(crontab -l -u pi ; echo "*/5 * * * * /var/www/html/openWB/runs/cron5min.sh >> /var/log/openWB.log 2>&1")| crontab -u pi -
+# remove old pi crontab entries
+if [[ -f /var/spool/cron/crontab/pi ]]; then
+	sudo crontab -l -u pi > /var/www/html/openWB/ramdisk/tmpcrontab
+	sed -i '/openWB/d' /var/www/html/openWB/ramdisk/tmpcrontab
+	cat /var/www/html/openWB/ramdisk/tmpcrontab | sudo crontab -
 fi
 
-if ! sudo grep -Fq "atreboot.sh" /var/spool/cron/crontabs/pi
-then
-	(crontab -l -u pi ; echo "@reboot /var/www/html/openWB/runs/atreboot.sh >> /var/log/openWB.log 2>&1")| crontab -u pi -
-fi
 if python -c "import evdev" &> /dev/null; then
 	echo 'evdev installed...'
 else
@@ -2868,6 +2854,37 @@ if python3 -c "import pymodbus" &> /dev/null; then
 else
 	sudo pip3 install pymodbus
 fi
+
+# check for openwb cron file
+if [[ ! -f /etc/cron.d/openwb ]]; then
+	echo "# openWB cronjobs - do not modify!" > /etc/cron.d/openwb
+fi
+
+if ! sudo grep -Fq "cronnightly.sh" /etc/cron.d/openwb
+then
+	echo "1 0 * * * pi /var/www/html/openWB/runs/cronnightly.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+fi
+
+if ! sudo grep -Fq "cron5min.sh" /etc/cron.d/openwb
+then
+	echo "*/5 * * * * pi /var/www/html/openWB/runs/cron5min.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+fi
+
+if ! sudo grep -Fq "atreboot.sh" /etc/cron.d/openwb
+then
+	echo "@reboot pi /var/www/html/openWB/runs/atreboot.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+fi
+
+if ! sudo grep -Fq "regel.sh" /etc/cron.d/openwb
+then
+	echo "* * * * * pi /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 10 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 20 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 30 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 40 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 50 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+fi
+
 uuid=$(</sys/class/net/eth0/address)
 owbv=$(</var/www/html/openWB/web/version)
 curl -d "update="$releasetrain$uuid"vers"$owbv"" -H "Content-Type: application/x-www-form-urlencoded" -X POST https://openwb.de/tools/update.php

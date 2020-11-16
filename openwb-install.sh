@@ -10,6 +10,7 @@ if ! [ -x "$(command -v vim)" ]; then
 else
 	echo "...ok"
 fi
+
 echo "check for timezone"
 if  grep -Fxq "Europe/Berlin" /etc/timezone
 then
@@ -23,7 +24,7 @@ fi
 
 echo "check for bc"
 if ! [ -x "$(command -v bc)" ];then
-	apt-get -qq install bc
+	apt-get -qq install -y bc
 	echo "...installed"
 else
 	echo "...ok"
@@ -31,21 +32,8 @@ fi
 
 echo "check for apache"
 if ! [ -x "$(command -v apachectl)" ]; then
-	apt-get -qq install -y apache2
+	apt-get -qq install -y apache2 php php-gd php7.0-xml php-curl libapache2-mod-php7.0 jq raspberrypi-kernel-headers
 	sleep 2
-	apt-get -qq install -y php
-	sleep 1
-	apt-get -qq install -y php-gd
-	sleep 1
-	apt-get -qq install -y php7.0-xml
-	sleep 2
-	apt-get -qq install -y php-curl
-	sleep 1	
-	apt-get -qq install -y libapache2-mod-php7.0
-	sleep 2
-	apt-get -qq install -y jq
-	sleep 2
-	apt-get -qq install -y raspberrypi-kernel-headers
 	echo "... installed"
 else
 	echo "...ok"
@@ -106,29 +94,6 @@ else
 	echo "...created"
 fi
 
-echo "check for crontab"
-if grep -Fxq "@reboot /var/www/html/openWB/runs/atreboot.sh &" /var/spool/cron/crontabs/root
-then
-	echo "...ok"
-else
-	echo "@reboot /var/www/html/openWB/runs/atreboot.sh &" >> /tmp/tocrontab
-	crontab -l -u root | cat - /tmp/tocrontab | crontab -u root -
-	rm /tmp/tocrontab
-	echo "...added"
-fi
-
-echo "check for MCP4725"
-if [ ! -d /home/pi/Adafruit_Python_MCP4725 ]; then
-	apt-get install build-essential python-dev
-	cd /home/pi
-	git clone https://github.com/adafruit/Adafruit_Python_MCP4725.git
-	cd Adafruit_Python_MCP4725
-	python setup.py install
-	echo "... installed"
-else
-	echo "...ok"
-fi
-
 echo "check for socat"
 if ! [ -x "$(command -v socat)" ]; then
 	apt-get -qq install -y socat
@@ -137,17 +102,79 @@ else
 	echo "...ok"
 fi
 
+echo "check for sshpass"
+if ! [ -x "$(command -v sshpass)" ];then
+	apt-get -qq install -y sshpass
+	echo "... installed"
+else
+	echo "...ok"
+fi
+
+echo "check for mosquitto"
+if [ ! -f /etc/mosquitto/mosquitto.conf ]; then
+	sudo apt-get -qq install -y mosquitto mosquitto-clients
+	sudo service mosquitto restart
+	echo "... installed"
+else
+	echo "...ok"
+fi
+
+echo "check for openwb specific mosquitto configuration"
+if [ ! -f /etc/mosquitto/conf.d/openwb.conf ]; then
+	sudo cp /var/www/html/openWB/web/files/mosquitto.conf /etc/mosquitto/conf.d/openwb.conf
+	sudo service mosquitto restart
+	echo "... installed"
+else
+	echo "...ok"
+fi
+
+echo "check for chromium-browser"
+if ! [ -x "$(command -v chromium-browser)" ];then
+	apt-get -qq install -y lxde-session chromium-browser chromium-browser-l10n
+	echo "... installed"
+else
+	echo "...ok"
+fi
+
 echo "disable cronjob logging"
-if grep -Fxq "EXTRA_OPTS="-L 0"" /etc/default/cron
+if grep -Fxq "EXTRA_OPTS=\"-L 0\"" /etc/default/cron
 then
 	echo "...ok"
 else
 	echo "EXTRA_OPTS="-L 0"" >> /etc/default/cron
 fi
+
+echo "check for crontab"
+if [ -f "/etc/cron.d/openwb" ]; then
+	echo "...ok"
+else
+	echo "@reboot root /var/www/html/openWB/runs/atreboot.sh" > /etc/cron.d/openwb
+	echo "1 0 * * * pi /var/www/html/openWB/runs/cronnightly.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "*/5 * * * * pi /var/www/html/openWB/runs/cron5min.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 10 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 20 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 30 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 40 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "* * * * * pi sleep 50 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1" >> /etc/cron.d/openwb
+	echo "...added"
+fi
+
 sudo /bin/su -c "echo 'upload_max_filesize = 300M' > /etc/php/7.0/apache2/conf.d/20-uploadlimit.ini"
 sudo /bin/su -c "echo 'post_max_size = 300M' >> /etc/php/7.0/apache2/conf.d/20-uploadlimit.ini"
+
+echo "installing required python modules"
 sudo apt-get -qq install -y python-pip
-sudo pip install  -U pymodbus
+sudo apt-get -qq install -y python3-pip
+sudo pip install evdev
+sudo pip install pymodbus
+sudo pip install adafruit-mcp4725
+sudo pip3 install paho-mqtt
+sudo pip3 install docopt
+sudo pip3 install certifi
+sudo pip3 install aiohttp
+sudo pip3 install pymodbus
+
 echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_pi-nopasswd
 
 chmod 777 /var/www/html/openWB/openwb.conf
@@ -155,4 +182,4 @@ chmod +x /var/www/html/openWB/modules/*
 chmod +x /var/www/html/openWB/runs/*
 touch /var/log/openWB.log
 chmod 777 /var/log/openWB.log
-/var/www/html/openWB/runs/atreboot.sh
+# /var/www/html/openWB/runs/atreboot.sh

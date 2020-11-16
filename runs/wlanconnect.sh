@@ -1,10 +1,15 @@
 #!/bin/bash
 wssid=$(</var/www/html/openWB/ramdisk/wssid)
 wpassword=$(</var/www/html/openWB/ramdisk/wpassword)
+whidden=$(</var/www/html/openWB/ramdisk/whidden)
 echo "country=DE" > /etc/wpa_supplicant/wpa_supplicant.conf
 echo "ctrl_interface=/var/run/wpa_supplicant GROUP=netdev" >> /etc/wpa_supplicant/wpa_supplicant.conf
 echo "network={" >> /etc/wpa_supplicant/wpa_supplicant.conf
 echo "ssid=\""$wssid"\"" >> /etc/wpa_supplicant/wpa_supplicant.conf
+# connect to hidden SSIDs
+if [[ $whidden -eq 1 ]]; then
+	echo "scan_ssid=1" >> /etc/wpa_supplicant/wpa_supplicant.conf
+fi
 echo "psk=\""$wpassword"\"" >> /etc/wpa_supplicant/wpa_supplicant.conf
 echo "}" >> /etc/wpa_supplicant/wpa_supplicant.conf
 sudo systemctl stop hostapd
@@ -14,7 +19,7 @@ sudo cp /etc/dhcpcd.conf.dhcp /etc/dhcpcd.conf
 sudo cp /etc/dnsmasq.conf.dhcp /etc/dnsmasq.conf
 systemctl restart dhcpcd 
 ifconfig wlan0 up
-wpa_cli -i wlan0 reconfigure	
+wpa_cli -i wlan0 reconfigure
 sleep 15
 wlan0state=$(</sys/class/net/wlan0/carrier)
 wlan0ip=$(ifconfig wlan0 |grep 'inet ' |awk '{print $2}')
