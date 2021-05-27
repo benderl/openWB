@@ -37,6 +37,13 @@
 	</head>
 
 	<body>
+		<?php
+			$lines = file($_SERVER['DOCUMENT_ROOT'] . '/openWB/openwb.conf');
+			foreach($lines as $line) {
+				list($key, $value) = explode("=", $line, 2);
+				${$key."old"} = trim( $value, " '\t\n\r\0\x0B" ); // remove all garbage and single quotes
+			}
+		?>
 
 		<div id="nav"></div> <!-- placeholder for navbar -->
 
@@ -84,6 +91,36 @@
 						</div>
 						<div class="card-footer text-center">
 							<button type="submit" name="action" value="rename" class="btn btn-success">Hostnamen ändern</button>
+						</div>
+					</form>
+				</div> <!-- card end -->
+
+				<div class="card border-secondary">
+					<div class="card-header bg-secondary">
+						Netzwerk Optionen
+					</div>
+					<form action="./settings/saveconfig.php" method="POST">
+						<div class="card-body">
+							<div class="row form-group">
+								<label class="col-md-4 col-form-label">Automatisches Netzwerkhandling</label>
+								<div class="col">
+									<div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+										<label class="btn btn-outline-info<?php if($networkautoconfigold == 0) echo " active" ?>">
+											<input type="radio" name="networkautoconfig" id="networkautoconfigOff" value="0"<?php if($networkautoconfigold == 0) echo " checked=\"checked\"" ?>>Aus
+										</label>
+										<label class="btn btn-outline-info<?php if($networkautoconfigold == 1) echo " active" ?>">
+											<input type="radio" name="networkautoconfig" id="networkautoconfigOn" value="1"<?php if($networkautoconfigold == 1) echo " checked=\"checked\"" ?>>An
+										</label>
+									</div>
+									<span class="form-text small">
+										Diese option steuert, ob openWB die Netzwerkschnittstellen aktiv überwacht und ggf. einen Hotspot bereitstellt, falls kein LAN-Kabel und keine WLAN-Verbindung erkannt wurde.
+										<span class="text-danger">Das ist eine experimentelle Funktion! Bitte nur ändern, wenn es mit der automatischen Konfiguration zu Problemen kommt und die openWB nicht mehr erreicht werden kann.</span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer text-center">
+							<button type="submit" class="btn btn-success">Speichern</button>
 						</div>
 					</form>
 				</div> <!-- card end -->

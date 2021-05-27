@@ -268,22 +268,80 @@ if (( isss == 1 )) || [[ "$evsecon" == "daemon" ]]; then
 	fi
 else
 	openwbDebugLog "MAIN" 1 "external openWB or daemon mode not configured; checking network setup"
-	ethstate=$(</sys/class/net/eth0/carrier)
-	if (( ethstate == 1 )); then
-		sudo ifconfig eth0:0 192.168.193.5 netmask 255.255.255.0 up
-		if [ -d /sys/class/net/wlan0 ]; then
-			sudo ifconfig wlan0:0 192.168.193.6 netmask 255.255.255.0 down
-			wlanstate=$(</sys/class/net/wlan0/carrier)
-			if (( wlanstate == 1 )); then
-				sudo systemctl stop hostapd
-				sudo systemctl stop dnsmasq
+	if (( networkautoconfig == 1 )); then
+		ethstate=$(</sys/class/net/eth0/carrier)
+		if (( ethstate == 1 )); then
+			openwbDebugLog "MAIN" 1 "eth0 carrier detected"
+			eth00up=$(/sbin/ifconfig eth0:0 | grep "inet" -c)
+			if [[ $eth00up -eq 0 ]]; then
+				openwbDebugLog "MAIN" 0 "eth0:0 not detected; adding with ip 192.168.193.5"
+				sudo ifconfig eth0:0 192.168.193.5 netmask 255.255.255.0 up
+			else
+				openwbDebugLog "MAIN" 1 "eth0:0 already up: ok"
+			fi
+			if [ -d /sys/class/net/wlan0 ]; then
+				wlan00up=$(/sbin/ifconfig wlan0:0 | grep "inet" -c)
+				if [[ $wlan00up -eq 1 ]]; then
+					openwbDebugLog "MAIN" 0 "wlan0:0 detected; removing"
+					sudo ifconfig wlan0:0 192.168.193.6 netmask 255.255.255.0 down
+				else
+					openwbDebugLog "MAIN" 1 "wlan0:0 not present: ok"
+				fi
+				wlanstate=$(</sys/class/net/wlan0/carrier)
+				if (( wlanstate == 1 )); then
+					openwbDebugLog "MAIN" 0 "wifi still connected; stopping hostapd and dnsmasq"
+					sudo systemctl stop hostapd
+					sudo systemctl stop dnsmasq
+				else
+					openwbDebugLog "MAIN" 1 "wifi not connected: ok"
+				fi
+			else
+				openwbDebugLog "MAIN" 0 "wifi device disabled at system level"
+			fi
+		else
+			openwbDebugLog "MAIN" 1 "eth0 has no link; setting up wifi"
+			if [ -d /sys/class/net/wlan0 ]; then
+				wlan00up=$(/sbin/ifconfig wlan0:0 | grep "inet" -c)
+				if [[ $wlan00up -eq 0 ]]; then
+					openwbDebugLog "MAIN" 0 "wlan0:0 not detected; adding with ip 192.168.193.6"
+					sudo ifconfig wlan0:0 192.168.193.6 netmask 255.255.255.0 up
+				else
+					openwbDebugLog "MAIN" 1 "wlan0:0 already up: ok"
+				fi
+			else
+				openwbDebugLog "MAIN" 0 "wifi device disabled at system level"
+				openwbDebugLog "MAIN" 0 "WARNING: no network connection!"
+			fi
+			eth00up=$(/sbin/ifconfig eth0:0 | grep "inet" -c)
+			if [[ $eth00up -eq 1 ]]; then
+				openwbDebugLog "MAIN" 0 "eth0:0 detected; removing"
+				sudo ifconfig eth0:0 192.168.193.5 netmask 255.255.255.0 down
+			else
+				openwbDebugLog "MAIN" 1 "eth0:0 not present: ok"
 			fi
 		fi
 	else
-		if [ -d /sys/class/net/wlan0 ]; then
-			sudo ifconfig wlan0:0 192.168.193.6 netmask 255.255.255.0 up
+		openwbDebugLog "MAIN" 0 "network autoconfig disabled in settings!"
+		ethstate=$(</sys/class/net/eth0/carrier)
+		openwbDebugLog "MAIN" 0 "eth0 carrier: $ethstate"
+		eth00up=$(/sbin/ifconfig eth0:0 | grep "inet" -c)
+		if [[ $eth00up -eq 0 ]]; then
+			openwbDebugLog "MAIN" 0 "eth0:0 not detected"
+		else
+			openwbDebugLog "MAIN" 0 "eth0:0 already up"
 		fi
-		sudo ifconfig eth0:0 192.168.193.5 netmask 255.255.255.0 down
+		if [ -d /sys/class/net/wlan0 ]; then
+			wlanstate=$(</sys/class/net/wlan0/carrier)
+			openwbDebugLog "MAIN" 0 "wlan0 carrier: $wlanstate"
+			wlan00up=$(/sbin/ifconfig wlan0:0 | grep "inet" -c)
+			if [[ $wlan00up -eq 0 ]]; then
+				openwbDebugLog "MAIN" 0 "wlan0:0 not detected"
+			else
+				openwbDebugLog "MAIN" 0 "wlan0:0 already up"
+			fi
+		else
+			openwbDebugLog "MAIN" 0 "wifi device disabled at system level"
+		fi
 	fi
 	# check for obsolete isss handler
 	if ps ax |grep -v grep |grep "python3 /var/www/html/openWB/runs/isss.py" > /dev/null

@@ -2035,5 +2035,8 @@ updateConfig(){
 	if ! grep -Fq "sungrowsr=" $ConfigFile; then
 		echo "sungrowsr=0" >> $ConfigFile
 	fi
+	if ! grep -Fq "networkautoconfig=" $ConfigFile; then
+		echo "networkautoconfig=1" >> $ConfigFile
+	fi
 	echo "Config file Update done."
 }
