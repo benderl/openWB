@@ -91,18 +91,14 @@ at_reboot() {
 	sudo chown -R pi:www-data "$OPENWBBASEDIR/"{web/backup,web/tools/upload}
 	sudo chmod -R g+w "$OPENWBBASEDIR/"{web/backup,web/tools/upload}
 
-	sudo chmod 777 "$OPENWBBASEDIR/openwb.conf"
+	sudo chmod 666 "$OPENWBBASEDIR/openwb.conf"
 	sudo chmod 777 "$OPENWBBASEDIR/ramdisk"
-	sudo chmod 777 "$OPENWBBASEDIR/ramdisk/"
-	sudo chmod 777 "$OPENWBBASEDIR/web/files/"*
+	sudo chmod 666 "$OPENWBBASEDIR/web/files/"*
 	sudo chmod -R +x "$OPENWBBASEDIR/modules/"*
 
 	sudo chmod -R 777 "$OPENWBBASEDIR/modules/soc_i3"
 	sudo chmod -R 777 "$OPENWBBASEDIR/modules/soc_eq"
 	sudo chmod -R 777 "$OPENWBBASEDIR/modules/soc_tesla"
-
-	sudo chmod 777 "$OPENWBBASEDIR/web/files/"*
-	sudo chmod -R +x "$OPENWBBASEDIR/modules/"*
 
 	mkdir -p "$OPENWBBASEDIR/web/logging/data/daily"
 	mkdir -p "$OPENWBBASEDIR/web/logging/data/monthly"
@@ -307,7 +303,7 @@ at_reboot() {
 	echo "clear warning..."
 	echo "" >"$OPENWBBASEDIR/ramdisk/lastregelungaktiv"
 	echo "" >"$OPENWBBASEDIR/ramdisk/mqttlastregelungaktiv"
-	chmod 777 "$OPENWBBASEDIR/ramdisk/mqttlastregelungaktiv"
+	chmod 666 "$OPENWBBASEDIR/ramdisk/mqttlastregelungaktiv"
 
 	"$OPENWBBASEDIR/runs/services.sh" restart
 
@@ -320,8 +316,8 @@ at_reboot() {
 	commitId=$(git -C "$OPENWBBASEDIR" log --format="%h" -n 1)
 	echo "$commitId" >"$OPENWBBASEDIR/ramdisk/currentCommitHash"
 	git -C "$OPENWBBASEDIR" branch -a --contains "$commitId" | perl -nle 'm|.*origin/(.+).*|; print $1' | uniq | xargs >"$OPENWBBASEDIR/ramdisk/currentCommitBranches"
-	sudo chmod 777 "$OPENWBBASEDIR/ramdisk/currentCommitHash"
-	sudo chmod 777 "$OPENWBBASEDIR/ramdisk/currentCommitBranches"
+	sudo chmod 666 "$OPENWBBASEDIR/ramdisk/currentCommitHash"
+	sudo chmod 666 "$OPENWBBASEDIR/ramdisk/currentCommitBranches"
 
 	# update broker
 	echo "update broker..."
@@ -353,9 +349,9 @@ at_reboot() {
 		mosquitto_pub -t openWB/global/ChargeMode -r -m "$bootmodus"
 	) &
 	echo " " >"$OPENWBBASEDIR/ramdisk/lastregelungaktiv"
-	chmod 777 "$OPENWBBASEDIR/ramdisk/lastregelungaktiv"
-	chmod 777 "$OPENWBBASEDIR/ramdisk/smarthome.log"
-	chmod 777 "$OPENWBBASEDIR/ramdisk/smarthomehandlerloglevel"
+	chmod 666 "$OPENWBBASEDIR/ramdisk/lastregelungaktiv"
+	chmod 666 "$OPENWBBASEDIR/ramdisk/smarthome.log"
+	chmod 666 "$OPENWBBASEDIR/ramdisk/smarthomehandlerloglevel"
 
 	# update etprovider pricelist
 	echo "etprovider..."

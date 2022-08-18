@@ -114,10 +114,10 @@ fi
 
 echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_pi-nopasswd
 
-chmod 777 /var/www/html/openWB/openwb.conf
+chmod 666 /var/www/html/openWB/openwb.conf
 chmod +x /var/www/html/openWB/modules/*
 chmod +x /var/www/html/openWB/runs/*
 chmod +x /var/www/html/openWB/*.sh
 touch /var/log/openWB.log
-chmod 777 /var/log/openWB.log
+chmod 666 /var/log/openWB.log
 sudo -u pi /var/www/html/openWB/runs/atreboot.sh

@@ -1,17 +1,18 @@
 #!/bin/bash
 OPENWBBASEDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-cd /var/www/html/openWB
-. /var/www/html/openWB/loadconfig.sh
+
+source "$OPENWBBASEDIR/loadconfig.sh"
 
 # set mode to stop and flags in ramdisk and broker to indicate current update state
-mosquitto_pub -t openWB/set/ChargeMode -r -m "3"
-mosquitto_pub -t openWB/system/updateInProgress -r -m "1"
-echo 1 > /var/www/html/openWB/ramdisk/updateinprogress
-echo 1 > /var/www/html/openWB/ramdisk/bootinprogress
-echo "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist" > /var/www/html/openWB/ramdisk/lastregelungaktiv
-mosquitto_pub -t "openWB/global/strLastmanagementActive" -r -m "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist"
-echo "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist" > /var/www/html/openWB/ramdisk/mqttlastregelungaktiv
-chmod 777 /var/www/html/openWB/ramdisk/mqttlastregelungaktiv
+mosquitto_pub -t "openWB/set/ChargeMode" -r -m "3"
+mosquitto_pub -t "openWB/system/updateInProgress" -r -m "1"
+echo 1 >"$RAMDISKDIR/updateinprogress"
+echo 1 >"$RAMDISKDIR/bootinprogress"
+UPDATEMESSAGE="Update wird ausgeführt, bitte warten bis die Meldung nicht mehr sichtbar ist"
+echo "$UPDATEMESSAGE" >"$RAMDISKDIR/lastregelungaktiv"
+mosquitto_pub -t "openWB/global/strLastmanagementActive" -r -m "$UPDATEMESSAGE"
+echo "$UPDATEMESSAGE" >"$RAMDISKDIR/mqttlastregelungaktiv"
+chmod 666 "$RAMDISKDIR/mqttlastregelungaktiv"
 
 # The update might replace a number of files which might currently be in use by the continuously running legacy-run
 # server. If we replace the source files while the process is running, funny things might happen.
@@ -64,32 +65,30 @@ pgrep -f "$OPENWBBASEDIR/(regel\\.sh|runs/cron5min\\.sh|runs/cronnightly\\.sh)$"
 
 # backup some files before fetching new release
 # module soc_eq
-cp modules/soc_eq/soc_eq_acc_lp1 /tmp/soc_eq_acc_lp1
-cp modules/soc_eq/soc_eq_acc_lp2 /tmp/soc_eq_acc_lp2
-cp openwb.conf /tmp/openwb.conf
+cp "$OPENWBBASEDIR/modules/soc_eq/soc_eq_acc_lp1" /tmp/soc_eq_acc_lp1
+cp "$OPENWBBASEDIR/modules/soc_eq/soc_eq_acc_lp2" /tmp/soc_eq_acc_lp2
+cp "$OPENWBBASEDIR/openwb.conf" /tmp/openwb.conf
 
 # fetch new release from GitHub
-git fetch origin
-git reset --hard origin/$train
+git -C "$OPENWBBASEDIR" fetch origin
+git -C "$OPENWBBASEDIR" reset --hard "origin/$train"
 
 # set permissions
-cd /var/www/html/
-sudo chown -R pi:pi openWB 
-cp /tmp/openwb.conf /var/www/html/openWB/openwb.conf
+sudo chown -R pi:pi "$OPENWBBASEDIR"
+cp /tmp/openwb.conf "$OPENWBBASEDIR/openwb.conf"
 
 # restore saved files after fetching new release
 # module soc_eq
-sudo cp /tmp/soc_eq_acc_lp1 /var/www/html/openWB/modules/soc_eq/soc_eq_acc_lp1
-sudo cp /tmp/soc_eq_acc_lp2 /var/www/html/openWB/modules/soc_eq/soc_eq_acc_lp2
+cp /tmp/soc_eq_acc_lp1 "$OPENWBBASEDIR/modules/soc_eq/soc_eq_acc_lp1"
+cp /tmp/soc_eq_acc_lp2 "$OPENWBBASEDIR/modules/soc_eq/soc_eq_acc_lp2"
 
 # set permissions
-sudo chmod 777 /var/www/html/openWB/openwb.conf
-sudo chmod +x /var/www/html/openWB/modules/*
-sudo chmod +x /var/www/html/openWB/runs/*
-sudo chmod +x /var/www/html/openWB/*.sh
-sudo chmod 777 /var/www/html/openWB/ramdisk/*
-sudo chmod 777 /var/www/html/openWB/web/lade.log
+sudo chmod 666 "$OPENWBBASEDIR/openwb.conf"
+sudo chmod +x "$OPENWBBASEDIR/modules/"*
+sudo chmod +x "$OPENWBBASEDIR/runs/"*
+sudo chmod +x "$OPENWBBASEDIR/"*.sh
+sudo chmod 666 "$RAMDISKDIR/"*
 sleep 2
 
 # now treat system as in booting state
-nohup /var/www/html/openWB/runs/atreboot.sh >> /var/log/openWB.log 2>&1 &
+nohup "$OPENWBBASEDIR/runs/atreboot.sh" >>/var/log/openWB.log 2>&1 &

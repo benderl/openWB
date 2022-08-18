@@ -91,11 +91,11 @@ async def main():
             json.dump(data, f, ensure_ascii=False, indent=4)
             f.close()
             try:
-                os.chmod(replyFile, 0o777)
+                os.chmod(replyFile, 0o666)
             except Exception as e:
                 log.exception("chmod replyFile exception, e="+str(e))
                 log.exception("use sudo, user: "+getpass.getuser())
-                os.system("sudo chmod 0777 "+replyFile)
+                os.system("sudo chmod 0666 "+replyFile)
 
             try:
                 soc = data['charging']['batteryStatus']['value']['currentSOC_pct']
@@ -118,9 +118,9 @@ async def main():
                 pickle.dump(w.tokens, tf)     # write tokens file
                 tf.close()
                 try:
-                    os.chmod(tokensFile, 0o777)
+                    os.chmod(tokensFile, 0o666)
                 except Exception as e:
                     log.exception("chmod tokensFile exception, use sudo, e="+str(e)+"user: "+getpass.getuser())
-                    os.system("sudo chmod 0777 "+tokensFile)
+                    os.system("sudo chmod 0666 "+tokensFile)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
