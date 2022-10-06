@@ -167,6 +167,12 @@
 			exec( $_SERVER['DOCUMENT_ROOT'] . "/openWB/runs/rfid/rfidSetup.sh >> /var/log/openWB.log 2>&1 &" );
 		}
 
+		// check for led mode and start/stop handler
+		if( array_key_exists( 'ledsakt', $_POST ) ){ ?>
+			<script>$('#feedbackdiv').append("<br>LED Konfiguration wird aktualisiert.");</script>
+			<?php
+			exec( $_SERVER['DOCUMENT_ROOT'] . "/openWB/runs/leds/ledsSetup.sh >> /var/log/openWB.log 2>&1 &" );
+		}
 	} catch ( Exception $e ) {
 		$msg = $e->getMessage();
 		echo "<script>alert('$msg');</script>";

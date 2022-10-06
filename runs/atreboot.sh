@@ -234,12 +234,6 @@ at_reboot() {
 	# update old ladelog
 	"$OPENWBBASEDIR/runs/transferladelog.sh"
 
-	# check for led handler
-	if ((ledsakt == 1)); then
-		echo "led..."
-		sudo python "$OPENWBBASEDIR/runs/leds.py" startup
-	fi
-
 	# setup timezone
 	echo "timezone..."
 	sudo cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime

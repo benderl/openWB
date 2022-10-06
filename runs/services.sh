@@ -6,11 +6,12 @@ declare -F "openwbDebugLog" >/dev/null || . "$OPENWBBASEDIR/helperFunctions.sh"
 
 . "$OPENWBBASEDIR/runs/rfid/rfidHelper.sh"
 . "$OPENWBBASEDIR/runs/pushButtons/pushButtonsHelper.sh"
+. "$OPENWBBASEDIR/runs/leds/ledsHelper.sh"
 . "$OPENWBBASEDIR/runs/rse/rseHelper.sh"
 
 stop() {
 	openwbDebugLog "MAIN" 0 "Stopping OpenWB services"
-	local service_pattern='^python.*/(modbusserver|smarthomehandler|smarthomemq|mqttsub|isss|buchse|legacy_run_server|rseDaemon|pushButtonsDaemon|rfidDaemon|readrfid)\.py'
+	local service_pattern='^python.*/(modbusserver|smarthomehandler|smarthomemq|mqttsub|isss|buchse|legacy_run_server|rseDaemon|pushButtonsDaemon|ledsDaemon|rfidDaemon|readrfid)\.py'
 	sudo pkill -f "$service_pattern"
 	# Wait until all services terminated (max 10 seconds)
 	pgrep -f "$service_pattern" | timeout 10 xargs -n1 -I'{}' tail -f --pid="{}" /dev/null
@@ -140,6 +141,8 @@ start() {
 		rseStop
 		pushButtonsStop
 	fi
+
+	ledsSetup "$ledsakt" 0
 
 	rfidSetup "$rfidakt" 0 "$rfidlist"
 }
