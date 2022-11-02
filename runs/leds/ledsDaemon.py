@@ -116,6 +116,6 @@ try:
         led_mode = new_led_mode
 except Exception as e:
     log_debug(2, "ERROR in led daemon: " + str(e), traceback.format_exc())
+finally:
     GPIO.cleanup()
-
-log_debug(2, "led daemon stopped")
+    log_debug(2, "led daemon stopped")
