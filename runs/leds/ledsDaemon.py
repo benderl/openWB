@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import sys
 import traceback
 import time
 from typing import List
 
 basePath = "/var/www/html/openWB"
 ramdiskPath = basePath + "/ramdisk"
-logFilename = ramdiskPath + "/leds.log"
-leds = [
+logFilename = ramdiskPath + "/ledDaemon.log"
+led_gpio = [
     {"gpio": 24},
     {"gpio": 23},
     {"gpio":  4}
@@ -34,19 +33,19 @@ def read_from_ramdisk(filename: str) -> str:
 def init():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
-    for led in leds:
+    for led in led_gpio:
         GPIO.setup(led["gpio"], GPIO.OUT)
     led_off()
 
 
-def led_off(set_leds: List = [0, 1, 2]) -> None:
-    for set_led in set_leds:
-        GPIO.output(leds[set_led]["gpio"], GPIO.LOW)
+def led_off(set_led_list: List = [0, 1, 2]) -> None:
+    for set_led in set_led_list:
+        GPIO.output(led_gpio[set_led]["gpio"], GPIO.LOW)
 
 
-def led_on(set_leds: List = [0, 1, 2]) -> None:
-    for set_led in set_leds:
-        GPIO.output(leds[set_led]["gpio"], GPIO.HIGH)
+def led_on(set_led_list: List = [0, 1, 2]) -> None:
+    for set_led in set_led_list:
+        GPIO.output(led_gpio[set_led]["gpio"], GPIO.HIGH)
 
 
 try:
@@ -65,9 +64,9 @@ try:
             new_led_mode = led_mode
         if led_mode != new_led_mode:
             log_debug(1, "mode change detected: %s->%s" % (led_mode, new_led_mode))
-        requested_leds = [int(s)-1 for s in new_led_mode if s.isdigit()]
-        if len(requested_leds) == 0:
-            requested_leds = [0, 1, 2]
+        requested_led_list = [int(s)-1 for s in new_led_mode if s.isdigit()]
+        if len(requested_led_list) == 0:
+            requested_led_list = [0, 1, 2]
         if new_led_mode == "startup":
             led_off()
             n = 0
@@ -91,23 +90,23 @@ try:
             led_off([2])
             time.sleep(2)
         elif "aus" in new_led_mode:
-            led_off(requested_leds)
+            led_off(requested_led_list)
             time.sleep(2)
         elif "an" in new_led_mode:
             led_off()
-            led_on(requested_leds)
+            led_on(requested_led_list)
             time.sleep(2)
         elif "blink" in new_led_mode:
             led_off()
-            led_on(requested_leds)
+            led_on(requested_led_list)
             time.sleep(2)
-            led_off(requested_leds)
+            led_off(requested_led_list)
             time.sleep(2)
         elif "flash" in new_led_mode:
             led_off()
-            led_on(requested_leds)
+            led_on(requested_led_list)
             time.sleep(0.1)
-            led_off(requested_leds)
+            led_off(requested_led_list)
             time.sleep(0.1)
         else:
             log_debug(2, "unsupported led mode: %s" % (new_led_mode))
@@ -117,5 +116,7 @@ try:
 except Exception as e:
     log_debug(2, "ERROR in led daemon: " + str(e), traceback.format_exc())
 finally:
-    GPIO.cleanup()
+    led_off()
+    # No cleanup here! Keep state of output, low for all used GPIOs
+    # GPIO.cleanup()
     log_debug(2, "led daemon stopped")
