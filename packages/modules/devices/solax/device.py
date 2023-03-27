@@ -53,15 +53,16 @@ class Device(AbstractDevice):
 
     def update(self) -> None:
         log.debug("Start device reading " + str(self.components))
-        if self.components:
-            for component in self.components:
-                # Auch wenn bei einer Komponente ein Fehler auftritt, sollen alle anderen noch ausgelesen werden.
-                with SingleComponentUpdateContext(self.components[component].component_info):
-                    self.components[component].update()
-        else:
-            log.warning(
-                self.device_config.name +
-                ": Es konnten keine Werte gelesen werden, da noch keine Komponenten konfiguriert wurden.")
+        with self.client:
+            if self.components:
+                for component in self.components:
+                    # Auch wenn bei einer Komponente ein Fehler auftritt, sollen alle anderen noch ausgelesen werden.
+                    with SingleComponentUpdateContext(self.components[component].component_info):
+                        self.components[component].update()
+            else:
+                log.warning(
+                    self.device_config.name +
+                    ": Es konnten keine Werte gelesen werden, da noch keine Komponenten konfiguriert wurden.")
 
 
 COMPONENT_TYPE_TO_MODULE = {

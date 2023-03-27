@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from typing import Dict, Union
 from pymodbus.constants import Endian
+# import time
 
 from dataclass_utils import dataclass_from_dict
 from modules.common import modbus
@@ -26,20 +27,23 @@ class SolaxCounter:
         self.component_info = ComponentInfo.from_component_config(self.component_config)
 
     def update(self):
-        with self.__tcp_client:
-            power = self.__tcp_client.read_input_registers(70, ModbusDataType.INT_32, wordorder=Endian.Little,
-                                                           unit=self.__modbus_id) * -1
-            frequency = self.__tcp_client.read_input_registers(7, ModbusDataType.UINT_16, unit=self.__modbus_id) / 100
-            try:
-                powers = [-value for value in self.__tcp_client.read_input_registers(
-                    130, [ModbusDataType.INT_32] * 3, wordorder=Endian.Little, unit=self.__modbus_id
-                )]
-            except Exception:
-                powers = None
-            exported, imported = [value * 10
-                                  for value in self.__tcp_client.read_input_registers(
-                                      72, [ModbusDataType.UINT_32] * 2, wordorder=Endian.Little, unit=self.__modbus_id
-                                  )]
+        power = self.__tcp_client.read_input_registers(70, ModbusDataType.INT_32, wordorder=Endian.Little,
+                                                       unit=self.__modbus_id) * -1
+        # time.sleep(1)
+        frequency = self.__tcp_client.read_input_registers(7, ModbusDataType.UINT_16, unit=self.__modbus_id) / 100
+        # time.sleep(1)
+        try:
+            powers = [-value for value in self.__tcp_client.read_input_registers(
+                130, [ModbusDataType.INT_32] * 3, wordorder=Endian.Little, unit=self.__modbus_id
+            )]
+            # time.sleep(1)
+        except Exception:
+            powers = None
+        exported, imported = [value * 10
+                              for value in self.__tcp_client.read_input_registers(
+                                  72, [ModbusDataType.UINT_32] * 2, wordorder=Endian.Little, unit=self.__modbus_id
+                              )]
+        # time.sleep(1)
 
         counter_state = CounterState(
             imported=imported,
