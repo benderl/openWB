@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from typing import Dict, Union
 from pymodbus.constants import Endian
-# import time
+import time
 
 from dataclass_utils import dataclass_from_dict
 from modules.common import modbus
@@ -27,11 +27,11 @@ class SolaxInverter:
 
     def update(self) -> None:
         power_temp = self.__tcp_client.read_input_registers(10, [ModbusDataType.UINT_16] * 2, unit=self.__modbus_id)
-        # time.sleep(1)
+        time.sleep(1)
         power = sum(power_temp) * -1
         exported = self.__tcp_client.read_input_registers(82, ModbusDataType.UINT_32, wordorder=Endian.Little,
                                                           unit=self.__modbus_id) * 100
-        # time.sleep(1)
+        time.sleep(1)
 
         inverter_state = InverterState(
             power=power,

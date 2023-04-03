@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from typing import Dict, Union
-# import time
+import time
 
 from dataclass_utils import dataclass_from_dict
 from modules.common import modbus
@@ -29,9 +29,9 @@ class SolaxBat:
 
     def update(self) -> None:
         power = self.__tcp_client.read_input_registers(22, ModbusDataType.INT_16, unit=self.__modbus_id)
-        # time.sleep(1)
+        time.sleep(1)
         soc = self.__tcp_client.read_input_registers(28, ModbusDataType.UINT_16, unit=self.__modbus_id)
-        # time.sleep(1)
+        time.sleep(1)
 
         imported, exported = self.sim_counter.sim_count(power)
         bat_state = BatState(
