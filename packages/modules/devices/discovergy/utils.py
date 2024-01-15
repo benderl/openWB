@@ -1,5 +1,8 @@
 from typing import Callable, Union
 from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+import ssl
 
 from modules.common.component_state import CounterState
 from modules.common.fault_state import ComponentInfo
@@ -18,3 +21,11 @@ class DiscovergyComponent:
 
     def update(self, session: Session):
         self.store(get_last_reading(session, self.__meter_id))
+
+
+class DiscovergyHttpAdapter(HTTPAdapter):
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1_2)

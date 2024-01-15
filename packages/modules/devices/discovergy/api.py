@@ -7,7 +7,8 @@ def get_last_reading(session: Session, meter_id: str):
     values = session.get(
         "https://api.discovergy.com/public/v1/last_reading",
         params={"meterId": meter_id},
-        timeout=3
+        timeout=3,
+        verify=False
     ).json()["values"]
 
     def read_phases(*args: str):

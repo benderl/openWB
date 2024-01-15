@@ -13,12 +13,14 @@ from modules.devices.discovergy.config import (
     DiscovergyCounterSetup,
     DiscovergyInverterConfiguration,
     DiscovergyInverterSetup)
+from modules.devices.discovergy.utils import DiscovergyHttpAdapter
 
 log = logging.getLogger(__name__)
 
 
 def create_device(device_config: DiscovergyConfiguration):
     session = get_http_session()
+    session.mount('https://api.discovergy.com/', DiscovergyHttpAdapter())
     session.auth = (device_config.user, device_config.password)
     return ConfigurableDevice(
         device_config=device_config,
